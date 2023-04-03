@@ -1,0 +1,31 @@
+{
+  "name": "spin-observatory-plugin-deck",
+  "version": "1.0.0",
+  "private": true,
+  "module": "build/dist/index.js",
+  "scripts": {
+    "clean": "npx shx rm -rf build",
+    "develop": "npm run clean && run-p watch proxy",
+    "build": "npm run clean && NODE_ENV=production rollup -c",
+    "lint": "eslint --ext js,jsx,ts,tsx src",
+    "postinstall": "check-plugin && check-peer-dependencies || true",
+    "prepare": "husky-install",
+    "prettier": "prettier --write 'src/**/*.{js,jsx,ts,tsx,html,css,less,json}'",
+    "proxy": "dev-proxy",
+    "watch": "rollup -c -w --no-watch.clearScreen"
+  },
+  "dependencies": {
+    "@spinnaker/pluginsdk": "0.3.0",
+    "typescript": "5.1.0-dev.20230403"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "4.4.0",
+    "@typescript-eslint/parser": "4.4.0",
+    "eslint": "7.10.0",
+    "eslint-config-prettier": "6.12.0",
+    "eslint-plugin-react-hooks": "4.1.2"
+  },
+  "files": [
+    "build/dist"
+  ]
+}
