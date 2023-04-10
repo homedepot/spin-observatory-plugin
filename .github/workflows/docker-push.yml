@@ -2,7 +2,7 @@ name: Docker
 on:
   workflow_call:
     inputs:
-      version:
+      VERSION:
         description: 'plugin version'
         required: true
         type: string
@@ -28,7 +28,7 @@ jobs:
     - name: Print
       run: |
         set -vx
-        echo inputs.version
+        ${{ inputs.VERSION }}
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2

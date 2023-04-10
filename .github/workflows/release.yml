@@ -53,4 +53,4 @@ jobs:
     needs: build
     uses: ./.github/workflows/docker-push.yml
     with:
-      version: env.RELEASE_VERSION
+      VERSION: env.RELEASE_VERSION
