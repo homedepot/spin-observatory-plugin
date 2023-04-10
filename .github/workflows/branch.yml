@@ -12,3 +12,6 @@ jobs:
   docker:
     needs: build
     uses: ./.github/workflows/docker-push.yml
+    with:
+      version: $(git describe --tags --abbrev=0 --match="v[0-9]*" | cut -c2-)-dev-${GITHUB_REF_NAME}-$(git rev-parse --short HEAD)-$(date --utc +'%Y%m%d%H%M')
+

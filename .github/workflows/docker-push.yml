@@ -1,9 +1,16 @@
 name: Docker
 on:
   workflow_call:
+    inputs:
+      version:
+        description: 'plugin version'
+        required: true
+        type: string
+
 
 env:
   CONTAINER_REGISTRY: us-docker.pkg.dev/spinnaker-community/docker
+  REPO: ${GITHUB_REPOSITORY##*/}
 
 jobs:   
   push:
@@ -18,12 +25,12 @@ jobs:
       with:
         name: build             
     
-    - name: Prepare build variables
-      id: build_variables
-      run: |
-        set -vx
-        echo REPO=${GITHUB_REPOSITORY##*/} >> $GITHUB_OUTPUT
-        echo VERSION="$(git describe --tags --abbrev=0 --match="v[0-9]*" | cut -c2-)-dev-${GITHUB_REF_NAME}-$(git rev-parse --short HEAD)-$(date --utc +'%Y%m%d%H%M')" >> $GIHUB_OUTPUT
+    # - name: Prepare build variables
+    #   id: build_variables
+    #   run: |
+    #     set -vx
+    #     echo REPO=${GITHUB_REPOSITORY##*/} >> $GITHUB_OUTPUT
+    #     echo VERSION="$(git describe --tags --abbrev=0 --match="v[0-9]*" | cut -c2-)-dev-${GITHUB_REF_NAME}-$(git rev-parse --short HEAD)-$(date --utc +'%Y%m%d%H%M')" >> $GITHUB_OUTPUT
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2

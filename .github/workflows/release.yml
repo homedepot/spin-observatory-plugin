@@ -29,12 +29,6 @@ jobs:
           echo IS_CANDIDATE=${IS_CANDIDATE} >> $GITHUB_OUTPUT
           echo RELEASE_VERSION=${RELEASE_VERSION} >> $GITHUB_OUTPUT
 
-      - name: Prepare build variables
-        id: build_variables
-        run: |
-          echo REPO=${GITHUB_REPOSITORY##*/} >> $GITHUB_OUTPUT
-          echo VERSION="$(git rev-parse --short HEAD)-$(date --utc +'%Y%m%d%H%M')" >> $GITHUB_OUTPUT
-
       - name: Create release
         if: steps.release_info.outputs.SKIP_RELEASE == 'false'
         uses: softprops/action-gh-release@v1
@@ -46,4 +40,12 @@ jobs:
           prerelease: ${{ steps.release_info.outputs.IS_CANDIDATE }}
           tag_name: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Add release to plugin repo
+      #   if: steps.release_info.outputs.SKIP_RELEASE == 'false'
+      #   uses: armory-io/plugin-metadata-updater@master
+      #   env:
+      #     GITHUB_OAUTH: ${{secrets.GITHUB_TOKEN}}
+      #   with:
+      #     metadata:
 
