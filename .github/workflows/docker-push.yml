@@ -28,7 +28,7 @@ jobs:
     - name: Print
       run: |
         set -vx
-        ${{ inputs.VERSION }}
+        echo ${{ inputs.VERSION }}
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
