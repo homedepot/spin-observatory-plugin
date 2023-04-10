@@ -6,5 +6,5 @@ on:
     branches: [ main ]
 
 jobs:
-  wip:
-    uses: one-thd/cd-actions/.github/workflows/wip.yml@main
+  build:
+    uses: ./build.yml

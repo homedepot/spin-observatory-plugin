@@ -1,0 +1,22 @@
+pluginManagement {
+  repositories {
+    mavenCentral() // required so plugins can be found if not found in mavenLocal
+    mavenLocal()
+    gradlePluginPortal()
+  }
+}
+
+rootProject.name = "spin-observatory-plugin"
+
+include "spin-observatory-plugin-deck"
+
+def setBuildFile(project) {
+  project.buildFileName = "${project.name}.gradle"
+  project.children.each {
+    setBuildFile(it)
+  }
+}
+
+rootProject.children.each {
+  setBuildFile(it)
+}

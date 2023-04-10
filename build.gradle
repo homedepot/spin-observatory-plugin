@@ -1,0 +1,34 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+}
+
+plugins {
+  // each plugin adds tasks to project
+  id("com.palantir.git-version").version("0.12.2")
+  id("io.spinnaker.plugin.bundler").version("$spinnakerGradleVersion")
+}
+
+repositories {
+  mavenCentral()
+}
+
+spinnakerBundle {
+  description = "Home Depot Spinnaker plugin implementation"
+  pluginId = "homedepot.SpinObservatoryPlugin"
+  provider = "https://github.com/spinnaker-plugin-examples"
+  version = rootProject.version
+}
+
+version = normalizedVersion()
+
+String normalizedVersion() {
+  String fullVersion = gitVersion()
+  String normalized = fullVersion.split("-").first()
+  if (fullVersion.contains("dirty")) {
+    return "$normalized-SNAPSHOT"
+  } else {
+    return normalized
+  }
+}
