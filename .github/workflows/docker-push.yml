@@ -25,12 +25,10 @@ jobs:
       with:
         name: build             
     
-    # - name: Prepare build variables
-    #   id: build_variables
-    #   run: |
-    #     set -vx
-    #     echo REPO=${GITHUB_REPOSITORY##*/} >> $GITHUB_OUTPUT
-    #     echo VERSION="$(git describe --tags --abbrev=0 --match="v[0-9]*" | cut -c2-)-dev-${GITHUB_REF_NAME}-$(git rev-parse --short HEAD)-$(date --utc +'%Y%m%d%H%M')" >> $GITHUB_OUTPUT
+    - name: Print
+      run: |
+        set -vx
+        echo inputs.version
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2

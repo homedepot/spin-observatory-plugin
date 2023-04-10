@@ -27,7 +27,7 @@ jobs:
           echo CHANGELOG=$(echo -e "${CHANGELOG}") >> $GITHUB_OUTPUT
           echo SKIP_RELEASE=${SKIP_RELEASE} >> $GITHUB_OUTPUT
           echo IS_CANDIDATE=${IS_CANDIDATE} >> $GITHUB_OUTPUT
-          echo RELEASE_VERSION=${RELEASE_VERSION} >> $GITHUB_OUTPUT
+          echo RELEASE_VERSION=${RELEASE_VERSION} >> $GITHUB_ENV
 
       - name: Create release
         if: steps.release_info.outputs.SKIP_RELEASE == 'false'
@@ -48,4 +48,9 @@ jobs:
       #     GITHUB_OAUTH: ${{secrets.GITHUB_TOKEN}}
       #   with:
       #     metadata:
-
+  
+  docker:
+    needs: build
+    uses: ./.github/workflows/docker-push.yml
+    with:
+      version: env.RELEASE_VERSION
