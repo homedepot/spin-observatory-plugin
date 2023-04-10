@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@spinnaker/pluginsdk": "0.3.0",
+    "@spinnaker/pluginsdk-peerdeps": "0.10.0",
     "typescript": "5.1.0-dev.20230403"
   },
   "devDependencies": {

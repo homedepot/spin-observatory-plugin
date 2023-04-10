@@ -1179,6 +1179,11 @@
     lodash "^4.17.20"
     ts-node "*"
 
+"@spinnaker/pluginsdk-peerdeps@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@spinnaker/pluginsdk-peerdeps/-/pluginsdk-peerdeps-0.10.0.tgz#931d90409d1e14a6cfa9caea113e0e65a43d0adb"
+  integrity sha512-VNadkTOTsyOrhnOFEOjQxycviyITjBw7ljIasNYK+WW2rNYxJhRV07MZJ0hTvV/VuXHx17M4OCIOBI90ZtRG6Q==
+
 "@spinnaker/pluginsdk@0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@spinnaker/pluginsdk/-/pluginsdk-0.3.0.tgz#202926f0413be6b125ecc04607f2c37fc35e2104"
