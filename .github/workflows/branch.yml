@@ -22,7 +22,10 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Get short SHA
-        run: echo "SHA=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
+        run: echo "SHA=$(git rev-parse --short ${{ github.event.pull_request.head.sha }})" >> $GITHUB_ENV
+
+      - name: Display file structure
+        run: ls -R
 
       - name: Create branch release
         id: create-branch-release
