@@ -17,8 +17,12 @@ jobs:
     needs: docker
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
       - name: Get short SHA
-        run: echo "SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        run: echo "SHA=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
 
       - name: Create branch release
         id: create-branch-release
@@ -36,6 +40,6 @@ jobs:
         env:
           GITHUB_OAUTH: ${{secrets.GITHUB_TOKEN}}
         with:
-          metadata: ./build/distributions/plugin-info.json
+          metadata: ./plugins/plugin-info.json
           metadata_repo_url: https://github.com/one-thd/spinnaker-plugins
           binary_url: ${{ fromJSON(steps.create-branch-release.outputs.assets)[0].browser_download_url }}
