@@ -24,6 +24,11 @@ jobs:
       - name: Get short SHA
         run: echo "SHA=$(git rev-parse --short ${{ github.event.pull_request.head.sha }})" >> $GITHUB_ENV
 
+      - uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: ./build
+
       - name: Display file structure
         run: ls -R
 
@@ -43,6 +48,6 @@ jobs:
         env:
           GITHUB_OAUTH: ${{secrets.GITHUB_TOKEN}}
         with:
-          metadata: ./plugins/plugin-info.json
+          metadata: ./build/distributions/plugin-info.json
           metadata_repo_url: https://github.com/one-thd/spinnaker-plugins
           binary_url: ${{ fromJSON(steps.create-branch-release.outputs.assets)[0].browser_download_url }}
