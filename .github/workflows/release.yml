@@ -12,10 +12,11 @@ jobs:
     uses: ./.github/workflows/build.yml
 
   docker: 
+    needs: build
     uses: ./.github/workflows/docker-push.yml
 
   release:
-    needs: build
+    needs: docker
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
