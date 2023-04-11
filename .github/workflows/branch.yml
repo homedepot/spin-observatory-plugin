@@ -38,4 +38,3 @@ jobs:
           metadata: ./build/distributions/plugin-info.json
           metadata_repo_url: https://github.com/one-thd/spinnaker-plugins
           binary_url: ${{ fromJSON(steps.create-branch-release.outputs.assets)[0].browser_download_url }}
-
