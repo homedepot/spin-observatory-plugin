@@ -36,8 +36,3 @@ jobs:
         with:
           name: build
           path: build/
-
-      - name: Display file structure
-        run: |
-          git describe --tags --always --first-parent
-          ls -R
