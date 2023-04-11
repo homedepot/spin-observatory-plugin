@@ -12,6 +12,30 @@ jobs:
   docker:
     needs: build
     uses: ./.github/workflows/docker-push.yml
-    with:
-      VERSION: $(git describe --tags --abbrev=0 --match="v[0-9]*" | cut -c2-)-dev-${GITHUB_REF_NAME}-$(git rev-parse --short HEAD)-$(date --utc +'%Y%m%d%H%M')
+
+  branch-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get short SHA
+        run: echo "SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Create branch release
+        id: create-branch-release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          name: ${{ github.event.repository.name }} ${{ github.ref_name }}
+          prerelease: false
+          tag_name: ${{ github.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: ./build/distributions/${{ github.event.repository.name }}-${{ env.SHA }}.zip
+
+      - name: Add release to plugin repo
+        uses: armory-io/plugin-metadata-updater@master
+        env:
+          GITHUB_OAUTH: ${{secrets.GITHUB_TOKEN}}
+        with:
+          metadata: ./build/distributions/plugin-info.json
+          metadata_repo_url: https://github.com/one-thd/spinnaker-plugins
+          binary_url: ${{ fromJSON(steps.create-branch-release.outputs.assets)[0].browser_download_url }}
 

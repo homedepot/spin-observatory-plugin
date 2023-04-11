@@ -1,12 +1,6 @@
 name: Docker
 on:
   workflow_call:
-    inputs:
-      VERSION:
-        description: 'plugin version'
-        required: true
-        type: string
-
 
 env:
   CONTAINER_REGISTRY: ghcr.io
@@ -15,6 +9,8 @@ env:
 jobs:   
   push:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
     steps:
     - uses: actions/checkout@v2
       with:
