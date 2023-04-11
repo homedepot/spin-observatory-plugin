@@ -36,3 +36,6 @@ jobs:
         with:
           name: build
           path: build/
+
+      - name: Display file structure
+        run: ls -R
