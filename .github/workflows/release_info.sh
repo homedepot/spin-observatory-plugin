@@ -4,7 +4,7 @@ NEW_TAG=${GITHUB_REF/refs\/tags\//}
 export NEW_TAG
 echo "NEW_TAG=$NEW_TAG"
 # Glob match previous tags which should be format v1.2.3. Avoids Deck's npm tagging.
-PREVIOUS_TAG=$(git describe --abbrev=0 --tags "${NEW_TAG}"^ --match 'v[0-9]*')
+PREVIOUS_TAG=$(git describe --abbrev=0 --tags "${NEW_TAG}"^ --match 'v[0-9]*' --always)
 export PREVIOUS_TAG
 echo "PREVIOUS_TAG=$PREVIOUS_TAG"
 CHANGELOG=$(git log "$NEW_TAG"..."$PREVIOUS_TAG" --oneline)
