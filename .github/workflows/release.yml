@@ -60,6 +60,7 @@ jobs:
           fetch-depth: 0
           repository: one-thd/spinnaker-plugins
           ssh-key: ${{ secrets.SPINNAKER_PLUGINS_REPO_SSH }}
+          path: spinnaker-plugins
 
       - name: Print file structure
         run: ls -R ..
