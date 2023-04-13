@@ -62,4 +62,4 @@ jobs:
           ssh-key: ${{ secrets.SPINNAKER_PLUGINS_REPO_SSH }}
 
       - name: Print file structure
-        run: ls -R
+        run: ls -R ..
