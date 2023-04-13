@@ -62,6 +62,15 @@ jobs:
           ssh-key: ${{ secrets.SPINNAKER_PLUGINS_REPO_SSH }}
           path: spinnaker-plugins
 
-      - name: Print file structure
+      - name: Add plugin release
+        if: env.SKIP_RELEASE == 'false'
         run: |
-          ls -aR .
+          set -vx
+          go run .github/workflows/addPluginReleaseToRepo.go "{\"org\": \"homedepot\", \"repo\": \"spin-observatory-plugin\", \"release\": $(cat build/distributions/plugin-info.json)}}"
+
+      - name: Commit and push
+        if: env.SKIP_RELEASE == 'false'
+        run: |
+          set -vx
+          cd spinnaker-plugins
+          git status

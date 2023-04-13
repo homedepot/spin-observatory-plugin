@@ -15,9 +15,9 @@ func check(e error) {
 }
 
 type PluginReleaseEvent struct {
-	Org      string
-	Repo     string
-	Released Plugin
+	Org     string
+	Repo    string
+	Release Plugin
 }
 
 type Plugin struct {
@@ -43,7 +43,7 @@ func main() {
 	pluginReleaseErr := json.Unmarshal(pluginReleaseJson, &pluginReleaseEvent)
 	check(pluginReleaseErr)
 
-	pluginsJson, pluginsJsonReadErr := ioutil.ReadFile("plugins.json")
+	pluginsJson, pluginsJsonReadErr := ioutil.ReadFile("spinnaker-plugins/plugins.json")
 	check(pluginsJsonReadErr)
 	var plugins []Plugin
 	pluginsErr := json.Unmarshal(pluginsJson, &plugins)
@@ -60,12 +60,12 @@ func main() {
 	indentErr := json.Indent(&indentBuffer, encodeBuffer.Bytes(), "  ", "  ")
 	check(indentErr)
 
-	pluginsJsonWriteErr := ioutil.WriteFile("plugins.json", indentBuffer.Bytes(), 0644)
+	pluginsJsonWriteErr := ioutil.WriteFile("spinnaker-plugins/plugins.json", indentBuffer.Bytes(), 0644)
 	check(pluginsJsonWriteErr)
 }
 
 func addReleaseToPlugins(releaseEvent PluginReleaseEvent, existingPlugins []Plugin) []Plugin {
-	releasedPlugin := releaseEvent.Released
+	releasedPlugin := releaseEvent.Release
 	release := releasedPlugin.Releases[0]
 	release.Url = "https://github.com/" + releaseEvent.Org + "/" + releaseEvent.Repo + "/releases/download/" + release.Version + "/" + releaseEvent.Repo + "-" + release.Version + ".zip"
 	if strings.HasPrefix(release.Version, "v") {
