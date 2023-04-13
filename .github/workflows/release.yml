@@ -63,4 +63,5 @@ jobs:
           path: spinnaker-plugins
 
       - name: Print file structure
-        run: ls -R ..
+        run: |
+          ls -aR .
