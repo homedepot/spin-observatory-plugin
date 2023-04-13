@@ -73,4 +73,9 @@ jobs:
         run: |
           set -vx
           cd spinnaker-plugins
-          git status
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Add plugin release ${{ env.RELEASE_VERSION }}"
+          git push origin main
+      
