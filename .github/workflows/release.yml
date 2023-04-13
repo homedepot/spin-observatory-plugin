@@ -53,12 +53,13 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: ./build/distributions/${{ github.event.repository.name }}-${{ env.RELEASE_VERSION }}.zip
 
-      - name: Add release to plugin repo
+      - name: Checkout plugin repo
         if: env.SKIP_RELEASE == 'false'
-        uses: armory-io/plugin-metadata-updater@master
-        env:
-          GITHUB_OAUTH: ${{secrets.GITHUB_TOKEN}}
+        uses: actions/checkout@v3
         with:
-          metadata: ./build/distributions/plugin-info.json
-          metadata_repo_url: https://github.com/one-thd/spinnaker-plugins
-          binary_url: ${{ fromJSON(steps.create-release.outputs.assets)[0].browser_download_url }}
+          fetch-depth: 0
+          repository: one-thd/spinnaker-plugins
+          ssh-key: ${{ secrets.SPINNAKER_PLUGINS_REPO_SSH }}
+
+      - name: Print file structure
+        run: ls -R
