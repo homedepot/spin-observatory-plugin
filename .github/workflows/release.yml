@@ -31,7 +31,7 @@ jobs:
     needs: set-release-info
     uses: ./.github/workflows/docker-push.yml
     with:
-      RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+      RELEASE_VERSION: env.RELEASE_VERSION
 
   release:
     needs: docker
