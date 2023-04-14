@@ -32,9 +32,6 @@ jobs:
       - name: build
         run: ./gradlew build releaseBundle
 
-      - name: test
-        run: ./gradlew test
-
       - uses: actions/upload-artifact@v3
         with:
           name: build
