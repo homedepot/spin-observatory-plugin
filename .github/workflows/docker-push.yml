@@ -10,12 +10,11 @@ on:
 env:
   CONTAINER_REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  REPO_SHORT_NAME: ${GITHUB_REPOSITORY#*/}
 
 jobs:   
   push:
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -50,6 +49,6 @@ jobs:
           ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.RELEASE_VERSION }}
           ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         labels: |
-          org.opencontainers.image.title=${GITHUB_REPOSITORY#*/}
+          org.opencontainers.image.title=${{ env.REPO_SHORT_NAME }}
           org.opencontainers.image.source=https://github.com/${{ env.IMAGE_NAME }}
           org.opencontainers.image.version=${{ inputs.RELEASE_VERSION }}
