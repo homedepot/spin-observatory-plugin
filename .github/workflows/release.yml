@@ -55,17 +55,10 @@ jobs:
           name: build
           path: ./build
 
-      - name: check file structure
-        run: |
-          pwd
-          ls -R
-
       - name: Create release
         id: create-release
         uses: softprops/action-gh-release@v1
         with:
-          # body: |
-          #   ${{ env.CHANGELOG }}
           draft: false
           name: ${{ github.event.repository.name }} ${{ github.ref_name }}
           prerelease: ${{ env.IS_CANDIDATE }}
@@ -86,7 +79,7 @@ jobs:
       - name: Add plugin release
         run: |
           set -vx
-          go run .github/workflows/addPluginReleaseToRepo.go "{\"org\": \"homedepot\", \"${{ env.OWNER }}\": \"${{ github.event.repository.name }}\", \"release\": $(cat build/distributions/plugin-info.json)}"
+          go run .github/workflows/addPluginReleaseToRepo.go "{\"org\": \"${{ env.OWNER }}\", \"repo\": \"${{ github.event.repository.name }}\", \"release\": $(cat build/distributions/plugin-info.json)}"
 
       - name: Commit and push
         run: |
