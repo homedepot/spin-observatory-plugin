@@ -28,8 +28,8 @@ jobs:
           echo CHANGELOG=$(echo -e "${CHANGELOG}") >> $GITHUB_ENV
           echo IS_CANDIDATE=${IS_CANDIDATE} >> $GITHUB_ENV
           echo "RELEASE_VERSION=${RELEASE_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "::set-output name=RELEASE_VERSION::$RELEASE_VERSION"
           echo SKIP_RELEASE=${SKIP_RELEASE} >> "$GITHUB_OUTPUT"
-          echo $GITHUB_OUTPUT
 
   docker:
     if: needs.set-release-info.outputs.SKIP_RELEASE == 'false'
