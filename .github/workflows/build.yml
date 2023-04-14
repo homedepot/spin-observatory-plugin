@@ -1,0 +1,38 @@
+name: Build
+on:
+  workflow_call:
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false -Xmx2g -Xms2g
+  NODE_VERSION: 18.12.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ env.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: build
+        run: ./gradlew build releaseBundle
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: build/

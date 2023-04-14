@@ -1,0 +1,93 @@
+name: Release
+
+on:
+  push:
+    tags:
+    - "v[0-9]+.[0-9]+.[0-9]+"
+    - "v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+"
+    - "v[0-9]+.[0-9]+.[0-9]+\\+[0-9]+"
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+
+  set-release-info:
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      SKIP_RELEASE: ${{ steps.assemble-release-info.outputs.SKIP_RELEASE }}
+      RELEASE_VERSION: ${{ steps.assemble-release-info.outputs.RELEASE_VERSION }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Assemble release info
+      id: assemble-release-info
+      run: |
+          set -vx
+          . .github/workflows/release_info.sh ${{ github.event.repository.full_name }} 
+          echo CHANGELOG=$(echo -e "${CHANGELOG}") >> $GITHUB_ENV
+          echo IS_CANDIDATE=${IS_CANDIDATE} >> $GITHUB_ENV
+          echo "RELEASE_VERSION=${RELEASE_VERSION}" >> $GITHUB_OUTPUT
+          echo "SKIP_RELEASE=${SKIP_RELEASE}" >> $GITHUB_OUTPUT
+
+  docker:
+    if: needs.set-release-info.outputs.SKIP_RELEASE == 'false'
+    needs: set-release-info
+    uses: ./.github/workflows/docker-push.yml
+    with:
+      RELEASE_VERSION: ${{ needs.set-release-info.outputs.RELEASE_VERSION }}
+
+  release:
+    needs: [docker, set-release-info]
+    if: needs.set-release-info.outputs.SKIP_RELEASE == 'false'
+    runs-on: ubuntu-latest
+    env:
+      OWNER: ${GITHUB_REPOSITORY%/*}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: ./build
+
+      - name: Create release
+        id: create-release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          name: ${{ github.event.repository.name }} ${{ github.ref_name }}
+          prerelease: ${{ env.IS_CANDIDATE }}
+          tag_name: ${{ github.ref }}
+          generate_release_notes: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_unmatched_files: true
+          files: ./build/distributions/*.zip
+
+      - name: Checkout plugin repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          repository: one-thd/spinnaker-plugins
+          ssh-key: ${{ secrets.SPINNAKER_PLUGINS_REPO_SSH }}
+          path: spinnaker-plugins
+
+      - name: Add plugin release
+        run: |
+          set -vx
+          go run .github/workflows/addPluginReleaseToRepo.go "{\"org\": \"${{ env.OWNER }}\", \"repo\": \"${{ github.event.repository.name }}\", \"release\": $(cat build/distributions/plugin-info.json)}"
+
+      - name: Commit and push
+        run: |
+          set -vx
+          cd spinnaker-plugins
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Add plugin release ${{ needs.set-release-info.outputs.RELEASE_VERSION }}"
+          git push origin main
+      
