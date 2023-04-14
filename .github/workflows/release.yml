@@ -27,7 +27,7 @@ jobs:
           . .github/workflows/release_info.sh ${{ github.event.repository.full_name }} 
           echo CHANGELOG=$(echo -e "${CHANGELOG}") >> $GITHUB_ENV
           echo IS_CANDIDATE=${IS_CANDIDATE} >> $GITHUB_ENV
-          echo RELEASE_VERSION=${RELEASE_VERSION} >> "$GITHUB_OUTPUT"
+          echo "RELEASE_VERSION=${RELEASE_VERSION}" >> "$GITHUB_OUTPUT"
           echo SKIP_RELEASE=${SKIP_RELEASE} >> "$GITHUB_OUTPUT"
 
   docker:
