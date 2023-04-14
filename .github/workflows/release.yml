@@ -27,7 +27,7 @@ jobs:
           . .github/workflows/release_info.sh ${{ github.event.repository.full_name }} 
           echo CHANGELOG=$(echo -e "${CHANGELOG}") >> $GITHUB_ENV
           echo IS_CANDIDATE=${IS_CANDIDATE} >> $GITHUB_ENV
-          echo RELEASE_VERSION=${RELEASE_VERSION} >> $GITHUB_ENV
+          echo RELEASE_VERSION=${RELEASE_VERSION} >> "$GITHUB_OUTPUT"
           echo SKIP_RELEASE=${SKIP_RELEASE} >> "$GITHUB_OUTPUT"
 
   docker:
@@ -35,7 +35,7 @@ jobs:
     needs: set-release-info
     uses: ./.github/workflows/docker-push.yml
     with:
-      RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+      RELEASE_VERSION: ${{ needs.set-release-info.outputs.RELEASE_VERSION }}
 
   release:
     needs: [docker, set-release-info]
@@ -90,6 +90,6 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git commit -m "Add plugin release ${{ env.RELEASE_VERSION }}"
+          git commit -m "Add plugin release ${{ needs.set-release-info.outputs.RELEASE_VERSION }}"
           git push origin main
       
