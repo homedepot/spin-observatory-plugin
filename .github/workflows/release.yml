@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       SKIP_RELEASE: ${{ steps.assemble-release-info.outputs.SKIP_RELEASE }}
+      RELEASE_VERSION: ${{ steps.assemble-release-info.outputs.RELEASE_VERSION }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -30,7 +31,6 @@ jobs:
           echo IS_CANDIDATE=${IS_CANDIDATE} >> $GITHUB_ENV
           echo "RELEASE_VERSION=${RELEASE_VERSION}" >> $GITHUB_OUTPUT
           echo "SKIP_RELEASE=${SKIP_RELEASE}" >> $GITHUB_OUTPUT
-          cat $GITHUB_OUTPUT
 
   docker:
     if: needs.set-release-info.outputs.SKIP_RELEASE == 'false'
