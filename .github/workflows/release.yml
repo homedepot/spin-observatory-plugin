@@ -43,6 +43,8 @@ jobs:
     needs: [docker, set-release-info]
     if: needs.set-release-info.outputs.SKIP_RELEASE == 'false'
     runs-on: ubuntu-latest
+    env:
+      OWNER: ${GITHUB_REPOSITORY%/*}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -62,12 +64,13 @@ jobs:
         id: create-release
         uses: softprops/action-gh-release@v1
         with:
-          body: |
-            ${{ env.CHANGELOG }}
+          # body: |
+          #   ${{ env.CHANGELOG }}
           draft: false
           name: ${{ github.event.repository.name }} ${{ github.ref_name }}
           prerelease: ${{ env.IS_CANDIDATE }}
           tag_name: ${{ github.ref }}
+          generate_release_notes: true
           token: ${{ secrets.GITHUB_TOKEN }}
           fail_on_unmatched_files: true
           files: ./build/distributions/*.zip
@@ -83,7 +86,7 @@ jobs:
       - name: Add plugin release
         run: |
           set -vx
-          go run .github/workflows/addPluginReleaseToRepo.go "{\"org\": \"homedepot\", \"repo\": \"spin-observatory-plugin\", \"release\": $(cat build/distributions/plugin-info.json)}"
+          go run .github/workflows/addPluginReleaseToRepo.go "{\"org\": \"homedepot\", \"${{ env.OWNER }}\": \"${{ github.event.repository.name }}\", \"release\": $(cat build/distributions/plugin-info.json)}"
 
       - name: Commit and push
         run: |
