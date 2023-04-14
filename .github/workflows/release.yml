@@ -24,6 +24,7 @@ jobs:
     - name: Assemble release info
       id: assemble-release-info
       run: |
+          set -vx
           . .github/workflows/release_info.sh ${{ github.event.repository.full_name }} 
           echo CHANGELOG=$(echo -e "${CHANGELOG}") >> $GITHUB_ENV
           echo IS_CANDIDATE=${IS_CANDIDATE} >> $GITHUB_ENV
