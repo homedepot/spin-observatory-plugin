@@ -38,7 +38,10 @@ jobs:
         registry: ${{ env.CONTAINER_REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-        
+    
+    - name: Set release version'
+      run: echo "RELEASE_VERSION=$(echo ${{ inputs.RELEASE_VERSION }} | sed 's/+/-/g')" >> $GITHUB_ENV
+
     - name: Build and push
       id: docker_build
       uses: docker/build-push-action@v4
@@ -46,9 +49,9 @@ jobs:
         context: .
         push: true
         tags: |
-          ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ inputs.RELEASE_VERSION }}
+          ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_VERSION }}
           ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         labels: |
           org.opencontainers.image.title=${{ env.REPO_SHORT_NAME }}
           org.opencontainers.image.source=https://github.com/${{ env.IMAGE_NAME }}
-          org.opencontainers.image.version=${{ inputs.RELEASE_VERSION }}
+          org.opencontainers.image.version=${{ env.RELEASE_VERSION }}
