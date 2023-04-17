@@ -34,9 +34,9 @@ export const HeaderOverride = () => {
   const [navExpanded] = React.useState(!isDevicePhoneOrSmaller());
 
   const searchSref = useSrefActive('home.infrastructure', null, 'active');
-  const projectsSref = useSrefActive('home.projects', null, 'active');
-  const appsSref = useSrefActive('home.applications', null, 'active');
-  const templatesSref = useSrefActive('home.pipeline-templates', null, 'active');
+  // const projectsSref = useSrefActive('home.projects', null, 'active');
+  // const appsSref = useSrefActive('home.applications', null, 'active');
+  // const templatesSref = useSrefActive('home.pipeline-templates', null, 'active');
 
   const navItems = [
     {
@@ -44,21 +44,21 @@ export const HeaderOverride = () => {
       text: 'Search',
       srefProps: searchSref,
     },
-    {
-      key: 'navProjects',
-      text: 'Projects',
-      srefProps: projectsSref,
-    },
-    {
-      key: 'navApplications',
-      text: 'Applications',
-      srefProps: appsSref,
-    },
-    {
-      key: 'navPipelineTemplates',
-      text: 'TESTING',
-      srefProps: templatesSref,
-    },
+    // {
+    //   key: 'navProjects',
+    //   text: 'Projects',
+    //   srefProps: projectsSref,
+    // },
+    // {
+    //   key: 'navApplications',
+    //   text: 'Applications',
+    //   srefProps: appsSref,
+    // },
+    // {
+    //   key: 'navPipelineTemplates',
+    //   text: 'Pipeline Templates',
+    //   srefProps: templatesSref,
+    // },
   ];
 
   return (
