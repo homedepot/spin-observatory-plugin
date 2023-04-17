@@ -21,7 +21,7 @@
     "@rollup/plugin-url": "6.0.0",
     "@spinnaker/core": "0.23.0",
     "@spinnaker/pluginsdk": "0.3.0",
-    "@spinnaker/pluginsdk-peerdeps": "0.10.0",
+    "@spinnaker/pluginsdk-peerdeps": "0.11.0",
     "@spinnaker/presentation": "0.2.1",
     "@types/react-dom": "18.0.11",
     "@uirouter/core": "6.0.4",

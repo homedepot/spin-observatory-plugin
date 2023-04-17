@@ -1,6 +1,9 @@
 import type { IDeckPlugin } from '@spinnaker/core';
-import { widgetizeStage } from './WidgetizeStage';
+import { overrideRegistrationQueue } from '@spinnaker/core';
+import { HeaderOverride } from './components/header/HeaderOverride';
 
 export const plugin: IDeckPlugin = {
-  stages: [widgetizeStage],
+  initialize: () => {
+    overrideRegistrationQueue.register(HeaderOverride, 'spinnakerHeader');
+  },
 };

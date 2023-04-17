@@ -10,7 +10,6 @@ on:
 env:
   CONTAINER_REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  REPO_SHORT_NAME: ${GITHUB_REPOSITORY#*/}
 
 jobs:   
   push:
@@ -52,6 +51,5 @@ jobs:
           ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_VERSION }}
           ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
         labels: |
-          org.opencontainers.image.title=${{ env.REPO_SHORT_NAME }}
           org.opencontainers.image.source=https://github.com/${{ env.IMAGE_NAME }}
           org.opencontainers.image.version=${{ env.RELEASE_VERSION }}
