@@ -5,7 +5,7 @@ import { HeaderOverride } from './components/header/HeaderOverride';
 
 export const plugin: IDeckPlugin = {
   initialize: () => {
-    overrideRegistrationQueue.register(HeaderOverride, 'spinnakerHeader');
     overridesComponent(HeaderOverride, 'spinnakerHeader');
+    overrideRegistrationQueue.register(HeaderOverride, 'spinnakerHeader');
   },
 };
