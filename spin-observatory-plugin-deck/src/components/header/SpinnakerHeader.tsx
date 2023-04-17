@@ -14,7 +14,7 @@ import './SpinnakerHeader.css';
 
 const LOG_CATEGORY = 'Navbar';
 
-export const HeaderOverride = () => {
+export const SpinnakerHeader = () => {
   const { state: currentState } = useCurrentStateAndParams();
   const isApplicationView =
     currentState.name.includes('project.application.') || currentState.name.includes('applications.application.');

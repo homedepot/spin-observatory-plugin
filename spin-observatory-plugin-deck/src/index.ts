@@ -1,11 +1,11 @@
 import type { IDeckPlugin } from '@spinnaker/core';
 import { overridesComponent } from '@spinnaker/core';
 import { overrideRegistrationQueue } from '@spinnaker/core';
-import { HeaderOverride } from './components/header/HeaderOverride';
+import { SpinnakerHeader } from './components/header/SpinnakerHeader';
 
 export const plugin: IDeckPlugin = {
   initialize: () => {
-    overridesComponent(HeaderOverride, 'spinnakerHeader');
-    overrideRegistrationQueue.register(HeaderOverride, 'spinnakerHeader');
+    overridesComponent(SpinnakerHeader, 'spinnakerHeader');
+    overrideRegistrationQueue.register(SpinnakerHeader, 'spinnakerHeader');
   },
 };
