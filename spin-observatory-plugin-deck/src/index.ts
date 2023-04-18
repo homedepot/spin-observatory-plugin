@@ -1,13 +1,15 @@
-import type { Application, ApplicationStateProvider, IDeckPlugin } from '@spinnaker/core';
-import { ApplicationDataSourceRegistry, REST } from '@spinnaker/core';
-import { overrideRegistrationQueue, SETTINGS } from '@spinnaker/core';
+import {
+  Application,
+  ApplicationStateProvider,
+  ApplicationDataSourceRegistry,
+  IDeckPlugin,
+  REST,
+} from '@spinnaker/core';
 
 import { ExampleView } from './components/ExampleView';
-import { SpinnakerHeader } from './components/header/SpinnakerHeader';
 
 export const plugin: IDeckPlugin = {
   initialize: () => {
-    overrideRegistrationQueue.register(SpinnakerHeader, 'SpinnakerHeader');
     const injector = (window as any).spinnaker.$injector;
     const applicationState: ApplicationStateProvider = injector.get('applicationState');
     applicationState.addChildState({
