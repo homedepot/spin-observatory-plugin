@@ -1,6 +1,6 @@
 import type { Application, ApplicationStateProvider, IDeckPlugin } from '@spinnaker/core';
 import { ApplicationDataSourceRegistry, REST } from '@spinnaker/core';
-import { overrideRegistrationQueue } from '@spinnaker/core';
+import { overrideRegistrationQueue, SETTINGS } from '@spinnaker/core';
 
 import { ExampleView } from './components/ExampleView';
 import { SpinnakerHeader } from './components/header/SpinnakerHeader';
@@ -8,7 +8,6 @@ import { SpinnakerHeader } from './components/header/SpinnakerHeader';
 export const plugin: IDeckPlugin = {
   initialize: () => {
     overrideRegistrationQueue.register(SpinnakerHeader, 'SpinnakerHeader');
-
     const injector = (window as any).spinnaker.$injector;
     const applicationState: ApplicationStateProvider = injector.get('applicationState');
     applicationState.addChildState({
@@ -32,7 +31,7 @@ export const plugin: IDeckPlugin = {
       defaultData: [],
       description: 'Example Data Source',
       iconName: 'artifact',
-      loader: (application: Application) => REST('/applications').path(application.name).path('/pipelineConfigs').get(),
+      loader: (application: Application) => REST('/applications').path(application.name).path('pipelineConfigs').get(),
       onLoad: (application: Application, data: any) => Promise.resolve(data),
     });
   },
