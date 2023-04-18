@@ -2,12 +2,14 @@ import { useCurrentStateAndParams, useSrefActive } from '@uirouter/react';
 import React from 'react';
 import { useRecoilState } from 'recoil';
 
-import { verticalNavExpandedAtom } from '@spinnaker/core/src/application/nav/navAtoms';
-import { UserMenu } from '@spinnaker/core/src/authentication/userMenu/UserMenu';
-import { CollapsibleSectionStateCache } from '@spinnaker/core/src/cache';
-import { HelpMenu } from '@spinnaker/core/src/help/HelpMenu';
-import { GlobalSearch } from '@spinnaker/core/src/search/global/GlobalSearch';
-import { logger } from '@spinnaker/core/src/utils';
+import {
+  CollapsibleSectionStateCache,
+  GlobalSearch,
+  HelpMenu,
+  logger,
+  UserMenu,
+  verticalNavExpandedAtom,
+} from '@spinnaker/core';
 import { Icon } from '@spinnaker/presentation';
 
 import './SpinnakerHeader.css';
