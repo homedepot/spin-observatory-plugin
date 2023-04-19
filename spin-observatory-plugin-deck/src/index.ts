@@ -46,5 +46,7 @@ export const plugin: IDeckPlugin = {
       'observatory',
       ...dataSources.slice(pipelinesIdx + 1),
     ]);
+
+    console.log(dataSources)
   },
 };

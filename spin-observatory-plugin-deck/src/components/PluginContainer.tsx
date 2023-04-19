@@ -14,7 +14,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
     <div className="flex-container-v">
       <div className="flex-container-h">
         <div className="flex-pull-left">
-          <ReactSelectInput optionsString={dataSource.loaded ? pipelines.map((p: IPipeline) => p.name) : []} />
+          <ReactSelectInput options={pipelines.map((p: IPipeline) => ({ label: p.name, value: p.name }))} />
         </div>
       </div>
     </div>
