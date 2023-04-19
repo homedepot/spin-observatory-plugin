@@ -6,6 +6,6 @@ interface IExampleViewProps {
 }
 
 export function ExampleView(props: IExampleViewProps) {
-  console.log(props.app.getDataSource('observatory').data);
+  console.log(props.app.dataSources);
   return <h1>Example View</h1>;
 }

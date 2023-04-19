@@ -12,7 +12,7 @@ export const plugin: IDeckPlugin = {
   initialize: () => {
     const injector = (window as any).spinnaker.$injector;
     const applicationState: ApplicationStateProvider = injector.get('applicationState');
-    applicationState.addChildState({
+    applicationState.addInsightState({
       name: 'observatory',
       url: '/observatory',
       views: {
