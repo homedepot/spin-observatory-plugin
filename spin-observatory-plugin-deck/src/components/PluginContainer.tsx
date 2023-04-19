@@ -20,7 +20,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   };
 
   return (
-    <div className="flex-container-v" style={{ margin: '5rem', width: '100%' }}>
+    <div className="flex-container-v" style={{ margin: '3rem', width: '100%' }}>
       <div className="flex-container-h" style={{ flexGrow: 1 }}>
         <div className="flex-pull-left" style={{ width: '20rem' }}>
           <ReactSelectInput
@@ -30,7 +30,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           />
         </div>
       </div>
-      <div style={{ flexGrow: 5 }}></div>
+      <div style={{ flexGrow: 19 }}></div>
     </div>
   );
 }
