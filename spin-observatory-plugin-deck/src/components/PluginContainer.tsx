@@ -15,8 +15,8 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   }, []);
 
   const onPipelineSelect = (e: ChangeEvent) => {
-    console.log(e.target, e.currentTarget);
-    if (e.target.nodeValue) setSelectedPipeline(e.target.nodeValue);
+    const target = e.target as HTMLSelectElement;
+    if (target.value) setSelectedPipeline(target.value);
   };
 
   return (

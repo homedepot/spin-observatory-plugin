@@ -37,16 +37,5 @@ export const plugin: IDeckPlugin = {
       loader: (application: Application) => REST('/applications').path(application.name).path('pipelineConfigs').get(),
       onLoad: (application: Application, data: IPipeline[]) => Promise.resolve(data),
     });
-
-    const dataSources = ApplicationDataSourceRegistry.getDataSources().map((ds) => ds.key);
-    const pipelinesIdx = dataSources.indexOf('executions');
-
-    ApplicationDataSourceRegistry.setDataSourceOrder([
-      ...dataSources.slice(pipelinesIdx + 1),
-      'observatory',
-      ...dataSources.slice(pipelinesIdx + 1),
-    ]);
-
-    console.log(ApplicationDataSourceRegistry.getDataSources());
   },
 };
