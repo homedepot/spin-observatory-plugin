@@ -22,7 +22,7 @@ export const plugin: IDeckPlugin = {
         },
       },
     });
-
+    
     ApplicationDataSourceRegistry.registerDataSource({
       key: 'observatory',
       label: 'Observatory',
@@ -36,5 +36,7 @@ export const plugin: IDeckPlugin = {
       loader: (application: Application) => REST('/applications').path(application.name).path('pipelineConfigs').get(),
       onLoad: (application: Application, data: any) => Promise.resolve(data),
     });
+
+    console.log(ApplicationDataSourceRegistry.getDataSources().map(ds => ds.key))
   },
 };
