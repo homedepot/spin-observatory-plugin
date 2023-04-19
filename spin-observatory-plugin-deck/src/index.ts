@@ -47,6 +47,6 @@ export const plugin: IDeckPlugin = {
       ...dataSources.slice(pipelinesIdx + 1),
     ]);
 
-    console.log(dataSources);
+    console.log(ApplicationDataSourceRegistry.getDataSources());
   },
 };
