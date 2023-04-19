@@ -1,19 +1,19 @@
-import { Application, IPipeline, ReactSelectInput } from '@spinnaker/core';
-import React, { useState, useEffect } from 'react';
+import { Application, IPipeline, ReactSelectInput, useDataSource } from '@spinnaker/core';
+import React, { useEffect } from 'react';
 
 interface IPluginContainerProps {
   app: Application;
 }
 
 export function PluginContainer({ app }: IPluginContainerProps) {
-  const [pipelines, setPipelines] = useState<IPipeline[]>([]);
-  const data = app.getDataSource('observatory').data as IPipeline[];
+  const dataSource = app.getDataSource('observatory');
+  const { data: pipelines, status, loaded } = useDataSource<IPipeline[]>(dataSource);
 
   useEffect(() => {
-    setPipelines(data);
-  }, data);
+    dataSource.activate();
+  }, []);
 
-  console.log(pipelines);
+  console.log(pipelines, status, loaded);
   return (
     <div className="flex-container-v">
       <div className="flex-container-h">

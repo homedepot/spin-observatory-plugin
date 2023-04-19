@@ -27,10 +27,10 @@ export const plugin: IDeckPlugin = {
     ApplicationDataSourceRegistry.registerDataSource({
       key: 'observatory',
       label: 'Observatory',
-      autoActivate: true,
       activeState: '**.observatory.**',
       visible: true,
       sref: '.observatory',
+      lazy: true,
       defaultData: [],
       description: 'Example Data Source',
       iconName: 'artifact',
