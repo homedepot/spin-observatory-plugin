@@ -1,4 +1,4 @@
-import { Application, ReactSelectInput } from '@spinnaker/core';
+import { Application, IPipeline, ReactSelectInput } from '@spinnaker/core';
 import * as React from 'react';
 
 interface IPluginContainerProps {
@@ -6,11 +6,13 @@ interface IPluginContainerProps {
 }
 
 export function PluginContainer({app}: IPluginContainerProps) {
-  console.log(app.getDataSource("observatory"))
+  const dataSource = app.getDataSource("observatory")
+  const pipelines = dataSource.data
+
   return <div className="flex-container-v">
     <div className="flex-container-h">
       <div className="flex-pull-left">
-        <ReactSelectInput options={app.getDataSource("observatory").data}/>
+        <ReactSelectInput optionsString={pipelines.map((p: IPipeline) => p.name)}/>
       </div>
     </div>
   </div>;
