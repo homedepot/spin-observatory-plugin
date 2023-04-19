@@ -6,18 +6,18 @@ import {
   REST,
 } from '@spinnaker/core';
 
-import { ExampleView } from './components/ExampleView';
+import { PluginContainer } from './components/PluginContainer';
 
 export const plugin: IDeckPlugin = {
   initialize: () => {
     const injector = (window as any).spinnaker.$injector;
     const applicationState: ApplicationStateProvider = injector.get('applicationState');
-    applicationState.addInsightState({
+    applicationState.addChildState({
       name: 'observatory',
       url: '/observatory',
       views: {
         insight: {
-          component: ExampleView,
+          component: PluginContainer,
           $type: 'react',
         },
       },
