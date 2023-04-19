@@ -6,7 +6,7 @@ import {
   REST,
 } from '@spinnaker/core';
 
-import { ExampleView } from './components/ExampleView';
+import { PluginContainer } from './components/PluginContainer';
 
 export const plugin: IDeckPlugin = {
   initialize: () => {
@@ -17,7 +17,7 @@ export const plugin: IDeckPlugin = {
       url: '/observatory',
       views: {
         insight: {
-          component: ExampleView,
+          component: PluginContainer,
           $type: 'react',
         },
       },
