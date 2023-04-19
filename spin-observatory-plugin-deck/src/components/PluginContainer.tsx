@@ -9,7 +9,7 @@ interface IPluginContainerProps {
 export function PluginContainer(props: IPluginContainerProps) {
   return (
     <>
-      <h1>Observatory</h1>
+      <h1>Spinnaker Observatory</h1>
       <DatePicker />
     </>
   );
