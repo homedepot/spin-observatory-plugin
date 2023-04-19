@@ -20,9 +20,9 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   };
 
   return (
-    <div className="flex-container-v">
-      <div className="flex-container-h">
-        <div className="flex-pull-left" style={{ width: '15rem' }}>
+    <div className="flex-container-v" style={{ margin: '5rem', width: '100%' }}>
+      <div className="flex-container-h" style={{ flexGrow: 1 }}>
+        <div className="flex-pull-left" style={{ width: '20rem' }}>
           <ReactSelectInput
             onChange={onPipelineSelect}
             value={selectedPipeline}
@@ -30,6 +30,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           />
         </div>
       </div>
+      <div style={{ flexGrow: 5 }}></div>
     </div>
   );
 }
