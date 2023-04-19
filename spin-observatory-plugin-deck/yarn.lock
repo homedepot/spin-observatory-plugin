@@ -1316,10 +1316,10 @@
   resolved "https://registry.yarnpkg.com/@spinnaker/mocks/-/mocks-1.0.7.tgz#3e30fde4d691b310910e7fa5201c7424609042c0"
   integrity sha512-WXoNtZoFZFNDTrckCbbTShxoRN088IN+awWweNNv89EU4GsMX8HnnG/9J6N9rAt0R3ZgzhJmaNG06/JHHBzxEw==
 
-"@spinnaker/pluginsdk-peerdeps@0.10.0":
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/@spinnaker/pluginsdk-peerdeps/-/pluginsdk-peerdeps-0.10.0.tgz#931d90409d1e14a6cfa9caea113e0e65a43d0adb"
-  integrity sha512-VNadkTOTsyOrhnOFEOjQxycviyITjBw7ljIasNYK+WW2rNYxJhRV07MZJ0hTvV/VuXHx17M4OCIOBI90ZtRG6Q==
+"@spinnaker/pluginsdk-peerdeps@0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@spinnaker/pluginsdk-peerdeps/-/pluginsdk-peerdeps-0.11.0.tgz#131eef2ed4c6eda32a6244681284eb89c827a125"
+  integrity sha512-tiTFXhlkAJ/yh1v8wl1odtcC7LrEr/q/qaTcH1uWnBz2q5laibIqac1Sc2C1C9UkSAcLXyhA88bcjdfGPiY3NQ==
 
 "@spinnaker/pluginsdk@0.3.0":
   version "0.3.0"
