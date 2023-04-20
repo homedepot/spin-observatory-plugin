@@ -16,7 +16,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
 
   const onPipelineSelect = (e: ChangeEvent) => {
     const target = e.target as HTMLSelectElement;
-    if (target.value) setSelectedPipeline(target.value);
+    setSelectedPipeline(target.value);
   };
 
   return (
@@ -30,7 +30,9 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           />
         </div>
       </div>
-      <div style={{ flexGrow: 19 }}></div>
+      <div style={{ flexGrow: 19 }}>
+        <h1>Pipeline Executions Here</h1>
+      </div>
     </div>
   );
 }
