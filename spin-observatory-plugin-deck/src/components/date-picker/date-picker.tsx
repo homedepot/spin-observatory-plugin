@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 
 export const DatePicker = () => {
-
+  console.log('hello date picker');
   return (
     <TextField
       id="datetime-local"
