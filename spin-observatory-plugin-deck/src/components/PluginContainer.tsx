@@ -1,5 +1,6 @@
 import { Application, IPipeline, ReactSelectInput, useDataSource } from '@spinnaker/core';
 import React, { useEffect, useState, ChangeEvent } from 'react';
+import { DatePicker } from './date-picker/date-picker';
 
 interface IPluginContainerProps {
   app: Application;
@@ -31,6 +32,9 @@ export function PluginContainer({ app }: IPluginContainerProps) {
             clearable={true}
             options={pipelines.map((p) => ({ label: p.name, value: p.name }))}
           />
+        </div>
+        <div className="flex-pull-right">
+          <DatePicker />
         </div>
       </div>
       <div style={{ flexGrow: 19 }}>
