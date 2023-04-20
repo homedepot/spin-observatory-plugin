@@ -3,7 +3,9 @@ import {
   ApplicationStateProvider,
   ApplicationDataSourceRegistry,
   IDeckPlugin,
+  IPipeline,
   REST,
+  DELIVERY_KEY,
 } from '@spinnaker/core';
 
 import { PluginContainer } from './components/PluginContainer';
@@ -26,15 +28,16 @@ export const plugin: IDeckPlugin = {
     ApplicationDataSourceRegistry.registerDataSource({
       key: 'observatory',
       label: 'Observatory',
-      autoActivate: true,
       activeState: '**.observatory.**',
       visible: true,
       sref: '.observatory',
+      lazy: true,
+      category: DELIVERY_KEY,
       defaultData: [],
       description: 'Example Data Source',
       iconName: 'artifact',
       loader: (application: Application) => REST('/applications').path(application.name).path('pipelineConfigs').get(),
-      onLoad: (application: Application, data: any) => Promise.resolve(data),
+      onLoad: (application: Application, data: IPipeline[]) => Promise.resolve(data),
     });
   },
 };
