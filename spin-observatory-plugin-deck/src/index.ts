@@ -5,6 +5,7 @@ import {
   IDeckPlugin,
   IPipeline,
   REST,
+  navigationCategoryRegistry
 } from '@spinnaker/core';
 
 import { PluginContainer } from './components/PluginContainer';
@@ -34,8 +35,18 @@ export const plugin: IDeckPlugin = {
       defaultData: [],
       description: 'Example Data Source',
       iconName: 'artifact',
+      category: "",
       loader: (application: Application) => REST('/applications').path(application.name).path('pipelineConfigs').get(),
       onLoad: (application: Application, data: IPipeline[]) => Promise.resolve(data),
     });
+    console.log(navigationCategoryRegistry.getAll());
+    navigationCategoryRegistry.register({
+      key: "observatory",
+      label: 'Observatory',
+      iconName: 'artifact',
+      primary: true,
+      order: 150
+    })
+    console.log(navigationCategoryRegistry.getAll());
   },
 };
