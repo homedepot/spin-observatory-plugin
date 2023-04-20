@@ -26,6 +26,8 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           <ReactSelectInput
             onChange={onPipelineSelect}
             value={selectedPipeline}
+            searchable={true}
+            clearable={true}
             options={pipelines.map((p) => ({ label: p.name, value: p.name }))}
           />
         </div>
