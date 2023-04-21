@@ -16,6 +16,8 @@
     "modules": "echo 'yarn modules'"
   },
   "dependencies": {
+    "@material-ui/core": "4.12.4",
+    "@mui/icons-material": "^5.11.16",
     "@rollup/plugin-commonjs": "18.0.0",
     "@rollup/plugin-typescript": "8.2.1",
     "@rollup/plugin-url": "6.0.0",

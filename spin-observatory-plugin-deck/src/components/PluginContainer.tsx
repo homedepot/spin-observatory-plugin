@@ -1,5 +1,12 @@
-import { Application, IPipeline, ReactSelectInput, useDataSource } from '@spinnaker/core';
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import type { ChangeEvent } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import type { Application, IPipeline } from '@spinnaker/core';
+import type { IExecution } from '@spinnaker/core';
+import { ReactSelectInput, useDataSource } from '@spinnaker/core';
+
+import { PipelineExecutions } from './pipelines';
+import { getExecutions } from '../services/gateService';
 
 interface IPluginContainerProps {
   app: Application;
@@ -8,15 +15,20 @@ interface IPluginContainerProps {
 export function PluginContainer({ app }: IPluginContainerProps) {
   const dataSource = app.getDataSource('observatory');
   const { data: pipelines } = useDataSource<IPipeline[]>(dataSource);
-  const [selectedPipeline, setSelectedPipeline] = useState<string>();
+  const [selectedPipeline, setSelectedPipeline] = useState<string>('');
+  const [executions, setExecutions] = useState<IExecution[]>([]);
 
   useEffect(() => {
     dataSource.activate();
   }, []);
 
-  const onPipelineSelect = (e: ChangeEvent) => {
+  const onPipelineSelect = async (e: ChangeEvent) => {
     const target = e.target as HTMLSelectElement;
     setSelectedPipeline(target.value);
+
+    const res = await getExecutions(app.name, { pipelineName: selectedPipeline, pageSize: 100 });
+    setExecutions(res);
+    console.log(res); //eslint-disable-line
   };
 
   return (
@@ -34,7 +46,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
         </div>
       </div>
       <div style={{ flexGrow: 19 }}>
-        <h1>Pipeline Executions Here</h1>
+        <PipelineExecutions executions={executions} />
       </div>
     </div>
   );
