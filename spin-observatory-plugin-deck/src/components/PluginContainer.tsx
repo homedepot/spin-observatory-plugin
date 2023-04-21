@@ -38,7 +38,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
         </div>
       </div>
       <div style={{ flexGrow: 19 }}>
-        <h1>Pipeline Executions Here</h1>
+        <h1>Pipeline Executions Here Test</h1>
       </div>
     </div>
   );
