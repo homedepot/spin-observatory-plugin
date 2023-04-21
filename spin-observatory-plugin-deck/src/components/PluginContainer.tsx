@@ -24,6 +24,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
 
   const onPipelineSelect = async (e: ChangeEvent) => {
     const target = e.target as HTMLSelectElement;
+    if (!target.value) return;
     setSelectedPipeline(target.value);
 
     const res = await getExecutions(app.name, { pipelineName: selectedPipeline, pageSize: 100 });
