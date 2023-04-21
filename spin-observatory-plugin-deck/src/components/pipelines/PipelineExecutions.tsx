@@ -1,5 +1,5 @@
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@material-ui/core/';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import React from 'react';
 
 import type { IExecution } from '@spinnaker/core';
