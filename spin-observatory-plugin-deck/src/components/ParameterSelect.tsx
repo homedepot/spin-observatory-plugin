@@ -12,7 +12,7 @@ interface IParameterSelectProps {
 export const ParameterSelect = ({ pipeline, selectedParams, setSelectedParams }: IParameterSelectProps) => {
   const onParameterSelect = (options: Option<string>[]) => {
     console.log(pipeline);
-    console.log(options);
+    setSelectedParams(options.map((o) => o.value));
   };
 
   return (
