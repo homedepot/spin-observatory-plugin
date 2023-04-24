@@ -11,7 +11,7 @@ export const ParameterSelect = ({ pipeline, selectedParams, setSelectedParams }:
   const onParameterSelect = (e: ChangeEvent) => {
     const target = e.target as HTMLSelectElement;
     console.log(pipeline)
-    console.log(target);
+    console.log(target.selectedOptions);
   };
 
   return (
@@ -28,5 +28,5 @@ export const ParameterSelect = ({ pipeline, selectedParams, setSelectedParams }:
 };
 
 const extractPipelineParams = (config: IPipeline) => {
-  return config.parameterConfig.map((p) => ({ label: p.label, value: p.name }));
+  return config.parameterConfig.map((p) => ({ label: p.name, value: p.name }));
 };
