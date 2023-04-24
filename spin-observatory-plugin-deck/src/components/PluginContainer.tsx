@@ -26,8 +26,6 @@ export function PluginContainer({ app }: IPluginContainerProps) {
     const target = e.target as HTMLSelectElement;
     setSelectedPipeline(target.value);
 
-    if (!selectedPipeline) return;
-
     const res = await getExecutions(app.name, { pipelineName: selectedPipeline, pageSize: 100 });
     setExecutions(res);
     console.log(res); //eslint-disable-line
