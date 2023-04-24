@@ -8,10 +8,9 @@ interface IParameterSelectProps {
 }
 
 export const ParameterSelect = ({ pipeline, selectedParams, setSelectedParams }: IParameterSelectProps) => {
-  const onParameterSelect = (e: ChangeEvent) => {
-    const target = e.target as HTMLSelectElement;
+  const onParameterSelect = (e: ChangeEvent<HTMLSelectElement>) => {
     console.log(pipeline)
-    console.log(target.selectedOptions);
+    console.log(e.target,e.currentTarget);
   };
 
   return (
@@ -21,6 +20,7 @@ export const ParameterSelect = ({ pipeline, selectedParams, setSelectedParams }:
       disabled={!pipeline}
       placeholder="Select Parameters..."
       clearable={true}
+      noResultsText="No parameters"
       options={!pipeline || !pipeline.parameterConfig ? [] : extractPipelineParams(pipeline)}
       multi
     />
