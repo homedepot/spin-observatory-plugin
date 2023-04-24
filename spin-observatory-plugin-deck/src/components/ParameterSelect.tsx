@@ -9,8 +9,9 @@ interface IParameterSelectProps {
 
 export const ParameterSelect = ({ pipeline, selectedParams, setSelectedParams }: IParameterSelectProps) => {
   const onParameterSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log(pipeline)
-    console.log(e.target,e.currentTarget);
+    console.log(pipeline);
+    console.log(e);
+    console.log(e.target.selectedOptions);
   };
 
   return (
