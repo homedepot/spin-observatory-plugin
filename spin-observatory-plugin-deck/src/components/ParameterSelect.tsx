@@ -1,6 +1,7 @@
-import { IPipeline, ReactSelectInput } from '@spinnaker/core';
-import React, { ChangeEvent } from 'react';
-
+import { IPipeline } from '@spinnaker/core';
+import React from 'react';
+import type { Option } from 'react-select';
+import VirtualizedSelect from 'react-virtualized-select';
 
 interface IParameterSelectProps {
   pipeline?: IPipeline;
@@ -9,14 +10,13 @@ interface IParameterSelectProps {
 }
 
 export const ParameterSelect = ({ pipeline, selectedParams, setSelectedParams }: IParameterSelectProps) => {
-  const onParameterSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log(pipeline)
-    console.log(e.target,e.currentTarget);
-    //setSelectedParams(e.target.value)
+  const onParameterSelect = (options: Option<string>[]) => {
+    console.log(pipeline);
+    console.log(options);
   };
 
   return (
-    <ReactSelectInput
+    <VirtualizedSelect
       onChange={onParameterSelect}
       value={selectedParams}
       disabled={!pipeline}
@@ -29,6 +29,6 @@ export const ParameterSelect = ({ pipeline, selectedParams, setSelectedParams }:
   );
 };
 
-const extractPipelineParams = (config: IPipeline) => {
-  return config.parameterConfig.map((p) => p.name);
+const extractPipelineParams = (config: IPipeline): Option<string>[] => {
+  return config.parameterConfig.map((p) => ({ label: p.name, value: p.name }));
 };
