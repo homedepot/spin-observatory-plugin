@@ -1,6 +1,7 @@
 import { IPipeline, ReactSelectInput } from '@spinnaker/core';
 import React, { ChangeEvent } from 'react';
 
+
 interface IParameterSelectProps {
   pipeline?: IPipeline;
   selectedParams: string[];
@@ -9,9 +10,9 @@ interface IParameterSelectProps {
 
 export const ParameterSelect = ({ pipeline, selectedParams, setSelectedParams }: IParameterSelectProps) => {
   const onParameterSelect = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log(pipeline);
-    console.log(e);
-    console.log(e.target.selectedOptions);
+    console.log(pipeline)
+    console.log(e.target,e.currentTarget);
+    //setSelectedParams(e.target.value)
   };
 
   return (
@@ -29,5 +30,5 @@ export const ParameterSelect = ({ pipeline, selectedParams, setSelectedParams }:
 };
 
 const extractPipelineParams = (config: IPipeline) => {
-  return config.parameterConfig.map((p) => ({ label: p.name, value: p.name }));
+  return config.parameterConfig.map((p) => p.name);
 };
