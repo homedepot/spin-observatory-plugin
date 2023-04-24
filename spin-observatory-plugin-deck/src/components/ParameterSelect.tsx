@@ -3,6 +3,8 @@ import React from 'react';
 import type { Option } from 'react-select';
 import VirtualizedSelect from 'react-virtualized-select';
 
+import "./parameterselect.less"
+
 interface IParameterSelectProps {
   pipeline?: IPipeline;
   selectedParams: string[];

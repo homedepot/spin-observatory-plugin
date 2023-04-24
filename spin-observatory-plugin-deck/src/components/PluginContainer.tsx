@@ -35,7 +35,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
             options={pipelines.map((p) => ({ label: p.name, value: p.name }))}
           />
         </div>
-        <div className="flex-pull-right" style={{ width: '20rem' }}>
+        <div className="flex-pull-right" style={{ width: '40rem' }}>
           <ParameterSelect
             pipeline={selectedPipeline}
             selectedParams={selectedParams}
