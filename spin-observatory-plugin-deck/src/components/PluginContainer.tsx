@@ -29,7 +29,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
         <div className="flex-pull-left" style={{ width: '20rem' }}>
           <ReactSelectInput
             onChange={onPipelineSelect}
-            value={selectedPipeline}
+            value={!selectedPipeline ? '' : selectedPipeline.name}
             placeholder="Select Pipeline..."
             searchable={true}
             clearable={true}
