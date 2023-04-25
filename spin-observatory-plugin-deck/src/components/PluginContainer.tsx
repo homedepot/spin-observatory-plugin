@@ -35,7 +35,6 @@ export function PluginContainer({ app }: IPluginContainerProps) {
     }
     const resp = await getExecutions(app.name, { pipelineName: pipelineConfig.name, pageSize: 100 });
     setExecutions(resp);
-    console.log(executions);
   };
 
   return (
@@ -61,6 +60,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
       </div>
       <div style={{ flexGrow: 19 }}>
         <PipelineExecutions executions={executions} parameters={selectedParams} status={statuses.SUCCESSFUL} />
+        <PipelineExecutions executions={executions} parameters={selectedParams} status={statuses.FAILED} />
       </div>
     </div>
   );

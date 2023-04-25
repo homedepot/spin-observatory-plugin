@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
+import './paper.less';
 
 import type { IExecution } from '@spinnaker/core';
 import type { IStatus } from './status';
@@ -37,7 +38,9 @@ const TableHeaders = ({ headers }: ITableHeadersProps) => {
     <TableHead>
       <TableRow>
         {['ID', ...headers].map((h) => (
-          <TableCell>{h}</TableCell>
+          <TableCell>
+            <Typography variant="h6">{h}</Typography>
+          </TableCell>
         ))}
       </TableRow>
     </TableHead>
@@ -61,7 +64,7 @@ export const PipelineExecutions = ({ executions, parameters, status }: IPipeline
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography>{status.text}</Typography>
+        <Typography variant="h5">{status.text}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <TableContainer component={Paper}>
