@@ -30,6 +30,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
 
     const resp = await getExecutions(app.name, { pipelineName: pipelineConfig!.name, pageSize: 100 });
     setExecutions(resp);
+    console.log(executions)
   };
 
   return (
