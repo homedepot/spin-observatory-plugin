@@ -37,9 +37,9 @@ export function PluginContainer({ app }: IPluginContainerProps) {
         </div>
         <div className="flex-pull-right" style={{ width: '40rem' }}>
           <ParameterSelect
-            // pipeline={selectedPipeline}
-            // selectedParams={selectedParams}
-            // setSelectedParams={setSelectedParams}
+            pipeline={selectedPipeline}
+            selectedParams={selectedParams}
+            setSelectedParams={setSelectedParams}
           />
         </div>
       </div>
