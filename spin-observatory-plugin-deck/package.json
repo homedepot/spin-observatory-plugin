@@ -16,6 +16,8 @@
     "modules": "echo 'yarn modules'"
   },
   "dependencies": {
+    "@emotion/react": "11.10.6",
+    "@emotion/styled": "11.10.6",
     "@mui/material": "5.12.1",
     "@rollup/plugin-commonjs": "18.0.0",
     "@rollup/plugin-typescript": "8.2.1",
