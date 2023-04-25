@@ -13,7 +13,6 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
-import './paper.less';
 
 import type { IExecution } from '@spinnaker/core';
 import type { IStatus } from './status';
@@ -62,7 +61,7 @@ const ExecutionRow = ({ execution, parameters }: IExecutionRowProps) => {
 
 export const PipelineExecutions = ({ executions, parameters, status }: IPipelineExecutionsProps) => {
   return (
-    <Accordion>
+    <Accordion disabled={executions.length > 0}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h5">{status.text}</Typography>
       </AccordionSummary>
