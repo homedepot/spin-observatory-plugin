@@ -26,11 +26,16 @@ export function PluginContainer({ app }: IPluginContainerProps) {
 
   const onPipelineSelect = async (e: ChangeEvent<HTMLSelectElement>) => {
     const pipelineConfig = pipelines.find((p) => p.name === e.target.value);
+    setSelectedParams([]);
     setSelectedPipeline(pipelineConfig);
 
-    const resp = await getExecutions(app.name, { pipelineName: pipelineConfig!.name, pageSize: 100 });
+    if (!pipelineConfig) {
+      setExecutions([]);
+      return;
+    }
+    const resp = await getExecutions(app.name, { pipelineName: pipelineConfig.name, pageSize: 100 });
     setExecutions(resp);
-    console.log(executions)
+    console.log(executions);
   };
 
   return (

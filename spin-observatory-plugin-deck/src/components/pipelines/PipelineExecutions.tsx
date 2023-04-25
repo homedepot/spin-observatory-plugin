@@ -51,7 +51,7 @@ const ExecutionRow = ({ execution, parameters }: IExecutionRowProps) => {
         {execution.id}
       </TableCell>
       {parameters.map((p) => (
-        <TableCell align="right">{execution.trigger.parameters![p]}</TableCell>
+        <TableCell>{execution.trigger.parameters![p]}</TableCell>
       ))}
     </TableRow>
   );
