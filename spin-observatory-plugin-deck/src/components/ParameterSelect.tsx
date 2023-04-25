@@ -1,9 +1,9 @@
 import { IPipeline } from '@spinnaker/core';
 import React from 'react';
 import type { Option } from 'react-select';
-import Select from "react-select"
+import Select from 'react-select';
 
-import "./parameterselect.less"
+import './parameterselect.less';
 
 interface IParameterSelectProps {
   pipeline?: IPipeline;
@@ -13,7 +13,6 @@ interface IParameterSelectProps {
 
 export const ParameterSelect = ({ pipeline, selectedParams, setSelectedParams }: IParameterSelectProps) => {
   const onParameterSelect = (options: Option<string>[]) => {
-    console.log(pipeline);
     setSelectedParams(options.map((o) => o.value));
   };
 
