@@ -28,9 +28,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
     const pipelineConfig = pipelines.find((p) => p.name === e.target.value);
     setSelectedPipeline(pipelineConfig);
 
-    const resp = selectedPipeline
-      ? await getExecutions(app.name, { pipelineName: selectedPipeline.name, pageSize: 100 })
-      : [];
+    const resp = await getExecutions(app.name, { pipelineName: pipelineConfig!.name, pageSize: 100 });
     setExecutions(resp);
   };
 
