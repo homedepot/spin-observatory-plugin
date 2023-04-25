@@ -61,7 +61,7 @@ const ExecutionRow = ({ execution, parameters }: IExecutionRowProps) => {
 
 export const PipelineExecutions = ({ executions, parameters, status }: IPipelineExecutionsProps) => {
   return (
-    <Accordion disabled={executions.length > 0}>
+    <Accordion elevation={3} disabled={executions.length === 0}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h5">{status.text}</Typography>
       </AccordionSummary>
