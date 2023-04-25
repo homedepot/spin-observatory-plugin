@@ -2,7 +2,6 @@ import { IPipeline } from '@spinnaker/core';
 import React from 'react';
 import type { Option } from 'react-select';
 import Select from "react-select"
-import VirtualizedSelect from 'react-virtualized-select';
 
 import "./parameterselect.less"
 
