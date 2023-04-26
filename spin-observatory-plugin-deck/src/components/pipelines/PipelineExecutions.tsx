@@ -59,10 +59,10 @@ const TableHeaders = ({ headers, onSelectAll, rowCount, selectedCount }: ITableH
   );
 };
 
-const goToExecutionDetails = (executionID: string) => () => {
+const goToExecutionDetails = (executionId: string) => () => {
   const { $state, $uiRouter } = ReactInjector;
   const detailsState = $uiRouter.globals.current.name!.replace('observatory', 'pipelines.executions.execution');
-  $state.go(detailsState, { executionID });
+  $state.go(detailsState, { executionId });
 };
 
 const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected }: IExecutionRowProps) => {
@@ -106,14 +106,14 @@ export const PipelineExecutions = ({ executions, parameters, statusText }: IPipe
     setSelectedExecutions([]);
   };
 
-  const handleSelectOne = (executionID: string) => () => {
-    const selectedIdx = selectedExecutions.indexOf(executionID);
+  const handleSelectOne = (executionId: string) => () => {
+    const selectedIdx = selectedExecutions.indexOf(executionId);
     let newSelected: string[] = [];
 
     if (selectedIdx === -1) {
-      newSelected = [...selectedExecutions, executionID];
+      newSelected = [...selectedExecutions, executionId];
     } else {
-      newSelected = selectedExecutions.filter((e) => e !== executionID);
+      newSelected = selectedExecutions.filter((e) => e !== executionId);
     }
 
     setSelectedExecutions(newSelected);
