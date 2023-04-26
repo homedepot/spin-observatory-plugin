@@ -1,6 +1,12 @@
-import { Application, IPipeline, ReactSelectInput, useDataSource } from '@spinnaker/core';
-import React, { useEffect, useState, ChangeEvent } from 'react';
-import { ParameterSelect } from './ParameterSelect';
+import type { ChangeEvent } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { Application, IExecution, IPipeline } from '@spinnaker/core';
+import { ReactSelectInput, useDataSource, useInterval } from '@spinnaker/core';
+
+import { ParameterSelect } from './parameters';
+import { PipelineExecutions, statuses } from './pipelines';
+import { getExecutions } from '../services/gateService';
 
 interface IPluginContainerProps {
   app: Application;
@@ -12,18 +18,33 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   const [selectedPipeline, setSelectedPipeline] = useState<IPipeline>();
 
   const [selectedParams, setSelectedParams] = useState<string[]>([]);
+  const [executions, setExecutions] = useState<IExecution[]>([]);
 
   useEffect(() => {
     dataSource.activate();
   }, []);
 
-  const onPipelineSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+  useInterval(async () => {
+    if (!selectedPipeline) return;
+    const resp = await getExecutions(app.name, { pipelineName: selectedPipeline.name, pageSize: 100 });
+    setExecutions(resp);
+  }, 10000);
+
+  const onPipelineSelect = async (e: ChangeEvent<HTMLSelectElement>) => {
     const pipelineConfig = pipelines.find((p) => p.name === e.target.value);
+    setSelectedParams([]);
     setSelectedPipeline(pipelineConfig);
+
+    if (!pipelineConfig) {
+      setExecutions([]);
+      return;
+    }
+    const resp = await getExecutions(app.name, { pipelineName: pipelineConfig.name, pageSize: 100 });
+    setExecutions(resp);
   };
 
   return (
-    <div className="flex-container-v" style={{ margin: '3rem', width: '100%' }}>
+    <div className="flex-container-v" style={{ margin: '3rem', width: '100%', rowGap: '2rem' }}>
       <div className="flex-container-h" style={{ flexGrow: 1 }}>
         <div className="flex-pull-left" style={{ width: '20rem' }}>
           <ReactSelectInput
@@ -44,7 +65,21 @@ export function PluginContainer({ app }: IPluginContainerProps) {
         </div>
       </div>
       <div style={{ flexGrow: 19 }}>
-        <h1>Pipeline Executions Here</h1>
+        <PipelineExecutions
+          executions={executions.filter((e) => statuses.SUCCESSFUL.values.includes(e.status))}
+          parameters={selectedParams}
+          statusText={statuses.SUCCESSFUL.text}
+        />
+        <PipelineExecutions
+          executions={executions.filter((e) => statuses.FAILED.values.includes(e.status))}
+          parameters={selectedParams}
+          statusText={statuses.FAILED.text}
+        />
+        <PipelineExecutions
+          executions={executions.filter((e) => statuses.TRIGGERED.values.includes(e.status))}
+          parameters={selectedParams}
+          statusText={statuses.TRIGGERED.text}
+        />
       </div>
     </div>
   );
