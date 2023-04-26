@@ -44,7 +44,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   };
 
   return (
-    <div className="flex-container-v" style={{ margin: '3rem', width: '100%' }}>
+    <div className="flex-container-v" style={{ margin: '3rem', width: '100%', rowGap: '2rem' }}>
       <div className="flex-container-h" style={{ flexGrow: 1 }}>
         <div className="flex-pull-left" style={{ width: '20rem' }}>
           <ReactSelectInput

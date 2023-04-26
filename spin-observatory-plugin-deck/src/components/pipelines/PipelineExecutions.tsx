@@ -65,7 +65,7 @@ export const PipelineExecutions = ({ executions, parameters, statusText }: IPipe
       </AccordionSummary>
       <AccordionDetails>
         <TableContainer component={Paper} sx={{ borderRadius: 'inherit' }}>
-          <Table>
+          <Table stickyHeader>
             <TableHeaders
               headers={
                 statusText === statuses.TRIGGERED.text
