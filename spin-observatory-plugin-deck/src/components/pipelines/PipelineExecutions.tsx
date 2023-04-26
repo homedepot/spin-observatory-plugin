@@ -11,6 +11,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Checkbox,
 } from '@mui/material';
 import React from 'react';
 
@@ -36,7 +37,14 @@ const TableHeaders = ({ headers }: ITableHeadersProps) => {
   return (
     <TableHead>
       <TableRow>
-        {['ID', ...headers].map((h) => (
+        <TableCell padding="checkbox">
+          <Checkbox
+            color="primary"
+            // checked={rowCount > 0 && numSelected === rowCount}
+            // onChange={onSelectAllClick}
+          />
+        </TableCell>
+        {['ID', 'Start Time', 'End Time', ...headers].map((h) => (
           <TableCell>
             <Typography variant="h6">{h}</Typography>
           </TableCell>
@@ -48,10 +56,19 @@ const TableHeaders = ({ headers }: ITableHeadersProps) => {
 
 const ExecutionRow = ({ execution, parameters }: IExecutionRowProps) => {
   return (
-    <TableRow key={execution.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+      <TableCell padding="checkbox">
+        <Checkbox
+          color="primary"
+          // checked={rowCount > 0 && numSelected === rowCount}
+          // onChange={onSelectAllClick}
+        />
+      </TableCell>
       <TableCell component="th" scope="row">
         {execution.id}
       </TableCell>
+      <TableCell>{convertTimestamp(execution.startTime)}</TableCell>
+      <TableCell>{convertTimestamp(execution.endTime)}</TableCell>
       {parameters.map((p) => (
         <TableCell>{execution.trigger.parameters![p]}</TableCell>
       ))}
@@ -81,4 +98,15 @@ export const PipelineExecutions = ({ executions, parameters, status }: IPipeline
       </AccordionDetails>
     </Accordion>
   );
+};
+
+const convertTimestamp = (ts: number) => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: '2-digit',
+    month: 'numeric',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  }).format(ts);
 };
