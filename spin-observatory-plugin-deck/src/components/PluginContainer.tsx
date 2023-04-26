@@ -69,6 +69,11 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           parameters={selectedParams}
           statusText={statuses.FAILED.text}
         />
+        <PipelineExecutions
+          executions={executions.filter((e) => statuses.TRIGGERED.values.includes(e.status))}
+          parameters={selectedParams}
+          statusText={statuses.TRIGGERED.text}
+        />
       </div>
     </div>
   );

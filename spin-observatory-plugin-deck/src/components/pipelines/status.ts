@@ -10,6 +10,10 @@ export const statuses = {
   },
   FAILED: {
     text: 'Failed',
-    values: ['FAILED_CONTINUE', 'TERMINAL'],
+    values: ['FAILED_CONTINUE', 'TERMINAL', 'CANCELED'],
+  },
+  TRIGGERED: {
+    text: 'Triggered',
+    values: ['NOT_STARTED', 'RUNNING', 'PAUSED', 'SUSPENDED', 'BUFFERED', 'STOPPED', 'SKIPPED'],
   },
 };

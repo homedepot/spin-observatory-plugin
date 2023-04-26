@@ -14,7 +14,6 @@ import {
   Checkbox,
 } from '@mui/material';
 import React, { ChangeEvent, MouseEventHandler, useState } from 'react';
-import { UISref } from '@uirouter/react';
 import { IExecution, ReactInjector } from '@spinnaker/core';
 
 interface IPipelineExecutionsProps {
@@ -49,7 +48,7 @@ const TableHeaders = ({ headers, onSelectAll, rowCount, selectedCount }: ITableH
             onChange={onSelectAll}
           />
         </TableCell>
-        {['ID', 'Start Time', 'End Time', ...headers].map((h) => (
+        {['ID', 'Status', 'Start Time', 'End Time', ...headers].map((h) => (
           <TableCell>
             <Typography variant="h6">{h}</Typography>
           </TableCell>
@@ -81,10 +80,19 @@ const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected }: IExecu
           {execution.id}
         </Typography>
       </TableCell>
-      <TableCell><Typography>{convertTimestamp(execution.startTime)}</Typography></TableCell>
-      <TableCell><Typography>{convertTimestamp(execution.endTime)}</Typography></TableCell>
+      <TableCell>
+        <Typography>{execution.status}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{convertTimestamp(execution.startTime)}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{convertTimestamp(execution.endTime)}</Typography>
+      </TableCell>
       {parameters.map((p) => (
-        <TableCell><Typography>{execution.trigger.parameters![p]}</Typography></TableCell>
+        <TableCell>
+          <Typography>{execution.trigger.parameters![p]}</Typography>
+        </TableCell>
       ))}
     </TableRow>
   );
@@ -122,7 +130,7 @@ export const PipelineExecutions = ({ executions, parameters, statusText }: IPipe
   const isSelected = (name: string) => selectedExecutions.indexOf(name) !== -1;
 
   return (
-    <Accordion elevation={3} disabled={executions.length === 0} expanded={expanded}>
+    <Accordion elevation={2} disabled={executions.length === 0} expanded={expanded}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={onAccordionClick}>
         <Typography variant="h5">{statusText}</Typography>
       </AccordionSummary>
