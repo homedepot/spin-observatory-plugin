@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react';
 import React, { useEffect, useState } from 'react';
 
-import { Application, CollapsibleElement, CollapsibleSection, IExecution, IPipeline } from '@spinnaker/core';
+import { Application, IExecution, IPipeline } from '@spinnaker/core';
 import { ReactSelectInput, useDataSource, useInterval } from '@spinnaker/core';
 
 import { ParameterSelect } from './parameters';
@@ -80,9 +80,6 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           parameters={selectedParams}
           statusText={statuses.TRIGGERED.text}
         />
-        <CollapsibleElement maxHeight={30}>
-          <CollapsibleSection heading="test"></CollapsibleSection>
-        </CollapsibleElement>
       </div>
     </div>
   );

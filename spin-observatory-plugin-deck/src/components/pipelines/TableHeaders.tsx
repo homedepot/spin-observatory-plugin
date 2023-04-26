@@ -20,7 +20,7 @@ export const TableHeaders = ({ headers, onSelectAll, rowCount, selectedCount }: 
             onChange={onSelectAll}
           />
         </TableCell>
-        {['ID', 'Status', 'Start Time', 'End Time', ...headers].map((h) => (
+        {headers.map((h) => (
           <TableCell>
             <Typography variant="h6">{h}</Typography>
           </TableCell>

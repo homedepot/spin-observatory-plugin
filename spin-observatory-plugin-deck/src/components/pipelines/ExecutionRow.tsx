@@ -7,6 +7,7 @@ interface IExecutionRowProps {
   parameters: string[];
   onSelectOne: MouseEventHandler<HTMLTableRowElement>;
   isSelected: boolean;
+  inProgress: boolean;
 }
 
 const goToExecutionDetails = (executionId: string) => () => {
@@ -26,7 +27,7 @@ const convertTimestamp = (ts: number) => {
   }).format(ts);
 };
 
-export const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected }: IExecutionRowProps) => {
+export const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected, inProgress }: IExecutionRowProps) => {
   return (
     <TableRow
       hover
@@ -48,9 +49,11 @@ export const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected }:
       <TableCell>
         <Typography>{convertTimestamp(execution.startTime)}</Typography>
       </TableCell>
-      <TableCell>
-        <Typography>{convertTimestamp(execution.endTime)}</Typography>
-      </TableCell>
+      {!inProgress && (
+        <TableCell>
+          <Typography>{convertTimestamp(execution.endTime)}</Typography>
+        </TableCell>
+      )}
       {parameters.map((p) => (
         <TableCell>
           <Typography>{execution.trigger.parameters![p]}</Typography>

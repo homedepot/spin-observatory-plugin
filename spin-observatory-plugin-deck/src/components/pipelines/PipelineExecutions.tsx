@@ -13,6 +13,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { IExecution } from '@spinnaker/core';
 import { TableHeaders } from './TableHeaders';
 import { ExecutionRow } from './ExecutionRow';
+import { statuses } from './status';
 
 interface IPipelineExecutionsProps {
   executions: IExecution[];
@@ -55,7 +56,7 @@ export const PipelineExecutions = ({ executions, parameters, statusText }: IPipe
     <Accordion
       elevation={2}
       disabled={executions.length === 0}
-      expanded={expanded}
+      expanded={executions.length === 0 ? false : expanded}
       square
       sx={{ marginBottom: '1rem' }}
     >
@@ -66,7 +67,11 @@ export const PipelineExecutions = ({ executions, parameters, statusText }: IPipe
         <TableContainer component={Paper} sx={{ borderRadius: 'inherit' }}>
           <Table>
             <TableHeaders
-              headers={parameters}
+              headers={
+                statusText === statuses.TRIGGERED.text
+                  ? ['ID', 'Status', 'Start Time', ...parameters]
+                  : ['ID', 'Status', 'Start Time', 'End Time', ...parameters]
+              }
               onSelectAll={handleSelectAll}
               rowCount={executions.length}
               selectedCount={selectedExecutions.length}
@@ -78,6 +83,7 @@ export const PipelineExecutions = ({ executions, parameters, statusText }: IPipe
                   isSelected={isSelected(e.id)}
                   execution={e}
                   parameters={parameters}
+                  inProgress={statusText === statuses.TRIGGERED.text}
                   onSelectOne={handleSelectOne(e.id)}
                 />
               ))}
