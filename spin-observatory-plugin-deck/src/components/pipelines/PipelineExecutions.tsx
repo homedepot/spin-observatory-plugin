@@ -109,8 +109,8 @@ export const PipelineExecutions = ({ executions, parameters, statusText }: IPipe
   const isSelected = (name: string) => selectedExecutions.indexOf(name) !== -1;
 
   return (
-    <Accordion elevation={3} disabled={executions.length === 0} expanded={expanded} onClick={onAccordionClick}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+    <Accordion elevation={3} disabled={executions.length === 0} expanded={expanded}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={onAccordionClick}>
         <Typography variant="h5">{statusText}</Typography>
       </AccordionSummary>
       <AccordionDetails>
