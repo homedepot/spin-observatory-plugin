@@ -77,7 +77,7 @@ const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected }: IExecu
         <Checkbox color="primary" checked={isSelected} />
       </TableCell>
       <TableCell component="th" scope="row">
-        <Typography color="#139cb5" onClick={goToExecutionDetails(execution.id)}>
+        <Typography color="#139cb5" onClick={goToExecutionDetails(execution.id)} width="fit-content">
           {execution.id}
         </Typography>
       </TableCell>
