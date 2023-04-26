@@ -59,8 +59,16 @@ export function PluginContainer({ app }: IPluginContainerProps) {
         </div>
       </div>
       <div style={{ flexGrow: 19 }}>
-        <PipelineExecutions executions={executions} parameters={selectedParams} status={statuses.SUCCESSFUL} />
-        <PipelineExecutions executions={executions} parameters={selectedParams} status={statuses.FAILED} />
+        <PipelineExecutions
+          executions={executions.filter((e) => statuses.SUCCESSFUL.values.includes(e.status))}
+          parameters={selectedParams}
+          statusText={statuses.SUCCESSFUL.text}
+        />
+        <PipelineExecutions
+          executions={executions.filter((e) => statuses.FAILED.values.includes(e.status))}
+          parameters={selectedParams}
+          statusText={statuses.FAILED.text}
+        />
       </div>
     </div>
   );

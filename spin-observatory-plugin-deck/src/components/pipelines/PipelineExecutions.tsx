@@ -13,35 +13,40 @@ import {
   Typography,
   Checkbox,
 } from '@mui/material';
-import React from 'react';
+import React, { ChangeEvent, MouseEventHandler, useState } from 'react';
 
 import type { IExecution } from '@spinnaker/core';
-import type { IStatus } from './status';
 
 interface IPipelineExecutionsProps {
   executions: IExecution[];
   parameters: string[];
-  status: IStatus;
+  statusText: string;
 }
 
 interface ITableHeadersProps {
   headers: string[];
+  onSelectAll: (e: ChangeEvent<HTMLInputElement>) => void;
+  rowCount: number;
+  selectedCount: number;
 }
 
 interface IExecutionRowProps {
   execution: IExecution;
   parameters: string[];
+  onSelectOne: MouseEventHandler<HTMLButtonElement>;
+  isSelected: boolean;
 }
 
-const TableHeaders = ({ headers }: ITableHeadersProps) => {
+const TableHeaders = ({ headers, onSelectAll, rowCount, selectedCount }: ITableHeadersProps) => {
   return (
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
           <Checkbox
             color="primary"
-            // checked={rowCount > 0 && numSelected === rowCount}
-            // onChange={onSelectAllClick}
+            indeterminate={selectedCount > 0 && selectedCount < rowCount}
+            checked={rowCount > 0 && selectedCount === rowCount}
+            onChange={onSelectAll}
           />
         </TableCell>
         {['ID', 'Start Time', 'End Time', ...headers].map((h) => (
@@ -54,15 +59,11 @@ const TableHeaders = ({ headers }: ITableHeadersProps) => {
   );
 };
 
-const ExecutionRow = ({ execution, parameters }: IExecutionRowProps) => {
+const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected }: IExecutionRowProps) => {
   return (
-    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+    <TableRow hover selected={isSelected} sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}>
       <TableCell padding="checkbox">
-        <Checkbox
-          color="primary"
-          // checked={rowCount > 0 && numSelected === rowCount}
-          // onChange={onSelectAllClick}
-        />
+        <Checkbox color="primary" checked={isSelected} onClick={onSelectOne} />
       </TableCell>
       <TableCell component="th" scope="row">
         {execution.id}
@@ -76,22 +77,61 @@ const ExecutionRow = ({ execution, parameters }: IExecutionRowProps) => {
   );
 };
 
-export const PipelineExecutions = ({ executions, parameters, status }: IPipelineExecutionsProps) => {
+export const PipelineExecutions = ({ executions, parameters, statusText }: IPipelineExecutionsProps) => {
+  const [expanded, setExpanded] = useState(false);
+  const [selectedExecutions, setSelectedExecutions] = useState<string[]>([]);
+
+  const onAccordionClick = () => {
+    executions.length === 0 ? setExpanded(false) : setExpanded(!expanded);
+  };
+
+  const handleSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setSelectedExecutions(executions.map((e) => e.id));
+      return;
+    }
+    setSelectedExecutions([]);
+  };
+
+  const handleSelectOne = (executionID: string) => () => {
+    const selectedIdx = selectedExecutions.indexOf(executionID);
+    let newSelected: string[] = [];
+
+    if (selectedIdx === -1) {
+      newSelected = [...selectedExecutions, executionID];
+    } else {
+      newSelected = selectedExecutions.filter((e) => e !== executionID);
+    }
+
+    setSelectedExecutions(newSelected);
+  };
+
+  const isSelected = (name: string) => selectedExecutions.indexOf(name) !== -1;
+
   return (
-    <Accordion elevation={3} disabled={executions.length === 0}>
+    <Accordion elevation={3} disabled={executions.length === 0} expanded={expanded} onClick={onAccordionClick}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography variant="h5">{status.text}</Typography>
+        <Typography variant="h5">{statusText}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <TableContainer component={Paper}>
           <Table>
-            <TableHeaders headers={parameters} />
+            <TableHeaders
+              headers={parameters}
+              onSelectAll={handleSelectAll}
+              rowCount={executions.length}
+              selectedCount={selectedExecutions.length}
+            />
             <TableBody>
-              {executions
-                .filter((e) => status.values.includes(e.status))
-                .map((e) => (
-                  <ExecutionRow execution={e} parameters={parameters} />
-                ))}
+              {executions.map((e) => (
+                <ExecutionRow
+                  key={e.id}
+                  isSelected={isSelected(e.id)}
+                  execution={e}
+                  parameters={parameters}
+                  onSelectOne={handleSelectOne(e.id)}
+                />
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
