@@ -14,8 +14,8 @@ import {
   Checkbox,
 } from '@mui/material';
 import React, { ChangeEvent, MouseEventHandler, useState } from 'react';
-
-import type { IExecution } from '@spinnaker/core';
+import { UISref } from '@uirouter/react';
+import { IExecution, ReactInjector } from '@spinnaker/core';
 
 interface IPipelineExecutionsProps {
   executions: IExecution[];
@@ -33,7 +33,7 @@ interface ITableHeadersProps {
 interface IExecutionRowProps {
   execution: IExecution;
   parameters: string[];
-  onSelectOne: MouseEventHandler<HTMLButtonElement>;
+  onSelectOne: MouseEventHandler<HTMLTableRowElement>;
   isSelected: boolean;
 }
 
@@ -59,14 +59,27 @@ const TableHeaders = ({ headers, onSelectAll, rowCount, selectedCount }: ITableH
   );
 };
 
+const goToExecutionDetails = (executionID: string) => () => {
+  const { $state, $uiRouter } = ReactInjector;
+  const detailsState = $uiRouter.globals.current.name!.replace('observatory', 'pipelines.executions.execution');
+  $state.go(detailsState, { executionID });
+};
+
 const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected }: IExecutionRowProps) => {
   return (
-    <TableRow hover selected={isSelected} sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}>
+    <TableRow
+      hover
+      selected={isSelected}
+      onClick={onSelectOne}
+      sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
+    >
       <TableCell padding="checkbox">
-        <Checkbox color="primary" checked={isSelected} onClick={onSelectOne} />
+        <Checkbox color="primary" checked={isSelected} />
       </TableCell>
       <TableCell component="th" scope="row">
-        {execution.id}
+        <Typography color="#139cb5" onClick={goToExecutionDetails(execution.id)}>
+          {execution.id}
+        </Typography>
       </TableCell>
       <TableCell>{convertTimestamp(execution.startTime)}</TableCell>
       <TableCell>{convertTimestamp(execution.endTime)}</TableCell>
