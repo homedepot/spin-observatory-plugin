@@ -130,12 +130,18 @@ export const PipelineExecutions = ({ executions, parameters, statusText }: IPipe
   const isSelected = (name: string) => selectedExecutions.indexOf(name) !== -1;
 
   return (
-    <Accordion elevation={2} disabled={executions.length === 0} expanded={expanded}>
+    <Accordion
+      elevation={2}
+      disabled={executions.length === 0}
+      expanded={expanded}
+      square
+      sx={{ marginBottom: '1rem' }}
+    >
       <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={onAccordionClick}>
         <Typography variant="h5">{statusText}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ borderRadius: 'inherit' }}>
           <Table>
             <TableHeaders
               headers={parameters}
