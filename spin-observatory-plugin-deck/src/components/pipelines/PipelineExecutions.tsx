@@ -81,10 +81,10 @@ const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected }: IExecu
           {execution.id}
         </Typography>
       </TableCell>
-      <TableCell>{convertTimestamp(execution.startTime)}</TableCell>
-      <TableCell>{convertTimestamp(execution.endTime)}</TableCell>
+      <TableCell><Typography>{convertTimestamp(execution.startTime)}</Typography></TableCell>
+      <TableCell><Typography>{convertTimestamp(execution.endTime)}</Typography></TableCell>
       {parameters.map((p) => (
-        <TableCell>{execution.trigger.parameters![p]}</TableCell>
+        <TableCell><Typography>{execution.trigger.parameters![p]}</Typography></TableCell>
       ))}
     </TableRow>
   );
