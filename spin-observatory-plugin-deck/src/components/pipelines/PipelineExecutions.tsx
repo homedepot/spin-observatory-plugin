@@ -6,97 +6,19 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
-  TableHead,
-  TableRow,
   Typography,
-  Checkbox,
 } from '@mui/material';
-import React, { ChangeEvent, MouseEventHandler, useState } from 'react';
-import { IExecution, ReactInjector } from '@spinnaker/core';
+import React, { ChangeEvent, useState } from 'react';
+import { IExecution } from '@spinnaker/core';
+import { TableHeaders } from './TableHeaders';
+import { ExecutionRow } from './ExecutionRow';
 
 interface IPipelineExecutionsProps {
   executions: IExecution[];
   parameters: string[];
   statusText: string;
 }
-
-interface ITableHeadersProps {
-  headers: string[];
-  onSelectAll: (e: ChangeEvent<HTMLInputElement>) => void;
-  rowCount: number;
-  selectedCount: number;
-}
-
-interface IExecutionRowProps {
-  execution: IExecution;
-  parameters: string[];
-  onSelectOne: MouseEventHandler<HTMLTableRowElement>;
-  isSelected: boolean;
-}
-
-const TableHeaders = ({ headers, onSelectAll, rowCount, selectedCount }: ITableHeadersProps) => {
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={selectedCount > 0 && selectedCount < rowCount}
-            checked={rowCount > 0 && selectedCount === rowCount}
-            onChange={onSelectAll}
-          />
-        </TableCell>
-        {['ID', 'Status', 'Start Time', 'End Time', ...headers].map((h) => (
-          <TableCell>
-            <Typography variant="h6">{h}</Typography>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-};
-
-const goToExecutionDetails = (executionId: string) => () => {
-  const { $state, $uiRouter } = ReactInjector;
-  const detailsState = $uiRouter.globals.current.name!.replace('observatory', 'pipelines.executions.execution');
-  $state.go(detailsState, { executionId });
-};
-
-const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected }: IExecutionRowProps) => {
-  return (
-    <TableRow
-      hover
-      selected={isSelected}
-      onClick={onSelectOne}
-      sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
-    >
-      <TableCell padding="checkbox">
-        <Checkbox color="primary" checked={isSelected} />
-      </TableCell>
-      <TableCell component="th" scope="row">
-        <Typography color="#139cb5" onClick={goToExecutionDetails(execution.id)} width="fit-content">
-          {execution.id}
-        </Typography>
-      </TableCell>
-      <TableCell>
-        <Typography>{execution.status}</Typography>
-      </TableCell>
-      <TableCell>
-        <Typography>{convertTimestamp(execution.startTime)}</Typography>
-      </TableCell>
-      <TableCell>
-        <Typography>{convertTimestamp(execution.endTime)}</Typography>
-      </TableCell>
-      {parameters.map((p) => (
-        <TableCell>
-          <Typography>{execution.trigger.parameters![p]}</Typography>
-        </TableCell>
-      ))}
-    </TableRow>
-  );
-};
 
 export const PipelineExecutions = ({ executions, parameters, statusText }: IPipelineExecutionsProps) => {
   const [expanded, setExpanded] = useState(false);
@@ -165,15 +87,4 @@ export const PipelineExecutions = ({ executions, parameters, statusText }: IPipe
       </AccordionDetails>
     </Accordion>
   );
-};
-
-const convertTimestamp = (ts: number) => {
-  return new Intl.DateTimeFormat('en-US', {
-    year: '2-digit',
-    month: 'numeric',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  }).format(ts);
 };

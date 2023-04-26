@@ -1,8 +1,8 @@
 import type { ChangeEvent } from 'react';
 import React, { useEffect, useState } from 'react';
 
-import type { Application, IExecution, IPipeline } from '@spinnaker/core';
-import { ReactSelectInput, useDataSource } from '@spinnaker/core';
+import { Application, CollapsibleElement, CollapsibleSection, IExecution, IPipeline } from '@spinnaker/core';
+import { ReactSelectInput, useDataSource, useInterval } from '@spinnaker/core';
 
 import { ParameterSelect } from './parameters';
 import { PipelineExecutions, statuses } from './pipelines';
@@ -23,6 +23,12 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   useEffect(() => {
     dataSource.activate();
   }, []);
+
+  useInterval(async () => {
+    if (!selectedPipeline) return;
+    const resp = await getExecutions(app.name, { pipelineName: selectedPipeline.name, pageSize: 100 });
+    setExecutions(resp);
+  }, 10000);
 
   const onPipelineSelect = async (e: ChangeEvent<HTMLSelectElement>) => {
     const pipelineConfig = pipelines.find((p) => p.name === e.target.value);
@@ -74,6 +80,9 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           parameters={selectedParams}
           statusText={statuses.TRIGGERED.text}
         />
+        <CollapsibleElement maxHeight={30}>
+          <CollapsibleSection heading="test"></CollapsibleSection>
+        </CollapsibleElement>
       </div>
     </div>
   );
