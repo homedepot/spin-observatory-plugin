@@ -3,7 +3,7 @@ export interface IStatus {
   values: string[];
 }
 
-export const statuses = {
+export const STATUSES = {
   SUCCESSFUL: {
     text: 'Successful',
     values: ['SUCCEEDED'],
@@ -17,3 +17,7 @@ export const statuses = {
     values: ['NOT_STARTED', 'RUNNING', 'PAUSED', 'SUSPENDED', 'BUFFERED', 'STOPPED', 'SKIPPED'],
   },
 };
+
+export const DEFAULT_ROWS_PER_PAGE = 25;
+
+export const POLL_DELAY_MS = 10000;
