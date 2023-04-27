@@ -35,18 +35,27 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
   const [selectedExecutions, setSelectedExecutions] = useState<string[]>([]);
   const [currentPage, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PER_PAGE);
+  const [isLastPage, setIsLastPage] = useState(false);
 
   useEffect(() => {
     if (!pipeline) {
       setExecutions([]);
       return;
     }
-    getExecutions(appName, {
+
+    const requestParams = {
       pipelineName: pipeline.name,
       pageSize: rowsPerPage,
       statuses: status.values,
       firstItemIdx: rowsPerPage * currentPage,
-    }).then((resp) => setExecutions(resp));
+    };
+
+    getExecutions(appName, requestParams).then((resp) => setExecutions(resp));
+
+    getExecutions(appName, {
+      ...requestParams,
+      firstItemIdx: rowsPerPage * (currentPage + 1),
+    }).then((resp) => setIsLastPage(resp.length === 0));
   }, [pipeline, rowsPerPage, currentPage]);
 
   useInterval(async () => {
@@ -149,6 +158,7 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
                     rowsPerPageOptions={[DEFAULT_ROWS_PER_PAGE, 20, 50]}
                     onRowsPerPageChange={handleRowsPerPageChange}
                     labelRowsPerPage="Executions per page"
+                    nextIconButtonProps={{ disabled: isLastPage }}
                   />
                 </TableRow>
               </TableFooter>
