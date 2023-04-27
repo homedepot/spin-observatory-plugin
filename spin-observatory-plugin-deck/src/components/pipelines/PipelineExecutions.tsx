@@ -105,7 +105,14 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
         <Typography variant="h5">{status.text}</Typography>
       </AccordionSummary>
       {executions.length === 0 ? (
-        [...Array(10).keys()].map((key) => <Skeleton key={key} animation="wave" variant="text" />)
+        [...Array(4).keys()].map((key) => (
+          <Skeleton
+            key={key}
+            animation="wave"
+            variant="text"
+            sx={{ padding: '3rem', marginLeft: '2rem', marginRight: '2rem' }}
+          />
+        ))
       ) : (
         <AccordionDetails>
           <TableContainer component={Paper} sx={{ borderRadius: 'inherit' }}>
