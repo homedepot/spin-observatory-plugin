@@ -43,8 +43,9 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
       pipelineName: pipeline.name,
       pageSize: rowsPerPage,
       statuses: status.values,
+      firstItemIdx: rowsPerPage * currentPage,
     }).then((resp) => setExecutions(resp));
-  }, [pipeline, rowsPerPage]);
+  }, [pipeline, rowsPerPage, currentPage]);
 
   useInterval(async () => {
     if (!pipeline) return;
@@ -139,9 +140,8 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
                   onPageChange={handlePageChange}
                   page={currentPage}
                   rowsPerPage={rowsPerPage}
-                  rowsPerPageOptions={[DEFAULT_ROWS_PER_PAGE, 50, 100]}
+                  rowsPerPageOptions={[DEFAULT_ROWS_PER_PAGE, 20, 50]}
                   onRowsPerPageChange={handleRowsPerPageChange}
-                  ActionsComponent={PaginationActions}
                   labelRowsPerPage="Executions per page"
                 />
               </TableRow>

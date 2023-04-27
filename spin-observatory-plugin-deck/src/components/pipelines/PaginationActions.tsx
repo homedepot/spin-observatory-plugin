@@ -24,7 +24,7 @@ export const PaginationActions = ({ page, onPageChange }: IPaginationActionsProp
   };
 
   return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+    <Box>
       <IconButton onClick={handleFirstPageButtonClick} disabled={page === 0}>
         <FirstPageIcon />
       </IconButton>
