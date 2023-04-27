@@ -35,7 +35,6 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
   const [selectedExecutions, setSelectedExecutions] = useState<string[]>([]);
   const [currentPage, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PER_PAGE);
-  const [isLastPage, setIsLastPage] = useState(false);
 
   useEffect(() => {
     if (!pipeline) {
@@ -45,26 +44,19 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
 
     const requestParams = {
       pipelineName: pipeline.name,
-      pageSize: rowsPerPage,
+      pageSize: 5000,
       statuses: status.values,
-      firstItemIdx: rowsPerPage * currentPage,
     };
 
     getExecutions(appName, requestParams).then((resp) => setExecutions(resp));
-
-    getExecutions(appName, {
-      ...requestParams,
-      firstItemIdx: rowsPerPage * (currentPage + 1),
-    }).then((resp) => setIsLastPage(resp.length === 0));
-  }, [pipeline, rowsPerPage, currentPage]);
+  }, [pipeline]);
 
   useInterval(async () => {
     if (!pipeline) return;
     const resp = await getExecutions(appName, {
       pipelineName: pipeline.name,
       statuses: status.values,
-      pageSize: rowsPerPage,
-      firstItemIdx: rowsPerPage * currentPage,
+      pageSize: 5000,
     });
     setExecutions(resp);
   }, POLL_DELAY_MS);
@@ -137,7 +129,7 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
                 selectedCount={selectedExecutions.length}
               />
               <TableBody>
-                {executions.map((e) => (
+                {executions.slice(currentPage * rowsPerPage, currentPage * rowsPerPage + rowsPerPage).map((e) => (
                   <ExecutionRow
                     key={e.id}
                     isSelected={isSelected(e.id)}
@@ -151,14 +143,13 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
               <TableFooter>
                 <TableRow>
                   <TablePagination
-                    count={-1}
+                    count={executions.length}
                     onPageChange={handlePageChange}
                     page={currentPage}
                     rowsPerPage={rowsPerPage}
                     rowsPerPageOptions={[DEFAULT_ROWS_PER_PAGE, 20, 50]}
                     onRowsPerPageChange={handleRowsPerPageChange}
                     labelRowsPerPage="Executions per page"
-                    nextIconButtonProps={{ disabled: isLastPage }}
                   />
                 </TableRow>
               </TableFooter>
