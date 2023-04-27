@@ -1,4 +1,5 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 import {
   Accordion,
   AccordionDetails,
@@ -11,6 +12,7 @@ import {
   TableRow,
   TablePagination,
   Typography,
+  Skeleton,
 } from '@mui/material';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { IExecution, IPipeline, useInterval } from '@spinnaker/core';
@@ -71,7 +73,7 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
   };
 
   const onAccordionClick = () => {
-    executions.length === 0 ? setExpanded(false) : setExpanded(!expanded);
+    setExpanded(!expanded);
   };
 
   const handleSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
@@ -98,57 +100,55 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
   const isSelected = (name: string) => selectedExecutions.indexOf(name) !== -1;
 
   return (
-    <Accordion
-      elevation={2}
-      disabled={executions.length === 0}
-      expanded={executions.length === 0 ? false : expanded}
-      square
-      sx={{ marginBottom: '1rem' }}
-    >
+    <Accordion elevation={2} expanded={expanded} square sx={{ marginBottom: '1rem' }}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={onAccordionClick}>
         <Typography variant="h5">{status.text}</Typography>
       </AccordionSummary>
-      <AccordionDetails>
-        <TableContainer component={Paper} sx={{ borderRadius: 'inherit' }}>
-          <Table stickyHeader>
-            <TableHeaders
-              headers={
-                status === STATUSES.TRIGGERED
-                  ? ['ID', 'Status', 'Start Time', ...parameters]
-                  : ['ID', 'Status', 'Start Time', 'End Time', ...parameters]
-              }
-              onSelectAll={handleSelectAll}
-              rowCount={executions.length}
-              selectedCount={selectedExecutions.length}
-            />
-            <TableBody>
-              {executions.map((e) => (
-                <ExecutionRow
-                  key={e.id}
-                  isSelected={isSelected(e.id)}
-                  execution={e}
-                  parameters={parameters}
-                  inProgress={status === STATUSES.TRIGGERED}
-                  onSelectOne={handleSelectOne(e.id)}
-                />
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  count={-1}
-                  onPageChange={handlePageChange}
-                  page={currentPage}
-                  rowsPerPage={rowsPerPage}
-                  rowsPerPageOptions={[DEFAULT_ROWS_PER_PAGE, 20, 50]}
-                  onRowsPerPageChange={handleRowsPerPageChange}
-                  labelRowsPerPage="Executions per page"
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
-      </AccordionDetails>
+      {executions.length === 0 ? (
+        [...Array(10).keys()].map((key) => <Skeleton key={key} animation="wave" variant="text" />)
+      ) : (
+        <AccordionDetails>
+          <TableContainer component={Paper} sx={{ borderRadius: 'inherit' }}>
+            <Table stickyHeader>
+              <TableHeaders
+                headers={
+                  status === STATUSES.TRIGGERED
+                    ? ['ID', 'Status', 'Start Time', ...parameters]
+                    : ['ID', 'Status', 'Start Time', 'End Time', ...parameters]
+                }
+                onSelectAll={handleSelectAll}
+                rowCount={executions.length}
+                selectedCount={selectedExecutions.length}
+              />
+              <TableBody>
+                {executions.map((e) => (
+                  <ExecutionRow
+                    key={e.id}
+                    isSelected={isSelected(e.id)}
+                    execution={e}
+                    parameters={parameters}
+                    inProgress={status === STATUSES.TRIGGERED}
+                    onSelectOne={handleSelectOne(e.id)}
+                  />
+                ))}
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    count={-1}
+                    onPageChange={handlePageChange}
+                    page={currentPage}
+                    rowsPerPage={rowsPerPage}
+                    rowsPerPageOptions={[DEFAULT_ROWS_PER_PAGE, 20, 50]}
+                    onRowsPerPageChange={handleRowsPerPageChange}
+                    labelRowsPerPage="Executions per page"
+                  />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </TableContainer>
+        </AccordionDetails>
+      )}
     </Accordion>
   );
 };
