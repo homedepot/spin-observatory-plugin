@@ -10,6 +10,7 @@ import {
   TableContainer,
   TableFooter,
   TableRow,
+  TableCell,
   TablePagination,
   Typography,
   Skeleton,
@@ -35,6 +36,11 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
   const [selectedExecutions, setSelectedExecutions] = useState<string[]>([]);
   const [currentPage, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PER_PAGE);
+
+  const headers =
+    status === STATUSES.TRIGGERED
+      ? ['ID', 'Status', 'Start Time', ...parameters]
+      : ['ID', 'Status', 'Start Time', 'End Time', ...parameters];
 
   useEffect(() => {
     if (!pipeline) {
@@ -119,11 +125,7 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
           <TableContainer component={Paper} sx={{ borderRadius: 'inherit' }}>
             <Table stickyHeader>
               <TableHeaders
-                headers={
-                  status === STATUSES.TRIGGERED
-                    ? ['ID', 'Status', 'Start Time', ...parameters]
-                    : ['ID', 'Status', 'Start Time', 'End Time', ...parameters]
-                }
+                headers={headers}
                 onSelectAll={handleSelectAll}
                 rowCount={executions.length}
                 selectedCount={selectedExecutions.length}
@@ -152,6 +154,15 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
                     labelRowsPerPage="Executions per page"
                   />
                 </TableRow>
+                {emptyRowsCount > 0 && (
+                  <TableRow
+                    style={{
+                      height: 53 * emptyRowsCount,
+                    }}
+                  >
+                    <TableCell colSpan={headers.length} />
+                  </TableRow>
+                )}
               </TableFooter>
             </Table>
           </TableContainer>
