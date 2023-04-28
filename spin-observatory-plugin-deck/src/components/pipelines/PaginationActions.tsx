@@ -31,7 +31,7 @@ export const PaginationActions = ({ count, page, rowsPerPage, onPageChange }: IP
   };
 
   return (
-    <Box>
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
       <IconButton onClick={handleFirstPageButtonClick} disabled={page === 0}>
         <FirstPageIcon />
       </IconButton>
