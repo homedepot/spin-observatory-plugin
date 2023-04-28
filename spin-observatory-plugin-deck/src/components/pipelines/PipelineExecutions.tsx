@@ -150,7 +150,12 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
                     rowsPerPage={rowsPerPage}
                     rowsPerPageOptions={[DEFAULT_ROWS_PER_PAGE, 20, 50]}
                     onRowsPerPageChange={handleRowsPerPageChange}
-                    labelRowsPerPage={<div>"Executions per page"</div>}
+                    labelRowsPerPage={<div>Executions per page</div>}
+                    labelDisplayedRows={({ from, to, count }) => (
+                      <div>
+                        {from}-{to} of {count}
+                      </div>
+                    )}
                     ActionsComponent={PaginationActions}
                   />
                 </TableRow>
