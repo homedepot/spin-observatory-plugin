@@ -10,7 +10,6 @@ import {
   TableContainer,
   TableFooter,
   TableRow,
-  TableCell,
   TablePagination,
   Typography,
   Skeleton,
@@ -68,7 +67,7 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
   }, POLL_DELAY_MS);
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRowsCount = currentPage > 0 ? Math.max(0, (1 + currentPage) * rowsPerPage - executions.length) : 0;
+  // const emptyRowsCount = currentPage > 0 ? Math.max(0, (1 + currentPage) * rowsPerPage - executions.length) : 0;
 
   const handlePageChange = (_: any, newPage: number) => {
     setPage(newPage);
@@ -152,17 +151,9 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
                     rowsPerPageOptions={[DEFAULT_ROWS_PER_PAGE, 20, 50]}
                     onRowsPerPageChange={handleRowsPerPageChange}
                     labelRowsPerPage="Executions per page"
+                    ActionsComponent={PaginationActions}
                   />
                 </TableRow>
-                {emptyRowsCount > 0 && (
-                  <TableRow
-                    style={{
-                      height: 53 * emptyRowsCount,
-                    }}
-                  >
-                    <TableCell colSpan={headers.length} />
-                  </TableRow>
-                )}
               </TableFooter>
             </Table>
           </TableContainer>

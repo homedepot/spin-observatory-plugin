@@ -1,12 +1,10 @@
 import type { ChangeEvent } from 'react';
 import React, { useEffect, useState } from 'react';
 
-import { Application, IExecution, IPipeline } from '@spinnaker/core';
-import { ReactSelectInput, useDataSource, useInterval } from '@spinnaker/core';
+import { Application, IPipeline, ReactSelectInput, useDataSource } from '@spinnaker/core';
 
 import { ParameterSelect } from './parameters';
-import { DEFAULT_ROWS_PER_PAGE, PipelineExecutions, STATUSES } from './pipelines';
-import { getExecutions } from '../services/gateService';
+import { PipelineExecutions, STATUSES } from './pipelines';
 
 interface IPluginContainerProps {
   app: Application;
