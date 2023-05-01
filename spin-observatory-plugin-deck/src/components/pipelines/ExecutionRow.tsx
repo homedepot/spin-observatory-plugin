@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     cursor: 'pointer',
   },
   typography: { fontSize: '1.2rem' },
-  executionLink: { fontSize: '1.2rem', width: 'fit-content', color: '#139cb5' },
+  executionLink: { fontSize: '1.2rem', width: 'fit-content', color: 'var(--color-accent-g2)' },
 });
 
 interface IExecutionRowProps {
