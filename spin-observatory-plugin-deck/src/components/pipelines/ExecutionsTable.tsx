@@ -95,7 +95,7 @@ export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsT
         <TableFooter>
           <TableRow>
             <TablePagination
-              classes={{ root: styles.pagination }}
+              classes={{ root: styles.pagination, toolbar: styles.toolbar }}
               count={executions.length}
               onPageChange={handlePageChange}
               page={currentPage}

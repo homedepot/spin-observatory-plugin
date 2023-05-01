@@ -7,10 +7,11 @@ const useStyles = makeStyles({
   tableRow: {
     '&:last-child td, &:last-child th': { border: 0 },
     cursor: 'pointer',
-    '&:selected': { backgroundColor: 'rgb(215 232 237)' },
   },
+  rowSelected: { backgroundColor: 'rgb(215 232 237)' },
   typography: { fontSize: '1.2rem' },
   executionLink: { fontSize: '1.2rem', color: '#139cb5', width: 'fit-content' },
+  checkboxChecked: {},
   checkbox: {
     color: '#39546a',
     '&$checked': {
@@ -47,9 +48,14 @@ const convertTimestamp = (ts: number) => {
 export const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected, inProgress }: IExecutionRowProps) => {
   const styles = useStyles();
   return (
-    <TableRow hover selected={isSelected} onClick={onSelectOne} classes={{ root: styles.tableRow }}>
+    <TableRow
+      hover
+      selected={isSelected}
+      onClick={onSelectOne}
+      classes={{ root: styles.tableRow, selected: styles.rowSelected }}
+    >
       <TableCell padding="checkbox">
-        <Checkbox checked={isSelected} classes={{ root: styles.checkbox }} />
+        <Checkbox checked={isSelected} classes={{ root: styles.checkbox, checked: styles.checkboxChecked }} />
       </TableCell>
       <TableCell component="th" scope="row">
         <Typography onClick={goToExecutionDetails(execution.id)} classes={{ root: styles.executionLink }}>
