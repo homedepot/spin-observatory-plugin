@@ -19,6 +19,7 @@ import { makeStyles } from '@material-ui/core';
 const useStyles = makeStyles({
   tableContainer: { borderRadius: 'inherit' },
   pagination: { fontSize: '1rem', margin: 'auto' },
+  toolbar: {minHeight: "52px"}
 });
 
 interface IExecutionsTableProps {
