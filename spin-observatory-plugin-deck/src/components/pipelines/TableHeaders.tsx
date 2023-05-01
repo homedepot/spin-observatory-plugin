@@ -14,7 +14,7 @@ export const TableHeaders = ({ headers, onSelectAll, rowCount, selectedCount }: 
       <TableRow>
         <TableCell padding="checkbox">
           <Checkbox
-            style={rowCount > 0 && selectedCount === rowCount ? { color: 'var(color-primary-g1)' } : {}}
+            style={rowCount > 0 && selectedCount === rowCount ? { color: 'var(--color-primary-g1)' } : {}}
             indeterminate={selectedCount > 0 && selectedCount < rowCount}
             checked={rowCount > 0 && selectedCount === rowCount}
             onChange={onSelectAll}
