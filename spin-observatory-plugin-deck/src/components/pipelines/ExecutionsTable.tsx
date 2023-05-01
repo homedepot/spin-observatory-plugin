@@ -19,7 +19,6 @@ import { makeStyles } from '@material-ui/core';
 const useStyles = makeStyles({
   tableContainer: { borderRadius: 'inherit' },
   pagination: { fontSize: '1rem', margin: 'auto' },
-  toolbar: {minHeight: "52px"}
 });
 
 interface IExecutionsTableProps {
@@ -95,7 +94,7 @@ export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsT
         <TableFooter>
           <TableRow>
             <TablePagination
-              classes={{ root: styles.pagination, toolbar: styles.toolbar }}
+              classes={{ root: styles.pagination }}
               count={executions.length}
               onPageChange={handlePageChange}
               page={currentPage}
