@@ -7,8 +7,9 @@ const useStyles = makeStyles({
   tableRow: {
     '&:last-child td, &:last-child th': { border: 0 },
     cursor: 'pointer',
+    '&$selected': { backgroundColor: 'rgb(215 232 237)' },
   },
-  rowSelected: { backgroundColor: 'rgb(215 232 237)' },
+  rowSelected: {},
   typography: { fontSize: '1.2rem' },
   executionLink: { fontSize: '1.2rem', color: '#139cb5', width: 'fit-content' },
   checkboxChecked: {},
