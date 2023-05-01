@@ -7,7 +7,9 @@ const useStyles = makeStyles({
   tableRow: {
     '&:last-child td, &:last-child th': { border: 0 },
     cursor: 'pointer',
+    '&$hover': { backgroundColor: 'rgb(215, 232, 237)' },
   },
+  rowHover: {},
   typography: { fontSize: '1.2rem' },
   executionLink: { fontSize: '1.2rem', width: 'fit-content' },
 });
@@ -45,7 +47,7 @@ export const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected, i
       selected={isSelected}
       onClick={onSelectOne}
       style={isSelected ? { backgroundColor: 'rgb(215, 232, 237)' } : {}}
-      classes={{ root: styles.tableRow }}
+      classes={{ root: styles.tableRow, hover: styles.rowHover }}
     >
       <TableCell padding="checkbox">
         <Checkbox checked={isSelected} style={isSelected ? { color: '#39546a' } : {}} />

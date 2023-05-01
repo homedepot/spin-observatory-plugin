@@ -12,7 +12,7 @@ import { PluginContainer } from './components/PluginContainer';
 
 export const plugin: IDeckPlugin = {
   initialize: () => {
-    console.log("v0.5.0+23")
+    console.log("v0.5.0+24")
     const injector = (window as any).spinnaker.$injector;
     const applicationState: ApplicationStateProvider = injector.get('applicationState');
     applicationState.addChildState({
