@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     cursor: 'pointer',
   },
   typography: { fontSize: '1.2rem' },
-  executionLink: { fontSize: '1.2rem', width: 'fit-content', color: 'var(--color-accent-g2)' },
+  executionLink: { fontSize: '1.2rem', width: 'fit-content', color: 'var(color-accent)' },
 });
 
 interface IExecutionRowProps {
@@ -44,11 +44,11 @@ export const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected, i
       hover
       selected={isSelected}
       onClick={onSelectOne}
-      style={isSelected ? { backgroundColor: 'rgb(215, 232, 237)' } : {}}
+      style={isSelected ? { backgroundColor: 'var(color-accent-g2)' } : {}}
       classes={{ root: styles.tableRow }}
     >
       <TableCell padding="checkbox">
-        <Checkbox checked={isSelected} style={isSelected ? { color: '#39546a' } : {}} />
+        <Checkbox checked={isSelected} style={isSelected ? { color: 'var(color-primary-g1)' } : {}} />
       </TableCell>
       <TableCell component="th" scope="row">
         <Typography onClick={goToExecutionDetails(execution.id)} classes={{ root: styles.executionLink }}>
