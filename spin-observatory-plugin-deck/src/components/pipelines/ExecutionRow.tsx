@@ -7,18 +7,9 @@ const useStyles = makeStyles({
   tableRow: {
     '&:last-child td, &:last-child th': { border: 0 },
     cursor: 'pointer',
-    '&$selected': { backgroundColor: 'rgb(215 232 237)' },
   },
-  rowSelected: {},
   typography: { fontSize: '1.2rem' },
   executionLink: { fontSize: '1.2rem', color: '#139cb5', width: 'fit-content' },
-  checkboxChecked: {},
-  checkbox: {
-    color: '#39546a',
-    '&$checked': {
-      color: '#39546a',
-    },
-  },
 });
 
 interface IExecutionRowProps {
@@ -53,10 +44,11 @@ export const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected, i
       hover
       selected={isSelected}
       onClick={onSelectOne}
-      classes={{ root: styles.tableRow, selected: styles.rowSelected }}
+      style={isSelected ? { backgroundColor: 'rgb(215 232 237)' } : {}}
+      classes={{ root: styles.tableRow }}
     >
       <TableCell padding="checkbox">
-        <Checkbox checked={isSelected} classes={{ root: styles.checkbox, checked: styles.checkboxChecked }} />
+        <Checkbox checked={isSelected} style={isSelected ? { color: '#39546a' } : {}} />
       </TableCell>
       <TableCell component="th" scope="row">
         <Typography onClick={goToExecutionDetails(execution.id)} classes={{ root: styles.executionLink }}>
