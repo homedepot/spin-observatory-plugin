@@ -16,6 +16,5 @@ export const getExecutions = async (appName: string, params: IExecutionsParams) 
     .path('search')
     .query({ pipelineName, size: pageSize, startIndex: firstItemIdx, statuses: statuses.join(',') })
     .get<IExecution[]>();
-  console.log(params, data);
   return data;
 };

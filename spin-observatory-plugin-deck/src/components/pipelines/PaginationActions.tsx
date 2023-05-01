@@ -33,16 +33,16 @@ export const PaginationActions = ({ count, page, rowsPerPage, onPageChange }: IP
   return (
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
       <IconButton onClick={handleFirstPageButtonClick} disabled={page === 0}>
-        <FirstPageIcon />
+        <FirstPageIcon fontSize="large" />
       </IconButton>
       <IconButton onClick={handleBackButtonClick} disabled={page === 0}>
-        <KeyboardArrowLeft />
+        <KeyboardArrowLeft fontSize="large" />
       </IconButton>
       <IconButton onClick={handleNextButtonClick} disabled={page >= Math.ceil(count / rowsPerPage) - 1}>
-        <KeyboardArrowRight />
+        <KeyboardArrowRight fontSize="large" />
       </IconButton>
       <IconButton onClick={handleLastPageButtonClick} disabled={page >= Math.ceil(count / rowsPerPage) - 1}>
-        <LastPageIcon />
+        <LastPageIcon fontSize="large" />
       </IconButton>
     </Box>
   );

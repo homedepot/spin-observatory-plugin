@@ -39,24 +39,29 @@ export const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected, i
         <Checkbox color="primary" checked={isSelected} />
       </TableCell>
       <TableCell component="th" scope="row">
-        <Typography color="#139cb5" onClick={goToExecutionDetails(execution.id)} width="fit-content">
+        <Typography
+          color="#139cb5"
+          onClick={goToExecutionDetails(execution.id)}
+          width="fit-content"
+          sx={{ fontSize: '1.2rem' }}
+        >
           {execution.id}
         </Typography>
       </TableCell>
       <TableCell>
-        <Typography>{execution.status}</Typography>
+        <Typography sx={{ fontSize: '1.2rem' }}>{execution.status}</Typography>
       </TableCell>
       <TableCell>
-        <Typography>{convertTimestamp(execution.startTime)}</Typography>
+        <Typography sx={{ fontSize: '1.2rem' }}>{convertTimestamp(execution.startTime)}</Typography>
       </TableCell>
       {!inProgress && (
         <TableCell>
-          <Typography>{convertTimestamp(execution.endTime)}</Typography>
+          <Typography sx={{ fontSize: '1.2rem' }}>{convertTimestamp(execution.endTime)}</Typography>
         </TableCell>
       )}
       {parameters.map((p) => (
         <TableCell>
-          <Typography>{execution.trigger.parameters![p]}</Typography>
+          <Typography sx={{ fontSize: '1.2rem' }}>{execution.trigger.parameters![p]}</Typography>
         </TableCell>
       ))}
     </TableRow>

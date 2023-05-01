@@ -18,6 +18,8 @@ export const STATUSES = {
   },
 };
 
+export const REQUEST_PAGE_SIZE = 5000;
+
 export const DEFAULT_ROWS_PER_PAGE = 10;
 
 export const POLL_DELAY_MS = 10000;
