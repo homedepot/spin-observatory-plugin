@@ -1,10 +1,13 @@
-import { Box } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
+import { IconButton, makeStyles } from '@material-ui/core';
+import FirstPageIcon from '@material-ui/icons/FirstPage';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import LastPageIcon from '@material-ui/icons/LastPage';
 import React from 'react';
+
+const useStyles = makeStyles({
+  box: { flexShrink: 0, ml: 2.5 },
+});
 
 interface IPaginationActionsProps {
   count: number;
@@ -14,6 +17,8 @@ interface IPaginationActionsProps {
 }
 
 export const PaginationActions = ({ count, page, rowsPerPage, onPageChange }: IPaginationActionsProps) => {
+  const styles = useStyles();
+
   const handleFirstPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     onPageChange(event, 0);
   };
@@ -31,7 +36,7 @@ export const PaginationActions = ({ count, page, rowsPerPage, onPageChange }: IP
   };
 
   return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+    <div className={styles.box}>
       <IconButton onClick={handleFirstPageButtonClick} disabled={page === 0}>
         <FirstPageIcon fontSize="large" />
       </IconButton>
@@ -44,6 +49,6 @@ export const PaginationActions = ({ count, page, rowsPerPage, onPageChange }: IP
       <IconButton onClick={handleLastPageButtonClick} disabled={page >= Math.ceil(count / rowsPerPage) - 1}>
         <LastPageIcon fontSize="large" />
       </IconButton>
-    </Box>
+    </div>
   );
 };

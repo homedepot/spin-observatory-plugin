@@ -1,4 +1,4 @@
-import { TableCell, TableHead, TableRow, Typography, Checkbox } from '@mui/material';
+import { TableCell, TableHead, TableRow, Typography, Checkbox } from '@material-ui/core';
 import React, { ChangeEvent } from 'react';
 
 interface ITableHeadersProps {

@@ -7,13 +7,19 @@ import {
   TableRow,
   TablePagination,
   Typography,
-} from '@mui/material';
+} from '@material-ui/core';
 import React, { ChangeEvent, useState } from 'react';
 import { IExecution } from '@spinnaker/core';
 import { TableHeaders } from './TableHeaders';
 import { ExecutionRow } from './ExecutionRow';
 import { IStatus, STATUSES, DEFAULT_ROWS_PER_PAGE } from './constants';
 import { PaginationActions } from './PaginationActions';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  tableContainer: { borderRadius: 'inherit' },
+  pagination: { fontSize: '1rem', margin: 'auto' },
+});
 
 interface IExecutionsTableProps {
   executions: IExecution[];
@@ -25,6 +31,7 @@ export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsT
   const [selectedExecutions, setSelectedExecutions] = useState<string[]>([]);
   const [currentPage, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PER_PAGE);
+  const styles = useStyles();
 
   const headers =
     status === STATUSES.TRIGGERED
@@ -64,7 +71,7 @@ export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsT
   const isSelected = (name: string) => selectedExecutions.indexOf(name) !== -1;
 
   return (
-    <TableContainer component={Paper} sx={{ borderRadius: 'inherit' }}>
+    <TableContainer component={Paper} classes={{ root: styles.tableContainer }}>
       <Table stickyHeader>
         <TableHeaders
           headers={headers}
@@ -87,7 +94,7 @@ export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsT
         <TableFooter>
           <TableRow>
             <TablePagination
-              sx={{ fontSize: '1rem', margin: 'auto' }}
+              classes={{ root: styles.pagination }}
               count={executions.length}
               onPageChange={handlePageChange}
               page={currentPage}
