@@ -62,7 +62,7 @@ export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsT
   };
 
   const isSelected = (name: string) => selectedExecutions.indexOf(name) !== -1;
-  
+
   return (
     <TableContainer component={Paper} sx={{ borderRadius: 'inherit' }}>
       <Table stickyHeader>
@@ -87,6 +87,7 @@ export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsT
         <TableFooter>
           <TableRow>
             <TablePagination
+              sx={{ fontSize: '1rem', margin: 'auto' }}
               count={executions.length}
               onPageChange={handlePageChange}
               page={currentPage}
@@ -95,7 +96,7 @@ export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsT
               onRowsPerPageChange={handleRowsPerPageChange}
               labelRowsPerPage={
                 <div>
-                  <Typography sx={{ fontSize: '1rem' }}>Executions per page</Typography>
+                  <Typography>Executions per page</Typography>
                 </div>
               }
               labelDisplayedRows={({ from, to, count }) => (
