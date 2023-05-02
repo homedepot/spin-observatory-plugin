@@ -10,6 +10,7 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { pauseExecutions } from '../../services/gateService';
+import './pauseresumebutton.css';
 
 interface IPauseResumeButtonProps {
   executionIds: string[];
@@ -50,9 +51,9 @@ export const PauseResumeButton = ({ executionIds }: IPauseResumeButtonProps) => 
   return (
     <Grid container direction="column" alignItems="center">
       <Grid item xs={12}>
-        <ButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="split button">
+        <ButtonGroup variant="contained" ref={anchorRef}>
           <Button onClick={handleButtonClick}>{options[selectedIndex].text}</Button>
-          <Button color="primary" size="small" onClick={handleToggle}>
+          <Button size="small" onClick={handleToggle}>
             <ArrowDropDownIcon />
           </Button>
         </ButtonGroup>
