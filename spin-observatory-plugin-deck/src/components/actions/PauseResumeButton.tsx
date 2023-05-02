@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import { pauseExecutions } from '../../services/gateService';
+import { pauseExecutions, resumeExecutions } from '../../services/gateService';
 
 interface IPauseResumeButtonProps {
   executionIds: string[];
@@ -17,13 +17,14 @@ interface IPauseResumeButtonProps {
 
 const options = [
   { text: 'Pause', action: pauseExecutions },
-  { text: 'Resume', action: pauseExecutions },
+  { text: 'Resume', action: resumeExecutions },
 ];
 
 export const PauseResumeButton = ({ executionIds }: IPauseResumeButtonProps) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [hover, setHover] = useState(false);
 
   const handleButtonClick = () => {
     options[selectedIndex].action(executionIds).then((res) => console.log(res));
@@ -46,10 +47,19 @@ export const PauseResumeButton = ({ executionIds }: IPauseResumeButtonProps) => 
     setOpen(false);
   };
 
+  const handleHover = () => setHover((prevHover) => !prevHover);
+
   return (
     <Grid container direction="column" alignItems="flex-start">
       <Grid item xs={12}>
-        <ButtonGroup variant="contained" ref={anchorRef}>
+        <ButtonGroup
+          onMouseEnter={handleHover}
+          onMouseLeave={handleHover}
+          variant="contained"
+          ref={anchorRef}
+          disabled={executionIds.length === 0}
+          style={{ backgroundColor: hover ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)' }}
+        >
           <Button style={{ width: '7rem' }} onClick={handleButtonClick}>
             {options[selectedIndex].text}
           </Button>

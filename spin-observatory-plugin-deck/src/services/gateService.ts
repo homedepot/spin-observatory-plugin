@@ -19,8 +19,14 @@ export const getExecutions = async (appName: string, params: IExecutionsParams) 
   return data;
 };
 
-const pauseExecution = async (executionId: string) => await REST('/pipelines').path(executionId).path('pause').put();
+const pauseExecution = (executionId: string) => REST('/pipelines').path(executionId).path('pause').put();
 
 export const pauseExecutions = async (executionIds: string[]) => {
   return await Promise.all(executionIds.map((id) => pauseExecution(id)));
+};
+
+const resumeExecution = (executionId: string) => REST('/pipelines').path(executionId).path('resume').put();
+
+export const resumeExecutions = async (executionIds: string[]) => {
+  return await Promise.all(executionIds.map((id) => resumeExecution(id)));
 };
