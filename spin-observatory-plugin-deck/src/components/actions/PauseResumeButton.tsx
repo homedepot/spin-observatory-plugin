@@ -17,7 +17,7 @@ interface IPauseResumeButtonProps {
 
 const options = [
   { text: 'Pause', action: pauseExecutions },
-  { text: 'Resume', action: () => {} },
+  { text: 'Resume', action: pauseExecutions },
 ];
 
 export const PauseResumeButton = ({ executionIds }: IPauseResumeButtonProps) => {
@@ -26,11 +26,10 @@ export const PauseResumeButton = ({ executionIds }: IPauseResumeButtonProps) => 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleButtonClick = () => {
-    console.log(`You clicked ${options[selectedIndex].text}`);
-    console.log(`Executing ${options[selectedIndex].action.name}`);
+    options[selectedIndex].action(executionIds).then((res) => console.log(res));
   };
 
-  const handleMenuItemClick = (idx: number) => (event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+  const handleMenuItemClick = (idx: number) => (_: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     setSelectedIndex(idx);
     setOpen(false);
   };
@@ -48,10 +47,12 @@ export const PauseResumeButton = ({ executionIds }: IPauseResumeButtonProps) => 
   };
 
   return (
-    <Grid container direction="column" alignItems="center">
+    <Grid container direction="column" alignItems="flex-start">
       <Grid item xs={12}>
         <ButtonGroup variant="contained" ref={anchorRef}>
-          <Button onClick={handleButtonClick}>{options[selectedIndex].text}</Button>
+          <Button style={{ width: '7rem' }} onClick={handleButtonClick}>
+            {options[selectedIndex].text}
+          </Button>
           <Button size="small" onClick={handleToggle}>
             <ArrowDropDownIcon />
           </Button>
