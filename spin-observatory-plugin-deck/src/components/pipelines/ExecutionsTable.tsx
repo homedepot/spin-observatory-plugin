@@ -5,6 +5,7 @@ import {
   TableContainer,
   TableFooter,
   TableRow,
+  TableCell,
   TablePagination,
   Typography,
 } from '@material-ui/core';
@@ -94,7 +95,9 @@ export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsT
         </TableBody>
         <TableFooter>
           <TableRow>
-            <PauseResumeButton executionIds={selectedExecutions} />
+            <TableCell>
+              <PauseResumeButton executionIds={selectedExecutions} />
+            </TableCell>
             <TablePagination
               classes={{ root: styles.pagination }}
               count={executions.length}
