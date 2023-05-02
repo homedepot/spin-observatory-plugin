@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   TextField,
@@ -42,11 +42,20 @@ const PREMADE_SELECTIONS = [
   }
 ];
 
-export const DatePicker = () => {
+export const DatePicker = ({ onChange }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [value, setValue] = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedCustomStart, setSelectedCustomStart] = useState(new Date());
   const [selectedCustomEnd, setSelectedCustomEnd] = useState(new Date());
+
+  useEffect(() => {
+    const start = selectedCustomStart.getTime();
+    const end = selectedCustomEnd.getTime();
+    // only emit if valid range
+    if (start < end) {
+      onChange({ end, start });
+    }
+  }, [selectedCustomStart, selectedCustomEnd]);
 
   const handleClick = (event: React.SyntheticEvent) => {
     setAnchorEl(event.currentTarget);
@@ -56,15 +65,14 @@ export const DatePicker = () => {
     setAnchorEl(null);
   };
 
-  const handleMenuItemClick = (newValue: string) => {
-    setValue(newValue);
+  const handleMenuItemClick = (newValue: any) => {
+    setValue(newValue.text);
+    onChange(newValue.calculation());
     handleClose();
   };
 
-  const handleDateChange = (date: Date) => {
-    setSelectedDate(date);
-    // setValue(date.toLocaleDateString());
-    // handleClose();
+  const handleStartDateChange = (date: Date) => {
+    setSelectedCustomStart(date);
   };
 
   const handleEndDateChange = (date: Date) => {
@@ -91,7 +99,7 @@ export const DatePicker = () => {
           }}
         >
           {PREMADE_SELECTIONS.map((option) => {
-            return <MenuItem value={option.value}>{option.text}</MenuItem>;
+            return <MenuItem value={option}>{option.text}</MenuItem>;
           })}
           {PREMADE_SELECTIONS.findIndex((p) => p.value === value) === -1 && (
             <MenuItem value={value}>{value}</MenuItem>
@@ -116,7 +124,7 @@ export const DatePicker = () => {
               disableToolbar
               format="MM/dd/yyyy HH:mm"
               value={selectedDate}
-              onChange={handleDateChange}
+              onChange={handleStartDateChange}
               KeyboardButtonProps={{
                 "aria-label": "change start date"
               }}
