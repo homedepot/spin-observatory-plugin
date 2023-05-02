@@ -18,3 +18,9 @@ export const getExecutions = async (appName: string, params: IExecutionsParams) 
     .get<IExecution[]>();
   return data;
 };
+
+const pauseExecution = async (executionId: string) => await REST('/pipelines').path(executionId).path('pause').put();
+
+export const pauseExecutions = async (executionIds: string[]) => {
+  return await Promise.all(executionIds.map((id) => pauseExecution(id)));
+};

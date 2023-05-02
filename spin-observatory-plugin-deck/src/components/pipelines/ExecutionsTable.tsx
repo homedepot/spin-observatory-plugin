@@ -15,6 +15,7 @@ import { ExecutionRow } from './ExecutionRow';
 import { IStatus, STATUSES, DEFAULT_ROWS_PER_PAGE } from './constants';
 import { PaginationActions } from './PaginationActions';
 import { makeStyles } from '@material-ui/core';
+import { PauseResumeButton } from '../actions/PauseResumeButton';
 
 const useStyles = makeStyles({
   tableContainer: { borderRadius: 'inherit' },
@@ -93,6 +94,7 @@ export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsT
         </TableBody>
         <TableFooter>
           <TableRow>
+            <PauseResumeButton executionIds={selectedExecutions} />
             <TablePagination
               classes={{ root: styles.pagination }}
               count={executions.length}
