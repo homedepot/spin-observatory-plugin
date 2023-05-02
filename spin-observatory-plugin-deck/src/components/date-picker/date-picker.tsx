@@ -4,7 +4,8 @@ import {
   TextField,
   MenuItem,
   Menu,
-  ListSubheader
+  ListSubheader,
+  PopoverProps
 } from "@material-ui/core";
 
 import {
@@ -42,8 +43,8 @@ const PREMADE_SELECTIONS = [
   }
 ];
 
-export const DatePicker = ({ onChange }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
+export const DatePicker = ({ disabled, onChange }) => {
+  const [anchorEl, setAnchorEl] = useState<PopoverProps['anchorEl'] | null>(null);
   const [value, setValue] = useState("");
   const [selectedCustomStart, setSelectedCustomStart] = useState(new Date());
   const [selectedCustomEnd, setSelectedCustomEnd] = useState(new Date());
@@ -65,9 +66,10 @@ export const DatePicker = ({ onChange }) => {
     setAnchorEl(null);
   };
 
-  const handleMenuItemClick = (newValue: any) => {
-    setValue(newValue.text);
-    onChange(newValue.calculation());
+  const handleMenuItemClick = (newValue: string) => {
+    const item = PREMADE_SELECTIONS.find(i => i.value === newValue);
+    setValue(item.text);
+    onChange(item.calculation());
     handleClose();
   };
 
@@ -81,7 +83,7 @@ export const DatePicker = ({ onChange }) => {
 
   const updateValueWithCustomDateRange = () => {
     setValue(
-      `${selectedDate.toLocaleDateString()} - ${selectedCustomEnd.toLocaleDateString()}`
+      `${selectedCustomStart.toLocaleDateString()} - ${selectedCustomEnd.toLocaleDateString()}`
     );
     handleClose();
   };
@@ -90,6 +92,7 @@ export const DatePicker = ({ onChange }) => {
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <div>
         <TextField
+          disabled={disabled}
           select
           label="Select"
           value={value}
@@ -99,7 +102,7 @@ export const DatePicker = ({ onChange }) => {
           }}
         >
           {PREMADE_SELECTIONS.map((option) => {
-            return <MenuItem value={option}>{option.text}</MenuItem>;
+            return <MenuItem value={option.value}>{option.text}</MenuItem>;
           })}
           {PREMADE_SELECTIONS.findIndex((p) => p.value === value) === -1 && (
             <MenuItem value={value}>{value}</MenuItem>
@@ -123,7 +126,7 @@ export const DatePicker = ({ onChange }) => {
             <KeyboardDateTimePicker
               disableToolbar
               format="MM/dd/yyyy HH:mm"
-              value={selectedDate}
+              value={selectedCustomStart}
               onChange={handleStartDateChange}
               KeyboardButtonProps={{
                 "aria-label": "change start date"

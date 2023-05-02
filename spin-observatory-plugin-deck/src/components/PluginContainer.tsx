@@ -27,6 +27,10 @@ export function PluginContainer({ app }: IPluginContainerProps) {
     setSelectedPipeline(pipelineConfig);
   };
 
+  const handleDateFilterChange = ({ start, end }) => {
+    console.log("filter executions ", { start, end });
+  };
+
   return (
     <div className="flex-container-v" style={{ margin: '3rem', width: '100%', rowGap: '2rem' }}>
       <div className="flex-container-h" style={{ flexGrow: 1 }}>
@@ -41,7 +45,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           />
         </div>
         <div className="flex-pull-right" style={{ width: '40rem' }}>
-          <DatePicker />
+          <DatePicker onChange={handleDateFilterChange} disabled={!selectedPipeline} />
           <ParameterSelect
             pipeline={selectedPipeline}
             selectedParams={selectedParams}
