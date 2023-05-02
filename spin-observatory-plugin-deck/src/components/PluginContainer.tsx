@@ -1,12 +1,10 @@
 import type { ChangeEvent } from 'react';
 import React, { useEffect, useState } from 'react';
 
-import { Application, IExecution, IPipeline } from '@spinnaker/core';
-import { ReactSelectInput, useDataSource, useInterval } from '@spinnaker/core';
+import { Application, IPipeline, ReactSelectInput, useDataSource } from '@spinnaker/core';
 
 import { ParameterSelect } from './parameters';
-import { PipelineExecutions, statuses } from './pipelines';
-import { getExecutions } from '../services/gateService';
+import { PipelineExecutions, STATUSES } from './pipelines';
 
 interface IPluginContainerProps {
   app: Application;
@@ -16,31 +14,16 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   const dataSource = app.getDataSource('observatory');
   const { data: pipelines } = useDataSource<IPipeline[]>(dataSource);
   const [selectedPipeline, setSelectedPipeline] = useState<IPipeline>();
-
   const [selectedParams, setSelectedParams] = useState<string[]>([]);
-  const [executions, setExecutions] = useState<IExecution[]>([]);
 
   useEffect(() => {
     dataSource.activate();
   }, []);
 
-  useInterval(async () => {
-    if (!selectedPipeline) return;
-    const resp = await getExecutions(app.name, { pipelineName: selectedPipeline.name, pageSize: 100 });
-    setExecutions(resp);
-  }, 10000);
-
   const onPipelineSelect = async (e: ChangeEvent<HTMLSelectElement>) => {
     const pipelineConfig = pipelines.find((p) => p.name === e.target.value);
     setSelectedParams([]);
     setSelectedPipeline(pipelineConfig);
-
-    if (!pipelineConfig) {
-      setExecutions([]);
-      return;
-    }
-    const resp = await getExecutions(app.name, { pipelineName: pipelineConfig.name, pageSize: 100 });
-    setExecutions(resp);
   };
 
   return (
@@ -66,19 +49,22 @@ export function PluginContainer({ app }: IPluginContainerProps) {
       </div>
       <div style={{ flexGrow: 19 }}>
         <PipelineExecutions
-          executions={executions.filter((e) => statuses.SUCCESSFUL.values.includes(e.status))}
+          appName={app.name}
+          pipeline={selectedPipeline}
           parameters={selectedParams}
-          statusText={statuses.SUCCESSFUL.text}
+          status={STATUSES.SUCCESSFUL}
         />
         <PipelineExecutions
-          executions={executions.filter((e) => statuses.FAILED.values.includes(e.status))}
+          appName={app.name}
+          pipeline={selectedPipeline}
           parameters={selectedParams}
-          statusText={statuses.FAILED.text}
+          status={STATUSES.FAILED}
         />
         <PipelineExecutions
-          executions={executions.filter((e) => statuses.TRIGGERED.values.includes(e.status))}
+          appName={app.name}
+          pipeline={selectedPipeline}
           parameters={selectedParams}
-          statusText={statuses.TRIGGERED.text}
+          status={STATUSES.TRIGGERED}
         />
       </div>
     </div>

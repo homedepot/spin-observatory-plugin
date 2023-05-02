@@ -1,6 +1,16 @@
-import { TableCell, TableRow, Typography, Checkbox } from '@mui/material';
+import { TableCell, TableRow, Typography, Checkbox } from '@material-ui/core';
 import React, { MouseEventHandler } from 'react';
 import { IExecution, ReactInjector } from '@spinnaker/core';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  tableRow: {
+    '&:last-child td, &:last-child th': { border: 0 },
+    cursor: 'pointer',
+  },
+  typography: { fontSize: '1.2rem' },
+  executionLink: { fontSize: '1.2rem', width: 'fit-content', color: 'var(--color-accent)' },
+});
 
 interface IExecutionRowProps {
   execution: IExecution;
@@ -28,35 +38,37 @@ const convertTimestamp = (ts: number) => {
 };
 
 export const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected, inProgress }: IExecutionRowProps) => {
+  const styles = useStyles();
   return (
     <TableRow
       hover
       selected={isSelected}
       onClick={onSelectOne}
-      sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: 'pointer' }}
+      style={isSelected ? { backgroundColor: 'var(--color-accent-g2)' } : {}}
+      classes={{ root: styles.tableRow }}
     >
       <TableCell padding="checkbox">
-        <Checkbox color="primary" checked={isSelected} />
+        <Checkbox checked={isSelected} style={isSelected ? { color: 'var(--color-primary-g1)' } : {}} />
       </TableCell>
       <TableCell component="th" scope="row">
-        <Typography color="#139cb5" onClick={goToExecutionDetails(execution.id)} width="fit-content">
+        <Typography onClick={goToExecutionDetails(execution.id)} classes={{ root: styles.executionLink }}>
           {execution.id}
         </Typography>
       </TableCell>
       <TableCell>
-        <Typography>{execution.status}</Typography>
+        <Typography classes={{ root: styles.typography }}>{execution.status}</Typography>
       </TableCell>
       <TableCell>
-        <Typography>{convertTimestamp(execution.startTime)}</Typography>
+        <Typography classes={{ root: styles.typography }}>{convertTimestamp(execution.startTime)}</Typography>
       </TableCell>
       {!inProgress && (
         <TableCell>
-          <Typography>{convertTimestamp(execution.endTime)}</Typography>
+          <Typography classes={{ root: styles.typography }}>{convertTimestamp(execution.endTime)}</Typography>
         </TableCell>
       )}
       {parameters.map((p) => (
         <TableCell>
-          <Typography>{execution.trigger.parameters![p]}</Typography>
+          <Typography classes={{ root: styles.typography }}>{execution.trigger.parameters![p]}</Typography>
         </TableCell>
       ))}
     </TableRow>
