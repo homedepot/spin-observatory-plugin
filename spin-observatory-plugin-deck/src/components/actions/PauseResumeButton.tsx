@@ -53,15 +53,30 @@ export const PauseResumeButton = ({ executionIds }: IPauseResumeButtonProps) => 
     <Grid container direction="column" alignItems="flex-start">
       <Grid item xs={12}>
         <ButtonGroup
+          onMouseEnter={handleHover}
+          onMouseLeave={handleHover}
           variant="contained"
           ref={anchorRef}
           disabled={executionIds.length === 0}
-          style={{ backgroundColor: hover ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)' }}
         >
-          <Button style={{ width: '7rem', color: 'white' }} onClick={handleButtonClick}>
+          <Button
+            style={{
+              width: '7rem',
+              color: 'white',
+              backgroundColor: hover ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
+            }}
+            onClick={handleButtonClick}
+          >
             {options[selectedIndex].text}
           </Button>
-          <Button style={{ color: 'white' }} size="small" onClick={handleToggle}>
+          <Button
+            style={{
+              color: 'white',
+              backgroundColor: hover ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
+            }}
+            size="small"
+            onClick={handleToggle}
+          >
             <ArrowDropDownIcon />
           </Button>
         </ButtonGroup>
