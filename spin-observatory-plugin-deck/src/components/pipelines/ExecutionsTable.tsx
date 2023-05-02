@@ -95,7 +95,7 @@ export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsT
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={2}>
+            <TableCell colSpan={2} align="left">
               <PauseResumeButton executionIds={selectedExecutions} />
             </TableCell>
             <TablePagination

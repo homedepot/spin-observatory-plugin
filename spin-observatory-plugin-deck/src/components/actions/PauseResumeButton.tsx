@@ -10,7 +10,6 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { pauseExecutions } from '../../services/gateService';
-import './pauseresumebutton.css';
 
 interface IPauseResumeButtonProps {
   executionIds: string[];
@@ -58,11 +57,11 @@ export const PauseResumeButton = ({ executionIds }: IPauseResumeButtonProps) => 
           </Button>
         </ButtonGroup>
         <Popper open={open} anchorEl={anchorRef.current} transition disablePortal>
-          {({ TransitionProps, placement }) => (
+          {({ TransitionProps }) => (
             <Grow
               {...TransitionProps}
               style={{
-                transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
+                transformOrigin: 'center top',
               }}
             >
               <Paper>
