@@ -27,9 +27,10 @@ interface IExecutionsTableProps {
   executions: IExecution[];
   parameters: string[];
   status: IStatus;
+  refreshExecutions: () => void;
 }
 
-export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsTableProps) => {
+export const ExecutionsTable = ({ executions, parameters, status, refreshExecutions }: IExecutionsTableProps) => {
   const [selectedExecutions, setSelectedExecutions] = useState<string[]>([]);
   const [currentPage, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PER_PAGE);
@@ -96,7 +97,7 @@ export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsT
         <TableFooter>
           <TableRow>
             <TableCell colSpan={2}>
-              <PauseResumeButton executionIds={selectedExecutions} />
+              <PauseResumeButton executionIds={selectedExecutions} refreshExecutions={refreshExecutions} />
             </TableCell>
             <TablePagination
               classes={{ root: styles.pagination }}

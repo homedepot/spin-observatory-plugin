@@ -50,19 +50,19 @@ export function PluginContainer({ app }: IPluginContainerProps) {
       <div style={{ flexGrow: 19 }}>
         <PipelineExecutions
           appName={app.name}
-          pipeline={selectedPipeline}
+          pipelineName={!selectedPipeline ? '' : selectedPipeline.name}
           parameters={selectedParams}
           status={STATUSES.SUCCESSFUL}
         />
         <PipelineExecutions
           appName={app.name}
-          pipeline={selectedPipeline}
+          pipelineName={!selectedPipeline ? '' : selectedPipeline.name}
           parameters={selectedParams}
           status={STATUSES.FAILED}
         />
         <PipelineExecutions
           appName={app.name}
-          pipeline={selectedPipeline}
+          pipelineName={!selectedPipeline ? '' : selectedPipeline.name}
           parameters={selectedParams}
           status={STATUSES.TRIGGERED}
         />

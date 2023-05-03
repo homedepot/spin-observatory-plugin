@@ -13,6 +13,7 @@ import { pauseExecutions, resumeExecutions } from '../../services/gateService';
 
 interface IPauseResumeButtonProps {
   executionIds: string[];
+  refreshExecutions: () => void;
 }
 
 const options = [
@@ -20,14 +21,14 @@ const options = [
   { text: 'Resume', action: resumeExecutions },
 ];
 
-export const PauseResumeButton = ({ executionIds }: IPauseResumeButtonProps) => {
+export const PauseResumeButton = ({ executionIds, refreshExecutions }: IPauseResumeButtonProps) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [hover, setHover] = useState(false);
 
   const handleButtonClick = () => {
-    options[selectedIndex].action(executionIds).then((res) => console.log(res));
+    options[selectedIndex].action(executionIds).then(() => refreshExecutions());
   };
 
   const handleMenuItemClick = (idx: number) => (_: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
