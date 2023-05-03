@@ -1,11 +1,12 @@
 import type { ChangeEvent } from 'react';
 import React, { useEffect, useState } from 'react';
 
-import { Application, IPipeline, ReactSelectInput, useDataSource } from '@spinnaker/core';
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import type { Application, IPipeline } from '@spinnaker/core';
+import { ReactSelectInput, useDataSource } from '@spinnaker/core';
+
+import { DatePicker } from './date-picker/date-picker';
 import { ParameterSelect } from './parameters';
 import { PipelineExecutions, STATUSES } from './pipelines';
-import { DatePicker } from './date-picker/date-picker';
 
 interface IPluginContainerProps {
   app: Application;
@@ -27,7 +28,8 @@ export function PluginContainer({ app }: IPluginContainerProps) {
     setSelectedPipeline(pipelineConfig);
   };
 
-  const handleDateFilterChange = ({ start, end }) => {
+  const handleDateFilterChange = ({ start, end }: { start: number, end: number }) => {
+    // eslint-disable-next-line no-console
     console.log("filter executions ", { start, end });
   };
 
