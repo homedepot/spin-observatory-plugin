@@ -43,7 +43,12 @@ const PREMADE_SELECTIONS = [
   }
 ];
 
-export const DatePicker = ({ disabled, onChange }) => {
+type DatePickerProps = {
+  disabled?: boolean,
+  onChange: ({ start, end }: { start?: number, end?: number }) => void
+};
+
+export const DatePicker = ({ disabled, onChange }:DatePickerProps) => {
   const [anchorEl, setAnchorEl] = useState<PopoverProps['anchorEl'] | null>(null);
   const [value, setValue] = useState("");
   const [selectedCustomStart, setSelectedCustomStart] = useState(new Date());
@@ -94,7 +99,8 @@ export const DatePicker = ({ disabled, onChange }) => {
         <TextField
           disabled={disabled}
           select
-          label="Select"
+          label="Filter Date Range"
+          variant="outlined"
           value={value}
           onClick={handleClick}
           InputProps={{

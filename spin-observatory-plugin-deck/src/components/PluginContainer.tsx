@@ -47,12 +47,15 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           />
         </div>
         <div className="flex-pull-right" style={{ width: '40rem' }}>
-          <DatePicker onChange={handleDateFilterChange} disabled={!selectedPipeline} />
-          <ParameterSelect
-            pipeline={selectedPipeline}
-            selectedParams={selectedParams}
-            setSelectedParams={setSelectedParams}
-          />
+          <div className="horizontal middle right">
+            <DatePicker onChange={handleDateFilterChange} disabled={!selectedPipeline} />
+            <ParameterSelect
+              className="flex-1"
+              pipeline={selectedPipeline}
+              selectedParams={selectedParams}
+              setSelectedParams={setSelectedParams}
+            />
+          </div>
         </div>
       </div>
       <div style={{ flexGrow: 19 }}>

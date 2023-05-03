@@ -15,6 +15,9 @@
     "watch": "rollup -c -w --no-watch.clearScreen",
     "modules": "echo 'yarn modules'"
   },
+  "devProxy": {
+    "host": "https://dev.spinnaker.homedepot.com/"
+  },
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
