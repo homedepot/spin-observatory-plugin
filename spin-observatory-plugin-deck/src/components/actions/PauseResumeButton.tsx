@@ -92,12 +92,7 @@ export const PauseResumeButton = ({ executionIds }: IPauseResumeButtonProps) => 
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList id="split-button-menu">
                     {options.map((option, idx) => (
-                      <MenuItem
-                        key={option.text}
-                        disabled={idx === 2}
-                        selected={idx === selectedIndex}
-                        onClick={handleMenuItemClick(idx)}
-                      >
+                      <MenuItem key={option.text} selected={idx === selectedIndex} onClick={handleMenuItemClick(idx)}>
                         {option.text}
                       </MenuItem>
                     ))}
