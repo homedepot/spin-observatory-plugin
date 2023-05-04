@@ -96,9 +96,11 @@ export const ExecutionsTable = ({ executions, parameters, status, refreshExecuti
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={2}>
-              <PauseResumeButton executionIds={selectedExecutions} refreshExecutions={refreshExecutions} />
-            </TableCell>
+            {status === STATUSES.TRIGGERED && (
+              <TableCell colSpan={2}>
+                <PauseResumeButton executionIds={selectedExecutions} refreshExecutions={refreshExecutions} />
+              </TableCell>
+            )}
             <TablePagination
               classes={{ root: styles.pagination }}
               count={executions.length}

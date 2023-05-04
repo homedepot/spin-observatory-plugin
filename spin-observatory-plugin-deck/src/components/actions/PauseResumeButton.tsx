@@ -10,6 +10,7 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { pauseExecutions, resumeExecutions } from '../../services/gateService';
+import 'actionbuttons.less';
 
 interface IPauseResumeButtonProps {
   executionIds: string[];
@@ -61,23 +62,15 @@ export const PauseResumeButton = ({ executionIds, refreshExecutions }: IPauseRes
           disabled={executionIds.length === 0}
         >
           <Button
+            className="action-btn"
             style={{
               width: '7rem',
-              color: 'white',
-              backgroundColor: hover ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
             }}
             onClick={handleButtonClick}
           >
             {options[selectedIndex].text}
           </Button>
-          <Button
-            style={{
-              color: 'white',
-              backgroundColor: hover ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
-            }}
-            size="small"
-            onClick={handleToggle}
-          >
+          <Button className="action-btn" size="small" onClick={handleToggle}>
             <ArrowDropDownIcon />
           </Button>
         </ButtonGroup>

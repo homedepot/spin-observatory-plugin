@@ -15,15 +15,15 @@ interface IPipelineExecutionsProps {
 export const PipelineExecutions = ({ appName, pipelineName, parameters, status }: IPipelineExecutionsProps) => {
   const [executions, setExecutions] = useState<IExecution[]>([]);
 
-  const requestParams = {
+  const getExecutionsParams = {
     pipelineName,
     pageSize: REQUEST_PAGE_SIZE,
     statuses: status.values,
   };
 
   const refreshExecutions = () => {
-    console.log("refreshing executions")
-    getExecutions(appName, requestParams).then((resp) => setExecutions(resp));
+    console.log('refreshing executions');
+    getExecutions(appName, getExecutionsParams).then((resp) => setExecutions(resp));
   };
 
   useEffect(() => {
