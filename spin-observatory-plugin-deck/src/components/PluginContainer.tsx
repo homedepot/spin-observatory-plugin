@@ -1,8 +1,10 @@
 import type { ChangeEvent } from 'react';
 import React, { useEffect, useState } from 'react';
 
-import { Application, IPipeline, ReactSelectInput, useDataSource } from '@spinnaker/core';
+import type { Application, IPipeline } from '@spinnaker/core';
+import { ReactSelectInput, useDataSource } from '@spinnaker/core';
 
+import { DatePicker } from './date-picker/date-picker';
 import { ParameterSelect } from './parameters';
 import { PipelineExecutions, STATUSES } from './pipelines';
 
@@ -26,6 +28,11 @@ export function PluginContainer({ app }: IPluginContainerProps) {
     setSelectedPipeline(pipelineConfig);
   };
 
+  const handleDateFilterChange = ({ start, end }: { start: number, end: number }) => {
+    // eslint-disable-next-line no-console
+    console.log("filter executions ", { start, end });
+  };
+
   return (
     <div className="flex-container-v" style={{ margin: '3rem', width: '100%', rowGap: '2rem' }}>
       <div className="flex-container-h" style={{ flexGrow: 1 }}>
@@ -40,11 +47,15 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           />
         </div>
         <div className="flex-pull-right" style={{ width: '40rem' }}>
-          <ParameterSelect
-            pipeline={selectedPipeline}
-            selectedParams={selectedParams}
-            setSelectedParams={setSelectedParams}
-          />
+          <div className="horizontal middle right">
+            <DatePicker onChange={handleDateFilterChange} disabled={!selectedPipeline} />
+            <ParameterSelect
+              className="flex-1"
+              pipeline={selectedPipeline}
+              selectedParams={selectedParams}
+              setSelectedParams={setSelectedParams}
+            />
+          </div>
         </div>
       </div>
       <div style={{ flexGrow: 19 }}>
