@@ -95,10 +95,12 @@ export const DatePicker = ({ disabled, onChange }:DatePickerProps) => {
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <div>
+      <div className="flex-1">
         <TextField
           disabled={disabled}
           select
+          fullWidth
+          size="small"
           label="Filter Date Range"
           variant="outlined"
           value={value}
