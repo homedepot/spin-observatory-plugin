@@ -100,6 +100,7 @@ export const DatePicker = ({ disabled, onChange }:DatePickerProps) => {
           disabled={disabled}
           select
           fullWidth
+          style={disabled ? {} : { backgroundColor: "var(--color-white)" }}
           size="small"
           label="Filter Date Range"
           variant="outlined"
