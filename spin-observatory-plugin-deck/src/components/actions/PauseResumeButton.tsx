@@ -10,7 +10,7 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { pauseExecutions, resumeExecutions } from '../../services/gateService';
-import 'actionbuttons.less';
+import './actionbuttons.less';
 
 interface IPauseResumeButtonProps {
   executionIds: string[];
