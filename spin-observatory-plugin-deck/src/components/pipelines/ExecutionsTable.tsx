@@ -1,4 +1,5 @@
 import {
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -101,10 +102,14 @@ export const ExecutionsTable = ({ executions, parameters, status, refreshExecuti
         <TableFooter>
           <TableRow>
             <TableCell colSpan={2}>
-              {status === STATUSES.TRIGGERED && (
-                <PauseResumeButton executionIds={selectedExecutions} refreshExecutions={refreshExecutions} />
-              )}
-              <RetriggerButton />
+              <Grid container direction="column" alignItems="flex-start">
+                <Grid item xs={6}>
+                  <PauseResumeButton executionIds={selectedExecutions} refreshExecutions={refreshExecutions} />
+                </Grid>
+                <Grid item xs={6}>
+                  <RetriggerButton />
+                </Grid>
+              </Grid>
             </TableCell>
             <TablePagination
               classes={{ root: styles.pagination }}

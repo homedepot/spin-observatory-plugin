@@ -1,14 +1,16 @@
-import React, { useState, useRef } from 'react';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grid from '@material-ui/core/Grid';
 import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import React, { Fragment, useRef, useState } from 'react';
+
+import { RetriggerButton } from './RetriggerButton';
 import { pauseExecutions, resumeExecutions } from '../../services/gateService';
 
 interface IPauseResumeButtonProps {
@@ -51,59 +53,57 @@ export const PauseResumeButton = ({ executionIds, refreshExecutions }: IPauseRes
   const handleHover = () => setHover((prevHover) => !prevHover);
 
   return (
-    <Grid container direction="column" alignItems="flex-start">
-      <Grid item xs={12}>
-        <ButtonGroup
-          onMouseEnter={handleHover}
-          onMouseLeave={handleHover}
-          variant="contained"
-          ref={anchorRef}
-          disabled={executionIds.length === 0}
+    <Fragment>
+      <ButtonGroup
+        onMouseEnter={handleHover}
+        onMouseLeave={handleHover}
+        variant="contained"
+        ref={anchorRef}
+        disabled={executionIds.length === 0}
+      >
+        <Button
+          style={{
+            width: '7rem',
+            color: 'white',
+            backgroundColor: hover ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
+          }}
+          onClick={handleButtonClick}
         >
-          <Button
+          {options[selectedIndex].text}
+        </Button>
+        <Button
+          style={{
+            color: 'white',
+            backgroundColor: hover ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
+          }}
+          size="small"
+          onClick={handleToggle}
+        >
+          <ArrowDropDownIcon />
+        </Button>
+      </ButtonGroup>
+      <Popper open={open} anchorEl={anchorRef.current} transition disablePortal>
+        {({ TransitionProps }) => (
+          <Grow
+            {...TransitionProps}
             style={{
-              width: '7rem',
-              color: 'white',
-              backgroundColor: hover ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
+              transformOrigin: 'center top',
             }}
-            onClick={handleButtonClick}
           >
-            {options[selectedIndex].text}
-          </Button>
-          <Button
-            style={{
-              color: 'white',
-              backgroundColor: hover ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
-            }}
-            size="small"
-            onClick={handleToggle}
-          >
-            <ArrowDropDownIcon />
-          </Button>
-        </ButtonGroup>
-        <Popper open={open} anchorEl={anchorRef.current} transition disablePortal>
-          {({ TransitionProps }) => (
-            <Grow
-              {...TransitionProps}
-              style={{
-                transformOrigin: 'center top',
-              }}
-            >
-              <Paper>
-                <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList id="split-button-menu">
-                    {options.map((option, idx) => (
-                      <MenuItem key={option.text} selected={idx === selectedIndex} onClick={handleMenuItemClick(idx)}>
-                        {option.text}
-                      </MenuItem>
-                    ))}
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Popper>
-      </Grid>
-    </Grid>
+            <Paper>
+              <ClickAwayListener onClickAway={handleClose}>
+                <MenuList id="split-button-menu">
+                  {options.map((option, idx) => (
+                    <MenuItem key={option.text} selected={idx === selectedIndex} onClick={handleMenuItemClick(idx)}>
+                      {option.text}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
+    </Fragment>
   );
 };
