@@ -20,6 +20,7 @@ import { ExecutionRow } from './ExecutionRow';
 import { PaginationActions } from './PaginationActions';
 import { TableHeaders } from './TableHeaders';
 import { PauseResumeButton, RetriggerButton } from '../actions';
+import { ActionButtonsContainer } from '../actions/ActionButtonsContainer';
 import type { IStatus } from './constants';
 import { DEFAULT_ROWS_PER_PAGE, STATUSES } from './constants';
 
@@ -102,14 +103,12 @@ export const ExecutionsTable = ({ executions, parameters, status, refreshExecuti
         <TableFooter>
           <TableRow>
             <TableCell colSpan={2}>
-              <Grid container direction="row" alignItems="flex-start" spacing={2}>
-                <Grid item>
+              <ActionButtonsContainer>
+                {status === STATUSES.TRIGGERED && (
                   <PauseResumeButton executionIds={selectedExecutions} refreshExecutions={refreshExecutions} />
-                </Grid>
-                <Grid item>
-                  <RetriggerButton />
-                </Grid>
-              </Grid>
+                )}
+                <RetriggerButton />
+              </ActionButtonsContainer>
             </TableCell>
             <TablePagination
               classes={{ root: styles.pagination }}
