@@ -2,21 +2,25 @@ import {
   Paper,
   Table,
   TableBody,
+  TableCell,
   TableContainer,
   TableFooter,
-  TableRow,
-  TableCell,
   TablePagination,
+  TableRow,
   Typography,
 } from '@material-ui/core';
-import React, { ChangeEvent, useState } from 'react';
-import { IExecution } from '@spinnaker/core';
-import { TableHeaders } from './TableHeaders';
-import { ExecutionRow } from './ExecutionRow';
-import { IStatus, STATUSES, DEFAULT_ROWS_PER_PAGE } from './constants';
-import { PaginationActions } from './PaginationActions';
 import { makeStyles } from '@material-ui/core';
-import { PauseResumeButton } from '../actions/PauseResumeButton';
+import type { ChangeEvent } from 'react';
+import React, { useState } from 'react';
+
+import type { IExecution } from '@spinnaker/core';
+
+import { ExecutionRow } from './ExecutionRow';
+import { PaginationActions } from './PaginationActions';
+import { TableHeaders } from './TableHeaders';
+import { PauseResumeButton, RetriggerButton } from '../actions';
+import type { IStatus } from './constants';
+import { DEFAULT_ROWS_PER_PAGE, STATUSES } from './constants';
 
 const useStyles = makeStyles({
   tableContainer: { borderRadius: 'inherit' },
@@ -96,11 +100,12 @@ export const ExecutionsTable = ({ executions, parameters, status, refreshExecuti
         </TableBody>
         <TableFooter>
           <TableRow>
-            {status === STATUSES.TRIGGERED && (
-              <TableCell colSpan={2}>
+            <TableCell colSpan={2}>
+              {status === STATUSES.TRIGGERED && (
                 <PauseResumeButton executionIds={selectedExecutions} refreshExecutions={refreshExecutions} />
-              </TableCell>
-            )}
+              )}
+              <RetriggerButton />
+            </TableCell>
             <TablePagination
               classes={{ root: styles.pagination }}
               count={executions.length}
