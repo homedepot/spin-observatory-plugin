@@ -7,18 +7,20 @@ import type { IPipeline } from '@spinnaker/core';
 import './parameterselect.less';
 
 interface IParameterSelectProps {
+  className?: string;
   pipeline?: IPipeline;
   selectedParams: string[];
   setSelectedParams(params: string[]): void;
 }
 
-export const ParameterSelect = ({ pipeline, selectedParams, setSelectedParams }: IParameterSelectProps) => {
+export const ParameterSelect = ({ className, pipeline, selectedParams, setSelectedParams }: IParameterSelectProps) => {
   const onParameterSelect = (options: Array<Option<string>>) => {
     setSelectedParams(options.map((o) => o.value));
   };
 
   return (
     <Select
+      className={className}
       onChange={onParameterSelect}
       value={selectedParams}
       disabled={!pipeline}
