@@ -102,7 +102,7 @@ export const ExecutionsTable = ({ executions, parameters, status, refreshExecuti
         <TableFooter>
           <TableRow>
             <TableCell colSpan={2}>
-              <Grid container direction="row" alignItems="flex-start">
+              <Grid container direction="row" alignItems="flex-start" spacing={2}>
                 <Grid item>
                   <PauseResumeButton executionIds={selectedExecutions} refreshExecutions={refreshExecutions} />
                 </Grid>
