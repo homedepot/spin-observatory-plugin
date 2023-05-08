@@ -9,8 +9,6 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import React, { Fragment, useRef, useState } from 'react';
-
-import { RetriggerButton } from './RetriggerButton';
 import { pauseExecutions, resumeExecutions } from '../../services/gateService';
 
 interface IPauseResumeButtonProps {
@@ -52,6 +50,8 @@ export const PauseResumeButton = ({ executionIds, refreshExecutions }: IPauseRes
 
   const handleHover = () => setHover((prevHover) => !prevHover);
 
+  const isHovered = hover && executionIds.length > 0;
+
   return (
     <Fragment>
       <ButtonGroup
@@ -65,7 +65,7 @@ export const PauseResumeButton = ({ executionIds, refreshExecutions }: IPauseRes
           style={{
             width: '7rem',
             color: 'white',
-            backgroundColor: hover ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
+            backgroundColor: isHovered ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
           }}
           onClick={handleButtonClick}
         >
@@ -74,7 +74,7 @@ export const PauseResumeButton = ({ executionIds, refreshExecutions }: IPauseRes
         <Button
           style={{
             color: 'white',
-            backgroundColor: hover ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
+            backgroundColor: isHovered ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
           }}
           size="small"
           onClick={handleToggle}

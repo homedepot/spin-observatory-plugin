@@ -1,5 +1,4 @@
 import {
-  Grid,
   Paper,
   Table,
   TableBody,
@@ -19,8 +18,7 @@ import type { IExecution } from '@spinnaker/core';
 import { ExecutionRow } from './ExecutionRow';
 import { PaginationActions } from './PaginationActions';
 import { TableHeaders } from './TableHeaders';
-import { PauseResumeButton, RetriggerButton } from '../actions';
-import { ActionButtonsContainer } from '../actions/ActionButtonsContainer';
+import { ActionButtonsContainer, PauseResumeButton, RetriggerButton } from '../actions';
 import type { IStatus } from './constants';
 import { DEFAULT_ROWS_PER_PAGE, STATUSES } from './constants';
 
@@ -37,7 +35,7 @@ interface IExecutionsTableProps {
 }
 
 export const ExecutionsTable = ({ executions, parameters, status, refreshExecutions }: IExecutionsTableProps) => {
-  const [selectedExecutions, setSelectedExecutions] = useState<string[]>([]);
+  const [selectedExecutionIds, setSelectedExecutionIds] = useState<string[]>([]);
   const [currentPage, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PER_PAGE);
   const styles = useStyles();
@@ -58,26 +56,26 @@ export const ExecutionsTable = ({ executions, parameters, status, refreshExecuti
 
   const handleSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      setSelectedExecutions(executions.map((e) => e.id));
+      setSelectedExecutionIds(executions.map((e) => e.id));
       return;
     }
-    setSelectedExecutions([]);
+    setSelectedExecutionIds([]);
   };
 
   const handleSelectOne = (executionId: string) => () => {
-    const selectedIdx = selectedExecutions.indexOf(executionId);
+    const selectedIdx = selectedExecutionIds.indexOf(executionId);
     let newSelected: string[] = [];
 
     if (selectedIdx === -1) {
-      newSelected = [...selectedExecutions, executionId];
+      newSelected = [...selectedExecutionIds, executionId];
     } else {
-      newSelected = selectedExecutions.filter((e) => e !== executionId);
+      newSelected = selectedExecutionIds.filter((e) => e !== executionId);
     }
 
-    setSelectedExecutions(newSelected);
+    setSelectedExecutionIds(newSelected);
   };
 
-  const isSelected = (name: string) => selectedExecutions.indexOf(name) !== -1;
+  const isSelected = (name: string) => selectedExecutionIds.indexOf(name) !== -1;
 
   return (
     <TableContainer component={Paper} classes={{ root: styles.tableContainer }}>
@@ -86,7 +84,7 @@ export const ExecutionsTable = ({ executions, parameters, status, refreshExecuti
           headers={headers}
           onSelectAll={handleSelectAll}
           rowCount={executions.length}
-          selectedCount={selectedExecutions.length}
+          selectedCount={selectedExecutionIds.length}
         />
         <TableBody>
           {executions.slice(currentPage * rowsPerPage, currentPage * rowsPerPage + rowsPerPage).map((e) => (
@@ -105,7 +103,7 @@ export const ExecutionsTable = ({ executions, parameters, status, refreshExecuti
             <TableCell colSpan={2}>
               <ActionButtonsContainer>
                 {status === STATUSES.TRIGGERED && (
-                  <PauseResumeButton executionIds={selectedExecutions} refreshExecutions={refreshExecutions} />
+                  <PauseResumeButton executionIds={selectedExecutionIds} refreshExecutions={refreshExecutions} />
                 )}
                 <RetriggerButton />
               </ActionButtonsContainer>
