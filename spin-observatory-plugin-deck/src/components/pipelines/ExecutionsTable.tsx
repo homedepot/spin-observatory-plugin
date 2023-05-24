@@ -67,12 +67,12 @@ export const ExecutionsTable = ({ executions, parameters, status, refreshExecuti
 
   const handleSelectOne = ({ execution }: { execution: IExecution }) => () => {
     const selectedIdx = selectedExecutions.findIndex((e) => e.id === execution.id);
-    let newSelected: IExecution[] = [];
+    const newSelected: IExecution[] = [...selectedExecutions];
 
     if (selectedIdx === -1) {
-      newSelected = [...selectedExecutions, execution];
+      newSelected.push(execution);
     } else {
-      newSelected = [...selectedExecutions].splice(selectedIdx, 1);
+      newSelected.splice(selectedIdx, 1);
     }
 
     setSelectedExecutions(newSelected);

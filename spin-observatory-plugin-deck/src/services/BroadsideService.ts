@@ -19,7 +19,8 @@ export const retriggerExecutions = ({ executions }: { executions: IExecution[] }
     executions.map(async (execution) => {
       return await REST(BROADSIDE_URI).post({
         application: execution.application,
-        pipelineNameOrId: execution.pipelineConfig.id,
+        pipelineNameOrId: execution.pipelineConfigId,
+        pipelineBaseParameters: execution.trigger.parameters,
       });
     }),
   );
