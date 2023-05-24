@@ -1,24 +1,11 @@
 import Button from '@material-ui/core/Button';
-import React, { useState } from 'react';
+import React from 'react';
+import './RetriggerButton.module.scss';
 
-export const RetriggerButton = () => {
-  const [hover, setHover] = useState(false);
-
-  const handleHover = () => setHover((prevHover) => !prevHover);
-
+export const RetriggerButton = ({ disabled, onClick }: { disabled: boolean; onClick: () => void }) => {
   return (
-    <div>
-      <Button
-        onMouseEnter={handleHover}
-        onMouseLeave={handleHover}
-        style={{
-          width: '7rem',
-          color: 'white',
-          backgroundColor: hover ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
-        }}
-      >
-        Retrigger
-      </Button>
-    </div>
+    <Button className={'retrigger-button'} disabled={disabled} onClick={onClick}>
+      Retrigger
+    </Button>
   );
 };
