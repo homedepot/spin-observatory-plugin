@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button';
 import React from 'react';
-import './retrigger-button.scss';
+import './RetriggerButton.scss';
 
 export const RetriggerButton = ({ disabled, onClick }: { disabled: boolean; onClick: () => void }) => {
   return (
