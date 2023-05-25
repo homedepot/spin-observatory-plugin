@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IExecution, IPipeline, useInterval } from '@spinnaker/core';
-import { IStatus, IDateFilter, POLL_DELAY_MS, REQUEST_PAGE_SIZE } from './constants';
+import { IStatus, IDateFilter, MAX_DATE_FILTER, POLL_DELAY_MS, REQUEST_PAGE_SIZE } from './constants';
 import { getExecutions } from '../../services/gateService';
 import { ExecutionsContainer } from './ExecutionsContainer';
 import { ExecutionsTable } from './ExecutionsTable';
@@ -22,18 +22,18 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
       return;
     }
 
-    console.log("pipeline executions - useEffect", dateFilter);
+    if (!dateFilter) {
+      dateFilter = { start: 0, end: MAX_DATE_FILTER }
+    }
 
-    // if (!dateFilter) {
-    //   dateFilter = { start: 0, end: 9007199254740991 }
-    // }
+    console.log("pipeline executions - useEffect", dateFilter);
 
     const requestParams = {
       pipelineName: pipeline.name,
       pageSize: REQUEST_PAGE_SIZE,
       statuses: status.values,
-      // startDate: dateFilter.start,
-      // endDate: dateFilter.end
+      startDate: dateFilter.start,
+      endDate: dateFilter.end,
     };
 
     getExecutions(appName, requestParams).then((resp) => setExecutions(resp));
@@ -42,14 +42,18 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
   useInterval(async () => {
     if (!pipeline) return;
 
-    console.log("pipeline executions - useInterval", dateFilter);
+    if (!dateFilter) {
+      dateFilter = { start: 0, end: MAX_DATE_FILTER }
+    }
+
+    console.log("pipeline executions - useEffect", dateFilter);
 
     const resp = await getExecutions(appName, {
       pipelineName: pipeline.name,
       statuses: status.values,
       pageSize: REQUEST_PAGE_SIZE,
-      // startDate: dateFilter.start,
-      // endDate: dateFilter.end
+      startDate: dateFilter.start,
+      endDate: dateFilter.end,
     });
     setExecutions(resp);
   }, POLL_DELAY_MS);

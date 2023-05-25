@@ -5,19 +5,19 @@ interface IExecutionsParams {
   pipelineName: string;
   pageSize: number;
   statuses: string[];
-  // startDate: number;
-  // endDate: number;
+  startDate: number;
+  endDate: number;
   firstItemIdx?: number;
 }
 
 export const getExecutions = async (appName: string, params: IExecutionsParams) => {
-  const { pipelineName, pageSize, statuses, firstItemIdx = 0 } = params;
+  const { pipelineName, pageSize, statuses, startDate, endDate, firstItemIdx = 0 } = params;
   
   const data = await REST('/applications')
     .path(appName)
     .path('executions')
     .path('search')
-    .query({ pipelineName, size: pageSize, startIndex: firstItemIdx, statuses: statuses.join(',') })
+    .query({ pipelineName, size: pageSize, startIndex: firstItemIdx, statuses: statuses.join(','), triggerTimeStartBoundary: startDate, triggerTimeEndBoundary: endDate })
     .get<IExecution[]>();
   return data;
 };
