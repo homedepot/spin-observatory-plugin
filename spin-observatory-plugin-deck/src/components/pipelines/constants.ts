@@ -1,3 +1,8 @@
+export interface IDateFilter {
+  start: number;
+  end: number;
+}
+
 export interface IStatus {
   text: string;
   values: string[];
