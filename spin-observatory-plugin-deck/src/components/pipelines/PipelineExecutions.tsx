@@ -22,16 +22,18 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
       return;
     }
 
-    if (!dateFilter) {
-      dateFilter = { start: 0, end: 9007199254740991 }
-    }
+    console.log("pipeline executions - useEffect", dateFilter);
+
+    // if (!dateFilter) {
+    //   dateFilter = { start: 0, end: 9007199254740991 }
+    // }
 
     const requestParams = {
       pipelineName: pipeline.name,
       pageSize: REQUEST_PAGE_SIZE,
       statuses: status.values,
-      startDate: dateFilter.start,
-      endDate: dateFilter.end
+      // startDate: dateFilter.start,
+      // endDate: dateFilter.end
     };
 
     getExecutions(appName, requestParams).then((resp) => setExecutions(resp));
@@ -39,12 +41,15 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
 
   useInterval(async () => {
     if (!pipeline) return;
+
+    console.log("pipeline executions - useInterval", dateFilter);
+
     const resp = await getExecutions(appName, {
       pipelineName: pipeline.name,
       statuses: status.values,
       pageSize: REQUEST_PAGE_SIZE,
-      startDate: dateFilter.start,
-      endDate: dateFilter.end
+      // startDate: dateFilter.start,
+      // endDate: dateFilter.end
     });
     setExecutions(resp);
   }, POLL_DELAY_MS);
