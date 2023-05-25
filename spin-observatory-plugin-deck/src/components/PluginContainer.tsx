@@ -6,7 +6,7 @@ import { ReactSelectInput, useDataSource } from '@spinnaker/core';
 
 import { DatePicker } from './date-picker/date-picker';
 import { ParameterSelect } from './parameters';
-import { PipelineExecutions, STATUSES } from './pipelines';
+import { IDateFilter, PipelineExecutions, STATUSES } from './pipelines';
 
 interface IPluginContainerProps {
   app: Application;
@@ -17,6 +17,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   const { data: pipelines } = useDataSource<IPipeline[]>(dataSource);
   const [selectedPipeline, setSelectedPipeline] = useState<IPipeline>();
   const [selectedParams, setSelectedParams] = useState<string[]>([]);
+  const [selectedDateFilter, setSelectedDateFilter] = useState<IDateFilter>();
 
   useEffect(() => {
     dataSource.activate();
@@ -29,8 +30,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   };
 
   const handleDateFilterChange = ({ start, end }: { start: number, end: number }) => {
-    // eslint-disable-next-line no-console
-    console.log("filter executions ", { start, end });
+    setSelectedDateFilter({ start: start, end: end });
   };
 
   return (
@@ -64,18 +64,21 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           pipeline={selectedPipeline}
           parameters={selectedParams}
           status={STATUSES.SUCCESSFUL}
+          dateFilter={selectedDateFilter}
         />
         <PipelineExecutions
           appName={app.name}
           pipeline={selectedPipeline}
           parameters={selectedParams}
           status={STATUSES.FAILED}
+          dateFilter={selectedDateFilter}
         />
         <PipelineExecutions
           appName={app.name}
           pipeline={selectedPipeline}
           parameters={selectedParams}
           status={STATUSES.TRIGGERED}
+          dateFilter={selectedDateFilter}
         />
       </div>
     </div>
