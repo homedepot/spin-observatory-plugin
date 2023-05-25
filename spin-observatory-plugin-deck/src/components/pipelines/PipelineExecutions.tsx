@@ -22,6 +22,10 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
       return;
     }
 
+    if (!dateFilter) {
+      dateFilter = { start: 0, end: 9007199254740991 }
+    }
+
     const requestParams = {
       pipelineName: pipeline.name,
       pageSize: REQUEST_PAGE_SIZE,
