@@ -4,15 +4,17 @@ import { IStatus, POLL_DELAY_MS, REQUEST_PAGE_SIZE } from './constants';
 import { getExecutions } from '../../services/gateService';
 import { ExecutionsContainer } from './ExecutionsContainer';
 import { ExecutionsTable } from './ExecutionsTable';
+import { IDateRange } from '../date-picker/date-picker';
 
 interface IPipelineExecutionsProps {
   appName: string;
   pipeline?: IPipeline;
   parameters: string[];
   status: IStatus;
+  dateRange: IDateRange;
 }
 
-export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IPipelineExecutionsProps) => {
+export const PipelineExecutions = ({ appName, pipeline, parameters, status, dateRange }: IPipelineExecutionsProps) => {
   const [executions, setExecutions] = useState<IExecution[]>([]);
 
   useEffect(() => {
@@ -25,6 +27,8 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
       pipelineName: pipeline.name,
       pageSize: REQUEST_PAGE_SIZE,
       statuses: status.values,
+      startDate: dateRange.start,
+      endDate: dateRange.end,
     };
 
     getExecutions(appName, requestParams).then((resp) => setExecutions(resp));
@@ -36,6 +40,8 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status }: IP
       pipelineName: pipeline.name,
       statuses: status.values,
       pageSize: REQUEST_PAGE_SIZE,
+      startDate: dateRange.start,
+      endDate: dateRange.end,
     });
     setExecutions(resp);
   }, POLL_DELAY_MS);

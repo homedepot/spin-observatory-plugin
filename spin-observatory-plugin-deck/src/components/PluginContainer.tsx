@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 import type { Application, IPipeline } from '@spinnaker/core';
 import { ReactSelectInput, useDataSource } from '@spinnaker/core';
 
-import { DatePicker } from './date-picker/date-picker';
+import { DatePicker, IDateRange } from './date-picker/date-picker';
 import { ParameterSelect } from './parameters';
-import { PipelineExecutions, STATUSES } from './pipelines';
+import { PipelineExecutions, STATUSES, MAX_DATE_RANGE } from './pipelines';
 
 interface IPluginContainerProps {
   app: Application;
@@ -17,6 +17,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   const { data: pipelines } = useDataSource<IPipeline[]>(dataSource);
   const [selectedPipeline, setSelectedPipeline] = useState<IPipeline>();
   const [selectedParams, setSelectedParams] = useState<string[]>([]);
+  const [selectedDateRange, setSelectedDateRange] = useState<IDateRange>({ start: 0, end: MAX_DATE_RANGE });
 
   useEffect(() => {
     dataSource.activate();
@@ -29,8 +30,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   };
 
   const handleDateFilterChange = ({ start, end }: { start: number, end: number }) => {
-    // eslint-disable-next-line no-console
-    console.log("filter executions ", { start, end });
+    setSelectedDateRange({ start, end });
   };
 
   return (
@@ -64,18 +64,21 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           pipeline={selectedPipeline}
           parameters={selectedParams}
           status={STATUSES.SUCCESSFUL}
+          dateRange={selectedDateRange}
         />
         <PipelineExecutions
           appName={app.name}
           pipeline={selectedPipeline}
           parameters={selectedParams}
           status={STATUSES.FAILED}
+          dateRange={selectedDateRange}
         />
         <PipelineExecutions
           appName={app.name}
           pipeline={selectedPipeline}
           parameters={selectedParams}
           status={STATUSES.TRIGGERED}
+          dateRange={selectedDateRange}
         />
       </div>
     </div>
