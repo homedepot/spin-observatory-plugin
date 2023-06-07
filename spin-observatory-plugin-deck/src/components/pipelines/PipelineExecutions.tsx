@@ -15,10 +15,12 @@ interface IPipelineExecutionsProps {
 
 export const PipelineExecutions = ({ appName, pipeline, parameters, status, dateRange }: IPipelineExecutionsProps) => {
   const [executions, setExecutions] = useState<IExecution[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (!pipeline) {
       setExecutions([]);
+      setIsLoading(false);
       return;
     }
 
@@ -30,7 +32,10 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
       endDate: dateRange.end,
     };
 
-    getExecutions(appName, requestParams).then((resp) => setExecutions(resp));
+    getExecutions(appName, requestParams).then((resp) => {
+      setExecutions(resp);
+      setIsLoading(false);
+    });
   }, [pipeline]);
 
   useInterval(async () => {
@@ -43,7 +48,12 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
       endDate: dateRange.end,
     });
     setExecutions(resp);
+    setIsLoading(false);
   }, POLL_DELAY_MS);
+
+  if (isLoading) {
+    return null;
+  }
 
   if (executions.length == 0) {
     return <h4 style={{ textAlign: 'center' }}>No pipeline executions found.</h4>
