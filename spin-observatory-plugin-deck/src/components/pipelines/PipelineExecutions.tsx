@@ -45,6 +45,10 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
     setExecutions(resp);
   }, POLL_DELAY_MS);
 
+  if (executions.length == 0) {
+    return <h4 style={{ textAlign: 'center' }}>No pipeline executions found.</h4>
+  }
+
   return (
     <ExecutionsTable executions={executions} parameters={parameters} />
   );

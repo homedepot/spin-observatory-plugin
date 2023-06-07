@@ -65,10 +65,6 @@ export const ExecutionsTable = ({ executions, parameters }: IExecutionsTableProp
   };
 
   const isSelected = (name: string) => selectedExecutions.indexOf(name) !== -1;
-  
-  if (executions.length == 0) {
-    return <h4 style={{ textAlign: 'center' }}>No pipeline executions found.</h4>
-  }
 
   return (
     <TableContainer component={Paper} classes={{ root: styles.tableContainer }}>
