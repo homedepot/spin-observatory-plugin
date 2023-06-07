@@ -4,6 +4,12 @@ import { POLL_DELAY_MS, REQUEST_PAGE_SIZE } from './constants';
 import { getExecutions } from '../../services/gateService';
 import { ExecutionsTable } from './ExecutionsTable';
 import { IDateRange } from '../date-picker/date-picker';
+import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  skeleton: { padding: '3rem', marginLeft: '2rem', marginRight: '2rem' },
+});
 
 interface IPipelineExecutionsProps {
   appName: string;
@@ -16,6 +22,7 @@ interface IPipelineExecutionsProps {
 export const PipelineExecutions = ({ appName, pipeline, parameters, status, dateRange }: IPipelineExecutionsProps) => {
   const [executions, setExecutions] = useState<IExecution[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const styles = useStyles();
 
   useEffect(() => {
     if (!pipeline) {
@@ -52,14 +59,16 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
   }, POLL_DELAY_MS);
 
   if (isLoading) {
-    return null;
+    return (
+      [...Array(3).keys()].map((key) => (
+        <Skeleton key={key} animation="wave" variant="text" classes={{ root: styles.skeleton }} />
+      ))
+    );
   }
 
   if (executions.length == 0) {
     return <h4 style={{ textAlign: 'center' }}>No pipeline executions found.</h4>
   }
 
-  return (
-    <ExecutionsTable executions={executions} parameters={parameters} />
-  );
+  return <ExecutionsTable executions={executions} parameters={parameters} />
 };
