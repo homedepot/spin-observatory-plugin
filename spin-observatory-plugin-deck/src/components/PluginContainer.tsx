@@ -61,7 +61,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
       </div>
       <div style={{ flexGrow: 19 }}>
         {!selectedPipeline ? (
-          <h4 style={{ textAlign: 'center' }}>Select a pipeline..</h4>
+          <h4 style={{ textAlign: 'center' }}>Please select a pipeline to view executions.</h4>
         ) : (
           <PipelineExecutions
             appName={app.name}
