@@ -34,6 +34,22 @@ export function PluginContainer({ app }: IPluginContainerProps) {
     setSelectedDateRange({ start, end });
   };
 
+  const pipelineExecutions = () => {
+    if (!selectedPipeline) {
+      return <h4 style={{ textAlign: 'center' }}>Select a pipeline..</h4>
+    }
+
+    return (
+      <PipelineExecutions
+        appName={app.name}
+        pipeline={selectedPipeline}
+        parameters={selectedParams}
+        status={selectedStatus}
+        dateRange={selectedDateRange}
+      />
+    )
+  }
+
   return (
     <div className="flex-container-v" style={{ margin: '3rem', width: '100%', rowGap: '2rem' }}>
       <div className="flex-container-h" style={{ flexGrow: 1 }}>
@@ -60,13 +76,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
         </div>
       </div>
       <div style={{ flexGrow: 19 }}>
-        <PipelineExecutions
-          appName={app.name}
-          pipeline={selectedPipeline}
-          parameters={selectedParams}
-          status={selectedStatus}
-          dateRange={selectedDateRange}
-        />
+        {pipelineExecutions}
       </div>
     </div>
   );
