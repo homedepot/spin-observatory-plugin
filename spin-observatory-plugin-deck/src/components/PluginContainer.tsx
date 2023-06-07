@@ -60,13 +60,17 @@ export function PluginContainer({ app }: IPluginContainerProps) {
         </div>
       </div>
       <div style={{ flexGrow: 19 }}>
-        <PipelineExecutions
-          appName={app.name}
-          pipeline={selectedPipeline}
-          parameters={selectedParams}
-          status={selectedStatus}
-          dateRange={selectedDateRange}
-        />
+        {!selectedPipeline ? (
+          <h4 style={{ textAlign: 'center' }}>Select a pipeline..</h4>
+        ) : (
+          <PipelineExecutions
+            appName={app.name}
+            pipeline={selectedPipeline}
+            parameters={selectedParams}
+            status={selectedStatus}
+            dateRange={selectedDateRange}
+          />
+        )}
       </div>
     </div>
   );
