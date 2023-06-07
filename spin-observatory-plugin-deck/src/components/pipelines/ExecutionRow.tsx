@@ -17,7 +17,6 @@ interface IExecutionRowProps {
   parameters: string[];
   onSelectOne: MouseEventHandler<HTMLTableRowElement>;
   isSelected: boolean;
-  inProgress: boolean;
 }
 
 const goToExecutionDetails = (executionId: string) => () => {
@@ -27,6 +26,10 @@ const goToExecutionDetails = (executionId: string) => () => {
 };
 
 const convertTimestamp = (ts: number) => {
+  if (!ts) {
+    return ''
+  }
+
   return new Intl.DateTimeFormat('en-US', {
     year: '2-digit',
     month: 'numeric',
@@ -37,7 +40,7 @@ const convertTimestamp = (ts: number) => {
   }).format(ts);
 };
 
-export const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected, inProgress }: IExecutionRowProps) => {
+export const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected }: IExecutionRowProps) => {
   const styles = useStyles();
   return (
     <TableRow
@@ -61,11 +64,9 @@ export const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected, i
       <TableCell>
         <Typography classes={{ root: styles.typography }}>{convertTimestamp(execution.startTime)}</Typography>
       </TableCell>
-      {!inProgress && (
-        <TableCell>
-          <Typography classes={{ root: styles.typography }}>{convertTimestamp(execution.endTime)}</Typography>
-        </TableCell>
-      )}
+      <TableCell>
+        <Typography classes={{ root: styles.typography }}>{convertTimestamp(execution.endTime)}</Typography>
+      </TableCell>
       {parameters.map((p) => (
         <TableCell>
           <Typography classes={{ root: styles.typography }}>{execution.trigger.parameters![p]}</Typography>

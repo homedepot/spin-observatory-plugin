@@ -18,6 +18,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   const [selectedPipeline, setSelectedPipeline] = useState<IPipeline>();
   const [selectedParams, setSelectedParams] = useState<string[]>([]);
   const [selectedDateRange, setSelectedDateRange] = useState<IDateRange>({ start: 0, end: MAX_DATE_RANGE });
+  const [selectedStatus, setSelectedStatus] = useState<string[]>(STATUSES);
 
   useEffect(() => {
     dataSource.activate();
@@ -63,21 +64,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           appName={app.name}
           pipeline={selectedPipeline}
           parameters={selectedParams}
-          status={STATUSES.SUCCESSFUL}
-          dateRange={selectedDateRange}
-        />
-        <PipelineExecutions
-          appName={app.name}
-          pipeline={selectedPipeline}
-          parameters={selectedParams}
-          status={STATUSES.FAILED}
-          dateRange={selectedDateRange}
-        />
-        <PipelineExecutions
-          appName={app.name}
-          pipeline={selectedPipeline}
-          parameters={selectedParams}
-          status={STATUSES.TRIGGERED}
+          status={selectedStatus}
           dateRange={selectedDateRange}
         />
       </div>

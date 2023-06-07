@@ -1,22 +1,17 @@
-export interface IStatus {
-  text: string;
-  values: string[];
-}
-
-export const STATUSES = {
-  SUCCESSFUL: {
-    text: 'Successful',
-    values: ['SUCCEEDED'],
-  },
-  FAILED: {
-    text: 'Failed',
-    values: ['FAILED_CONTINUE', 'TERMINAL', 'CANCELED'],
-  },
-  TRIGGERED: {
-    text: 'Triggered',
-    values: ['NOT_STARTED', 'RUNNING', 'PAUSED', 'SUSPENDED', 'BUFFERED', 'STOPPED', 'SKIPPED'],
-  },
-};
+export const STATUSES = [
+  'SUCCEEDED',
+  'FAILED_CONTINUE',
+  'TERMINAL',
+  'CANCELED',
+  'NOT_STARTED',
+  'RUNNING',
+  'PAUSED',
+  'SUSPENDED',
+  'BUFFERED',
+  'STOPPED',
+  'SKIPPED',
+  'REDIRECT',
+];
 
 export const REQUEST_PAGE_SIZE = 5000;
 
