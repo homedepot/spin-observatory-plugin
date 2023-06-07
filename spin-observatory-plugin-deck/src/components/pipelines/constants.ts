@@ -10,7 +10,7 @@ export const STATUSES = [
   'BUFFERED',
   'STOPPED',
   'SKIPPED',
-  'REDIRECT',
+  'REDIRECT'
 ];
 
 export const REQUEST_PAGE_SIZE = 5000;
