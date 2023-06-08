@@ -12,7 +12,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { IExecution } from '@spinnaker/core';
 import { TableHeaders } from './TableHeaders';
 import { ExecutionRow } from './ExecutionRow';
-import { IStatus, STATUSES, DEFAULT_ROWS_PER_PAGE } from './constants';
+import { DEFAULT_ROWS_PER_PAGE } from './constants';
 import { PaginationActions } from './PaginationActions';
 import { makeStyles } from '@material-ui/core';
 
@@ -24,19 +24,15 @@ const useStyles = makeStyles({
 interface IExecutionsTableProps {
   executions: IExecution[];
   parameters: string[];
-  status: IStatus;
 }
 
-export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsTableProps) => {
+export const ExecutionsTable = ({ executions, parameters }: IExecutionsTableProps) => {
   const [selectedExecutions, setSelectedExecutions] = useState<string[]>([]);
   const [currentPage, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PER_PAGE);
   const styles = useStyles();
 
-  const headers =
-    status === STATUSES.TRIGGERED
-      ? ['ID', 'Status', 'Start Time', ...parameters]
-      : ['ID', 'Status', 'Start Time', 'End Time', ...parameters];
+  const headers = ['ID', 'Status', 'Start Time', 'End Time', ...parameters];
 
   const handlePageChange = (_: any, newPage: number) => {
     setPage(newPage);
@@ -86,7 +82,6 @@ export const ExecutionsTable = ({ executions, parameters, status }: IExecutionsT
               isSelected={isSelected(e.id)}
               execution={e}
               parameters={parameters}
-              inProgress={status === STATUSES.TRIGGERED}
               onSelectOne={handleSelectOne(e.id)}
             />
           ))}
