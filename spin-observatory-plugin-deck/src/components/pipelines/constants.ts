@@ -1,18 +1,3 @@
-export const STATUSES = [
-  'SUCCEEDED',
-  'FAILED_CONTINUE',
-  'TERMINAL',
-  'CANCELED',
-  'NOT_STARTED',
-  'RUNNING',
-  'PAUSED',
-  'SUSPENDED',
-  'BUFFERED',
-  'STOPPED',
-  'SKIPPED',
-  'REDIRECT'
-];
-
 export const REQUEST_PAGE_SIZE = 5000;
 
 export const DEFAULT_ROWS_PER_PAGE = 10;

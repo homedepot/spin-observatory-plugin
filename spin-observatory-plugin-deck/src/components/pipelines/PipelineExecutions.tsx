@@ -17,9 +17,10 @@ interface IPipelineExecutionsProps {
   parameters: string[];
   status: string[];
   dateRange: IDateRange;
+  onStatusChange: ({ statusCount }: { statusCount: any }) => void
 }
 
-export const PipelineExecutions = ({ appName, pipeline, parameters, status, dateRange }: IPipelineExecutionsProps) => {
+export const PipelineExecutions = ({ appName, pipeline, parameters, status, dateRange, onStatusChange }: IPipelineExecutionsProps) => {
   const [executions, setExecutions] = useState<IExecution[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const styles = useStyles();
@@ -42,6 +43,17 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
     getExecutions(appName, requestParams).then((resp) => {
       setExecutions(resp);
       setIsLoading(false);
+
+      let statusCount = {} as any;
+      for (const execution of executions) {
+        if (!(execution.status in statusCount)) {
+          statusCount[execution.status] = 0;
+        }
+
+        statusCount[execution.status]++;
+      }
+
+      onStatusChange(statusCount)
     });
   }, [pipeline]);
 
@@ -56,6 +68,18 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
     });
     setExecutions(resp);
     setIsLoading(false);
+
+    let statusCount = {} as any;
+    for (const execution of executions) {
+      if (!(execution.status in statusCount)) {
+        statusCount[execution.status] = 0;
+      }
+
+      statusCount[execution.status]++;
+    }
+
+    onStatusChange(statusCount)
+
   }, POLL_DELAY_MS);
 
   if (isLoading) {
