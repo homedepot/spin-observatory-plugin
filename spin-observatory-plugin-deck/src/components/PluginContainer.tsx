@@ -37,7 +37,8 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   };
 
   const handleStatusCountChange = ({ statusCount }: { statusCount: any }) => {
-    console.log(statusCount)
+    console.log("handleStatusCountChange");
+    console.log(statusCount);
   };
 
   return (

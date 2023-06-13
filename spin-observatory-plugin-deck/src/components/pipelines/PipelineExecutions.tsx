@@ -23,6 +23,7 @@ interface IPipelineExecutionsProps {
 export const PipelineExecutions = ({ appName, pipeline, parameters, status, dateRange, onStatusChange }: IPipelineExecutionsProps) => {
   const [executions, setExecutions] = useState<IExecution[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [statusCount, setStatusCount] = useState<any>({});
   const styles = useStyles();
 
   useEffect(() => {
@@ -44,20 +45,26 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
       setExecutions(resp);
       setIsLoading(false);
 
-      let statusCount = {} as any;
+      let map = {} as any;
       for (const execution of executions) {
-        if (!(execution.status in statusCount)) {
-          statusCount[execution.status] = 0;
+        if (!(execution.status in map)) {
+          map[execution.status] = 0;
         }
 
-        statusCount[execution.status]++;
+        map[execution.status]++;
       }
 
+      setStatusCount(map);
       console.log("getExecutions");
-      console.log(statusCount);
-      onStatusChange(statusCount);
+      console.log(map);
     });
   }, [pipeline]);
+
+  useEffect(() => {
+    console.log("useEffect");
+    console.log(statusCount);
+    onStatusChange(statusCount);
+  }, [statusCount]);
 
   useInterval(async () => {
     if (!pipeline) return;
@@ -71,19 +78,18 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
     setExecutions(resp);
     setIsLoading(false);
 
-    let statusCount = {} as any;
+    let map = {} as any;
     for (const execution of executions) {
-      if (!(execution.status in statusCount)) {
-        statusCount[execution.status] = 0;
+      if (!(execution.status in map)) {
+        map[execution.status] = 0;
       }
 
-      statusCount[execution.status]++;
+      map[execution.status]++;
     }
 
+    setStatusCount(map);
     console.log("useInterval");
-    console.log(statusCount);
-    onStatusChange(statusCount);
-
+    console.log(map);
   }, POLL_DELAY_MS);
 
   if (isLoading) {
