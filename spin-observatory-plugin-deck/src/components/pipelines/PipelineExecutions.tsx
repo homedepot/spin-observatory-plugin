@@ -44,7 +44,6 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, da
 
     getExecutions(appName, requestParams).then((resp) => {
       console.log("useEffect:pipeline");
-      console.log(resp);
 
       setExecutions(resp);
       setStatusCount(getStatusCount(resp));
@@ -54,19 +53,19 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, da
 
   useEffect(() => {
     console.log("useEffect:statuscount");
-    console.log(statusCount);
 
     onStatusChange(statusCount);
   }, [statusCount]);
 
   useEffect(() => {
     console.log("useEffect:statuses");
-    console.log(executions);
 
     setExecutions(getFilteredExecutions(executions));
   }, [statuses]);
 
   useInterval(async () => {
+    console.log("useInterval");
+
     if (!pipeline) return;
     const resp = await getExecutions(appName, {
       pipelineName: pipeline.name,

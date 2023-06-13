@@ -33,14 +33,12 @@ export const StatusSelect = ({className, pipeline, selectedStatus, setSelectedSt
   };
 
   const extractStatus = (statusCount: any): Array<Option<string>> => {
-    // let options = [];
-    // for (const [key, value] of statusCount.entries()) {
-    //   options.push({ label: `${key} (${value})`, value: key });
-    // }
+    let options = [];
+    for (const key in statusCount) {
+      options.push({ label: `${key} (${statusCount[key]})`, value: key });
+    }
   
-    // return options;
-
-    return STATUSES.map((s) => ({ label: s + " " + statusCount[s], value: s}));
+    return options;
   };
 
   return (
