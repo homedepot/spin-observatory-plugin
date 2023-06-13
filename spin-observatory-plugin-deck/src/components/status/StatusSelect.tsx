@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 import type { IPipeline } from '@spinnaker/core';
 
-const STATUSES = [
+export const STATUSES = [
     'SUCCEEDED',
     'FAILED_CONTINUE',
     'TERMINAL',
@@ -32,6 +32,15 @@ export const StatusSelect = ({className, pipeline, selectedStatus, setSelectedSt
     setSelectedStatus(options.map((o) => o.value));
   };
 
+  const extractStatus = (statusCount: any): Array<Option<string>> => {
+    let options = [];
+    for (const [key, value] of statusCount.entries()) {
+      options.push({ label: `${key} (${value})`, value: key });
+    }
+  
+    return options;
+  };
+
   return (
     <Select
       className={className}
@@ -41,12 +50,8 @@ export const StatusSelect = ({className, pipeline, selectedStatus, setSelectedSt
       placeholder="Select Status..."
       clearable={true}
       noResultsText="No status"
-      options={!pipeline ? [] : extractStatus(STATUSES, statusCount)}
+      options={!pipeline ? [] : extractStatus(statusCount)}
       multi
     />
   );
-};
-
-const extractStatus = (status: string[], statusCount: any): Array<Option<string>> => {
-    return status.map((s) => ({ label: s + " " + statusCount[s], value: s}));
 };

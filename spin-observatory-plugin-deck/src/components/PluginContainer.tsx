@@ -85,7 +85,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
             appName={app.name}
             pipeline={selectedPipeline}
             parameters={selectedParams}
-            status={selectedStatus}
+            statuses={selectedStatus}
             dateRange={selectedDateRange}
           />
         )}

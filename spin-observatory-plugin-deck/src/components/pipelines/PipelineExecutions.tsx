@@ -6,6 +6,7 @@ import { ExecutionsTable } from './ExecutionsTable';
 import { IDateRange } from '../date-picker/date-picker';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/core';
+import { STATUSES } from '../status';
 
 const useStyles = makeStyles({
   skeleton: { padding: '3rem', marginLeft: '2rem', marginRight: '2rem' },
@@ -15,20 +16,21 @@ interface IPipelineExecutionsProps {
   appName: string;
   pipeline?: IPipeline;
   parameters: string[];
-  status: string[];
+  statuses: string[];
   dateRange: IDateRange;
   onStatusChange: ({ statusCount }: { statusCount: any }) => void
 }
 
-export const PipelineExecutions = ({ appName, pipeline, parameters, status, dateRange, onStatusChange }: IPipelineExecutionsProps) => {
+export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, dateRange, onStatusChange }: IPipelineExecutionsProps) => {
   const [executions, setExecutions] = useState<IExecution[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [statusCount, setStatusCount] = useState<any>({});
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const styles = useStyles();
 
   useEffect(() => {
     if (!pipeline) {
       setExecutions([]);
+      setStatusCount({});
       setIsLoading(false);
       return;
     }
@@ -41,40 +43,28 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
     };
 
     getExecutions(appName, requestParams).then((resp) => {
-      let selectedStatus = {} as any;
-      let map = {} as any;
-      let execs = [] as IExecution[];
+      console.log("useEffect:pipeline");
+      console.log(resp);
 
-      for (const s of status) {
-        selectedStatus[s] = true;
-      }
-
-      for (const execution of resp) {
-        if (!(execution.status in map)) {
-          map[execution.status] = 0;
-        }
-
-        map[execution.status]++;
-
-        if (execution.status in selectedStatus) {
-          execs.push(execution);
-        }
-      }
-
+      setExecutions(resp);
+      setStatusCount(getStatusCount(resp));
       setIsLoading(false);
-      setExecutions(execs);
-      setStatusCount(map);
-
-      console.log("getExecutions");
-      console.log(map);
     });
   }, [pipeline]);
 
   useEffect(() => {
-    console.log("useEffect");
+    console.log("useEffect:statuscount");
     console.log(statusCount);
+
     onStatusChange(statusCount);
   }, [statusCount]);
+
+  useEffect(() => {
+    console.log("useEffect:statuses");
+    console.log(executions);
+
+    setExecutions(getFilteredExecutions(executions));
+  }, [statuses]);
 
   useInterval(async () => {
     if (!pipeline) return;
@@ -85,33 +75,43 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
       endDate: dateRange.end,
     });
 
-    let selectedStatus = {} as any;
-    let map = {} as any;
-    let execs = [] as IExecution[];
+    setExecutions(getFilteredExecutions(resp));
+    setStatusCount(getStatusCount(resp));
+    setIsLoading(false);
+  }, POLL_DELAY_MS);
 
-    for (const s of status) {
+  const getFilteredExecutions = (ex: IExecution[]) => {
+    let selectedStatus = {} as any;
+
+    const statusArr = statuses.length === 0 ? STATUSES : statuses;
+    for (const s of statusArr) {
       selectedStatus[s] = true;
     }
 
-    for (const execution of resp) {
-      if (!(execution.status in map)) {
-        map[execution.status] = 0;
-      }
-
-      map[execution.status]++;
-
-      if (execution.status in selectedStatus) {
-        execs.push(execution);
+    let filteredExecutions = [] as IExecution[];
+    for (const e of ex) {
+      if (e.status in selectedStatus) {
+        filteredExecutions.push(e);
       }
     }
-    
-    setIsLoading(false);
-    setExecutions(execs);
-    setStatusCount(map);
 
-    console.log("useInterval");
-    console.log(map);
-  }, POLL_DELAY_MS);
+    return filteredExecutions;
+  };
+
+  const getStatusCount = (ex: IExecution[]) => {
+    console.log("getStatusCount");
+
+    let statusCount = {} as any;
+    for (const e of ex) {
+      if (!(e.status in statusCount)) {
+        statusCount[e.status] = 0;
+      }
+
+      statusCount[e.status]++;
+    }
+
+    return statusCount;
+  };
 
   if (isLoading) {
     return (
