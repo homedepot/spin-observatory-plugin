@@ -20,6 +20,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   const [selectedParams, setSelectedParams] = useState<string[]>([]);
   const [selectedDateRange, setSelectedDateRange] = useState<IDateRange>({ start: 0, end: MAX_DATE_RANGE });
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
+  const [statusCount, setStatusCount] = useState<any>({});
 
   useEffect(() => {
     dataSource.activate();
@@ -39,6 +40,8 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   const handleStatusCountChange = (statusCount: any) => {
     console.log("handleStatusCountChange");
     console.log(statusCount);
+
+    setStatusCount(statusCount);
   };
 
   return (
@@ -68,6 +71,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
               pipeline={selectedPipeline}
               selectedStatus={selectedStatus}  
               setSelectedStatus={setSelectedStatus}
+              statusCount={statusCount}
             />
           </div>
         </div>
@@ -77,12 +81,12 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           <h4 style={{ textAlign: 'center' }}>Please select a pipeline to view executions.</h4>
         ) : (
           <PipelineExecutions
+            onStatusChange={handleStatusCountChange}
             appName={app.name}
             pipeline={selectedPipeline}
             parameters={selectedParams}
             status={selectedStatus}
             dateRange={selectedDateRange}
-            onStatusChange={handleStatusCountChange}
           />
         )}
       </div>

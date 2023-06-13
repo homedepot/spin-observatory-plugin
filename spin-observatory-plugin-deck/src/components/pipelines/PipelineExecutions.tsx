@@ -36,25 +36,35 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
     const requestParams = {
       pipelineName: pipeline.name,
       pageSize: REQUEST_PAGE_SIZE,
-      statuses: status,
       startDate: dateRange.start,
       endDate: dateRange.end,
     };
 
     getExecutions(appName, requestParams).then((resp) => {
-      setExecutions(resp);
-      setIsLoading(false);
-
+      let selectedStatus = {} as any;
       let map = {} as any;
-      for (const execution of executions) {
+      let execs = [] as IExecution[];
+
+      for (const s of status) {
+        selectedStatus[s] = true;
+      }
+
+      for (const execution of resp) {
         if (!(execution.status in map)) {
           map[execution.status] = 0;
         }
 
         map[execution.status]++;
+
+        if (execution.status in selectedStatus) {
+          execs.push(execution);
+        }
       }
 
+      setIsLoading(false);
+      setExecutions(execs);
       setStatusCount(map);
+
       console.log("getExecutions");
       console.log(map);
     });
@@ -70,24 +80,35 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
     if (!pipeline) return;
     const resp = await getExecutions(appName, {
       pipelineName: pipeline.name,
-      statuses: status,
       pageSize: REQUEST_PAGE_SIZE,
       startDate: dateRange.start,
       endDate: dateRange.end,
     });
-    setExecutions(resp);
-    setIsLoading(false);
 
+    let selectedStatus = {} as any;
     let map = {} as any;
-    for (const execution of executions) {
+    let execs = [] as IExecution[];
+
+    for (const s of status) {
+      selectedStatus[s] = true;
+    }
+
+    for (const execution of resp) {
       if (!(execution.status in map)) {
         map[execution.status] = 0;
       }
 
       map[execution.status]++;
-    }
 
+      if (execution.status in selectedStatus) {
+        execs.push(execution);
+      }
+    }
+    
+    setIsLoading(false);
+    setExecutions(execs);
     setStatusCount(map);
+
     console.log("useInterval");
     console.log(map);
   }, POLL_DELAY_MS);

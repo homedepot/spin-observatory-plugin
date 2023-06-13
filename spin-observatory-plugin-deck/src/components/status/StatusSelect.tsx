@@ -24,9 +24,10 @@ interface IStatusSelectProps {
   pipeline?: IPipeline;
   selectedStatus: string[];
   setSelectedStatus(params: string[]): void;
+  statusCount: any;
 }
 
-export const StatusSelect = ({className, pipeline, selectedStatus, setSelectedStatus }: IStatusSelectProps) => {
+export const StatusSelect = ({className, pipeline, selectedStatus, setSelectedStatus, statusCount }: IStatusSelectProps) => {
   const onStatusSelect = (options: Array<Option<string>>) => {
     setSelectedStatus(options.map((o) => o.value));
   };
@@ -40,12 +41,12 @@ export const StatusSelect = ({className, pipeline, selectedStatus, setSelectedSt
       placeholder="Select Status..."
       clearable={true}
       noResultsText="No status"
-      options={!pipeline ? [] : extractStatus(STATUSES)}
+      options={!pipeline ? [] : extractStatus(STATUSES, statusCount)}
       multi
     />
   );
 };
 
-const extractStatus = (status: string[]): Array<Option<string>> => {
-    return status.map((s) => ({ label: s, value: s}));
+const extractStatus = (status: string[], statusCount: any): Array<Option<string>> => {
+    return status.map((s) => ({ label: s + " " + statusCount[s], value: s}));
 };
