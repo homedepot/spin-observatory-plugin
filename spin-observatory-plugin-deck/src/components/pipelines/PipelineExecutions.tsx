@@ -81,6 +81,8 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, da
   }, POLL_DELAY_MS);
 
   const getFilteredExecutions = (ex: IExecution[]) => {
+    console.log("getFilteredExecutions");
+
     let selectedStatus = {} as any;
 
     const statusArr = statuses.length === 0 ? STATUSES : statuses;
