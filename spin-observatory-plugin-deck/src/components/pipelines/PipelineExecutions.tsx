@@ -53,7 +53,9 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
         statusCount[execution.status]++;
       }
 
-      onStatusChange(statusCount)
+      console.log("getExecutions");
+      console.log(statusCount);
+      onStatusChange(statusCount);
     });
   }, [pipeline]);
 
@@ -78,7 +80,9 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, status, date
       statusCount[execution.status]++;
     }
 
-    onStatusChange(statusCount)
+    console.log("useInterval");
+    console.log(statusCount);
+    onStatusChange(statusCount);
 
   }, POLL_DELAY_MS);
 
