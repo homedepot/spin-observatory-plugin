@@ -32,6 +32,17 @@ export const StatusSelect = ({className, pipeline, selectedStatus, setSelectedSt
     setSelectedStatus(options.map((o) => o.value));
   };
 
+  const extractStatus = (statusCount: any): Array<Option<string>> => {
+    // let options = [];
+    // for (const [key, value] of statusCount.entries()) {
+    //   options.push({ label: `${key} (${value})`, value: key });
+    // }
+  
+    // return options;
+
+    return STATUSES.map((s) => ({ label: s + " " + statusCount[s], value: s}));
+  };
+
   return (
     <Select
       className={className}
@@ -45,13 +56,4 @@ export const StatusSelect = ({className, pipeline, selectedStatus, setSelectedSt
       multi
     />
   );
-};
-
-const extractStatus = (statusCount: any): Array<Option<string>> => {
-  let options = [];
-  for (const [key, value] of statusCount.entries()) {
-    options.push({ label: `${key} (${value})`, value: key });
-  }
-
-  return options;
 };
