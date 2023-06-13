@@ -47,8 +47,6 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, da
     };
 
     getExecutions(appName, requestParams).then((resp) => {
-      console.log("useEffect:pipeline");
-
       setExecutions(resp);
       setFilteredExecutions(filterExecutions(resp));
       setStatusCount(getStatusCount(resp));
@@ -57,20 +55,14 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, da
   }, [pipeline]);
 
   useEffect(() => {
-    console.log("useEffect:statuscount");
-
     onStatusChange(statusCount);
   }, [statusCount]);
 
   useEffect(() => {
-    console.log("useEffect:statuses");
-
     setFilteredExecutions(filterExecutions(executions));
   }, [statuses]);
 
   useInterval(async () => {
-    console.log("useInterval");
-
     if (!pipeline) return;
     const resp = await getExecutions(appName, {
       pipelineName: pipeline.name,
@@ -86,8 +78,6 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, da
   }, POLL_DELAY_MS);
 
   const filterExecutions = (ex: IExecution[]) => {
-    console.log("getFilteredExecutions");
-
     let selectedStatus = {} as any;
 
     const statusArr = statuses.length === 0 ? STATUSES : statuses;
@@ -106,8 +96,6 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, da
   };
 
   const getStatusCount = (ex: IExecution[]) => {
-    console.log("getStatusCount");
-
     let statusCount = {} as any;
     for (const e of ex) {
       if (!(e.status in statusCount)) {

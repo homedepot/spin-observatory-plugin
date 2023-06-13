@@ -30,6 +30,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
     const pipelineConfig = pipelines.find((p) => p.name === e.target.value);
     setSelectedParams([]);
     setSelectedStatus([]);
+    setStatusCount({});
     setSelectedPipeline(pipelineConfig);
   };
 
@@ -38,8 +39,6 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   };
 
   const handleStatusCountChange = (statusCount: any) => {
-    console.log("handleStatusCountChange");
-
     setStatusCount(statusCount);
   };
 
@@ -59,7 +58,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
         <div className="flex-pull-right" style={{ width: '60rem' }}>
           <div className="horizontal right">
             <DatePicker onChange={handleDateFilterChange} disabled={!selectedPipeline} />
-            <div style={{ margin: '0 5px' }}>
+            <div className="flex-1" style={{ margin: '0 5px' }}>
               <ParameterSelect
                 className="flex-1"
                 pipeline={selectedPipeline}
