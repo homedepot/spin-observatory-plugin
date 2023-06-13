@@ -36,7 +36,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
     setSelectedDateRange({ start, end });
   };
 
-  const handleStatusCountChange = ({ statusCount }: { statusCount: any }) => {
+  const handleStatusCountChange = (statusCount: any) => {
     console.log("handleStatusCountChange");
     console.log(statusCount);
   };
