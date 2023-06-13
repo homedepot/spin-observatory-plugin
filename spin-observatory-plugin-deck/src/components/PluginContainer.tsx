@@ -6,8 +6,8 @@ import { ReactSelectInput, useDataSource } from '@spinnaker/core';
 
 import { DatePicker, IDateRange } from './date-picker/date-picker';
 import { ParameterSelect } from './parameters';
-import { PipelineExecutions, MAX_DATE_RANGE } from './pipelines';
 import { StatusSelect } from './status';
+import { PipelineExecutions, MAX_DATE_RANGE } from './pipelines';
 
 interface IPluginContainerProps {
   app: Application;
@@ -39,7 +39,6 @@ export function PluginContainer({ app }: IPluginContainerProps) {
 
   const handleStatusCountChange = (statusCount: any) => {
     console.log("handleStatusCountChange");
-    console.log(statusCount);
 
     setStatusCount(statusCount);
   };
@@ -58,14 +57,16 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           />
         </div>
         <div className="flex-pull-right" style={{ width: '60rem' }}>
-          <div className="horizontal middle right">
+          <div className="horizontal right">
             <DatePicker onChange={handleDateFilterChange} disabled={!selectedPipeline} />
-            <ParameterSelect
-              className="flex-1"
-              pipeline={selectedPipeline}
-              selectedParams={selectedParams}
-              setSelectedParams={setSelectedParams}
-            />
+            <div style={{ margin: '0 5px' }}>
+              <ParameterSelect
+                className="flex-1"
+                pipeline={selectedPipeline}
+                selectedParams={selectedParams}
+                setSelectedParams={setSelectedParams}
+              />
+            </div>
             <StatusSelect
               className="flex-1"
               pipeline={selectedPipeline}

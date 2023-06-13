@@ -37,7 +37,7 @@ export const StatusSelect = ({className, pipeline, selectedStatus, setSelectedSt
     for (const key in statusCount) {
       options.push({ label: `${key} (${statusCount[key]})`, value: key });
     }
-  
+
     return options;
   };
 

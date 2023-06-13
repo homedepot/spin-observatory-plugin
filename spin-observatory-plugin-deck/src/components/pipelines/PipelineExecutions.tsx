@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
+
 import { IExecution, IPipeline, useInterval } from '@spinnaker/core';
+import Skeleton from '@material-ui/lab/Skeleton';
+import { makeStyles } from '@material-ui/core';
+
 import { POLL_DELAY_MS, REQUEST_PAGE_SIZE } from './constants';
 import { getExecutions } from '../../services/gateService';
 import { ExecutionsTable } from './ExecutionsTable';
 import { IDateRange } from '../date-picker/date-picker';
-import Skeleton from '@material-ui/lab/Skeleton';
-import { makeStyles } from '@material-ui/core';
 import { STATUSES } from '../status';
 
 const useStyles = makeStyles({
@@ -23,6 +25,7 @@ interface IPipelineExecutionsProps {
 
 export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, dateRange, onStatusChange }: IPipelineExecutionsProps) => {
   const [executions, setExecutions] = useState<IExecution[]>([]);
+  const [filteredExecutions, setFilteredExecutions] = useState<IExecution[]>([]);
   const [statusCount, setStatusCount] = useState<any>({});
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const styles = useStyles();
@@ -30,6 +33,7 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, da
   useEffect(() => {
     if (!pipeline) {
       setExecutions([]);
+      setFilteredExecutions([]);
       setStatusCount({});
       setIsLoading(false);
       return;
@@ -46,6 +50,7 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, da
       console.log("useEffect:pipeline");
 
       setExecutions(resp);
+      setFilteredExecutions(filterExecutions(resp));
       setStatusCount(getStatusCount(resp));
       setIsLoading(false);
     });
@@ -60,7 +65,7 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, da
   useEffect(() => {
     console.log("useEffect:statuses");
 
-    setExecutions(getFilteredExecutions(executions));
+    setFilteredExecutions(filterExecutions(executions));
   }, [statuses]);
 
   useInterval(async () => {
@@ -74,12 +79,13 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, da
       endDate: dateRange.end,
     });
 
-    setExecutions(getFilteredExecutions(resp));
+    setExecutions(resp);
+    setFilteredExecutions(filterExecutions(resp));
     setStatusCount(getStatusCount(resp));
     setIsLoading(false);
   }, POLL_DELAY_MS);
 
-  const getFilteredExecutions = (ex: IExecution[]) => {
+  const filterExecutions = (ex: IExecution[]) => {
     console.log("getFilteredExecutions");
 
     let selectedStatus = {} as any;
@@ -126,5 +132,5 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, da
     return <h4 style={{ textAlign: 'center' }}>No pipeline executions found.</h4>
   }
 
-  return <ExecutionsTable executions={executions} parameters={parameters} />
+  return <ExecutionsTable executions={filteredExecutions} parameters={parameters} />
 };
