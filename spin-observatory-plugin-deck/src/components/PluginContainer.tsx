@@ -20,7 +20,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   const [selectedParams, setSelectedParams] = useState<string[]>([]);
   const [selectedDateRange, setSelectedDateRange] = useState<IDateRange>({ start: 0, end: MAX_DATE_RANGE });
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
-  const [statusCount, setStatusCount] = useState<any>({});
+  const [statusCount, setStatusCount] = useState<Map<string, number>>();
 
   useEffect(() => {
     dataSource.activate();
@@ -30,7 +30,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
     const pipelineConfig = pipelines.find((p) => p.name === e.target.value);
     setSelectedParams([]);
     setSelectedStatus([]);
-    setStatusCount({});
+    setStatusCount(new Map<string, number>());
     setSelectedPipeline(pipelineConfig);
   };
 
@@ -38,7 +38,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
     setSelectedDateRange({ start, end });
   };
 
-  const handleStatusCountChange = (statusCount: any) => {
+  const handleStatusCountChange = (statusCount: Map<string, number>) => {
     setStatusCount(statusCount);
   };
 

@@ -20,13 +20,13 @@ interface IPipelineExecutionsProps {
   parameters: string[];
   statuses: string[];
   dateRange: IDateRange;
-  onStatusChange: ({ statusCount }: { statusCount: any }) => void
+  onStatusChange: (statusCount: Map<string, number>) => void;
 }
 
 export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, dateRange, onStatusChange }: IPipelineExecutionsProps) => {
   const [executions, setExecutions] = useState<IExecution[]>([]);
   const [filteredExecutions, setFilteredExecutions] = useState<IExecution[]>([]);
-  const [statusCount, setStatusCount] = useState<any>({});
+  const [statusCount, setStatusCount] = useState<Map<string, number>>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const styles = useStyles();
 
@@ -34,7 +34,7 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, da
     if (!pipeline) {
       setExecutions([]);
       setFilteredExecutions([]);
-      setStatusCount({});
+      setStatusCount(new Map<string, number>());
       setIsLoading(false);
       return;
     }
@@ -78,31 +78,19 @@ export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, da
   }, POLL_DELAY_MS);
 
   const filterExecutions = (ex: IExecution[]) => {
-    let selectedStatus = {} as any;
-
     const statusArr = statuses.length === 0 ? STATUSES : statuses;
-    for (const s of statusArr) {
-      selectedStatus[s] = true;
-    }
 
-    let filteredExecutions = [] as IExecution[];
-    for (const e of ex) {
-      if (e.status in selectedStatus) {
-        filteredExecutions.push(e);
-      }
-    }
-
-    return filteredExecutions;
+    return ex.filter(e => statusArr.includes(e.status));
   };
 
   const getStatusCount = (ex: IExecution[]) => {
-    let statusCount = {} as any;
+    let statusCount = new Map<string, number>();
     for (const e of ex) {
-      if (!(e.status in statusCount)) {
-        statusCount[e.status] = 0;
+      if (!statusCount.has(e.status)) {
+        statusCount.set(e.status, 1);
+      } else {
+        statusCount.set(e.status, statusCount.get(e.status) + 1);
       }
-
-      statusCount[e.status]++;
     }
 
     return statusCount;

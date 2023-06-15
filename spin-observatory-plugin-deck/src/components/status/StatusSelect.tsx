@@ -24,7 +24,7 @@ interface IStatusSelectProps {
   pipeline?: IPipeline;
   selectedStatus: string[];
   setSelectedStatus(params: string[]): void;
-  statusCount: any;
+  statusCount: Map<string, number>;
 }
 
 export const StatusSelect = ({className, pipeline, selectedStatus, setSelectedStatus, statusCount }: IStatusSelectProps) => {
@@ -32,11 +32,11 @@ export const StatusSelect = ({className, pipeline, selectedStatus, setSelectedSt
     setSelectedStatus(options.map((o) => o.value));
   };
 
-  const extractStatus = (statusCount: any): Array<Option<string>> => {
+  const extractStatus = (statusCount: Map<string, number>): Array<Option<string>> => {
     let options = [];
-    for (const key in statusCount) {
-      options.push({ label: `${key} (${statusCount[key]})`, value: key });
-    }
+    statusCount.forEach((value, key) => {
+      options.push({ label: `${key} (${value})`, value: key });
+    });
 
     return options;
   };
