@@ -26,7 +26,7 @@ interface IPipelineExecutionsProps {
 export const PipelineExecutions = ({ appName, pipeline, parameters, statuses, dateRange, onStatusChange }: IPipelineExecutionsProps) => {
   const [executions, setExecutions] = useState<IExecution[]>([]);
   const [filteredExecutions, setFilteredExecutions] = useState<IExecution[]>([]);
-  const [statusCount, setStatusCount] = useState<Map<string, number>>();
+  const [statusCount, setStatusCount] = useState<Map<string, number>>(new Map<string, number>());
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const styles = useStyles();
 
