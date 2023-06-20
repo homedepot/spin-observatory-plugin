@@ -6,7 +6,8 @@ import { ReactSelectInput, useDataSource } from '@spinnaker/core';
 
 import { DatePicker, IDateRange } from './date-picker/date-picker';
 import { ParameterSelect } from './parameters';
-import { PipelineExecutions, STATUSES, MAX_DATE_RANGE } from './pipelines';
+import { StatusSelect } from './status';
+import { PipelineExecutions, MAX_DATE_RANGE } from './pipelines';
 
 interface IPluginContainerProps {
   app: Application;
@@ -18,7 +19,8 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   const [selectedPipeline, setSelectedPipeline] = useState<IPipeline>();
   const [selectedParams, setSelectedParams] = useState<string[]>([]);
   const [selectedDateRange, setSelectedDateRange] = useState<IDateRange>({ start: 0, end: MAX_DATE_RANGE });
-  const [selectedStatus, setSelectedStatus] = useState<string[]>(STATUSES);
+  const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
+  const [statusCount, setStatusCount] = useState<Map<string, number>>(new Map<string, number>());
 
   useEffect(() => {
     dataSource.activate();
@@ -27,11 +29,17 @@ export function PluginContainer({ app }: IPluginContainerProps) {
   const onPipelineSelect = async (e: ChangeEvent<HTMLSelectElement>) => {
     const pipelineConfig = pipelines.find((p) => p.name === e.target.value);
     setSelectedParams([]);
+    setSelectedStatus([]);
+    setStatusCount(new Map<string, number>());
     setSelectedPipeline(pipelineConfig);
   };
 
   const handleDateFilterChange = ({ start, end }: { start: number, end: number }) => {
     setSelectedDateRange({ start, end });
+  };
+
+  const handleStatusCountChange = (statusCount: Map<string, number>) => {
+    setStatusCount(statusCount);
   };
 
   return (
@@ -47,14 +55,23 @@ export function PluginContainer({ app }: IPluginContainerProps) {
             options={pipelines.map((p) => ({ label: p.name, value: p.name }))}
           />
         </div>
-        <div className="flex-pull-right" style={{ width: '40rem' }}>
-          <div className="horizontal middle right">
+        <div className="flex-pull-right" style={{ width: '60rem' }}>
+          <div className="horizontal right">
             <DatePicker onChange={handleDateFilterChange} disabled={!selectedPipeline} />
-            <ParameterSelect
+            <div className="flex-1" style={{ margin: '0 5px' }}>
+              <ParameterSelect
+                className="flex-1"
+                pipeline={selectedPipeline}
+                selectedParams={selectedParams}
+                setSelectedParams={setSelectedParams}
+              />
+            </div>
+            <StatusSelect
               className="flex-1"
               pipeline={selectedPipeline}
-              selectedParams={selectedParams}
-              setSelectedParams={setSelectedParams}
+              selectedStatus={selectedStatus}  
+              setSelectedStatus={setSelectedStatus}
+              statusCount={statusCount}
             />
           </div>
         </div>
@@ -64,10 +81,11 @@ export function PluginContainer({ app }: IPluginContainerProps) {
           <h4 style={{ textAlign: 'center' }}>Please select a pipeline to view executions.</h4>
         ) : (
           <PipelineExecutions
+            onStatusChange={handleStatusCountChange}
             appName={app.name}
             pipeline={selectedPipeline}
             parameters={selectedParams}
-            status={selectedStatus}
+            statuses={selectedStatus}
             dateRange={selectedDateRange}
           />
         )}
