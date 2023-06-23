@@ -14,6 +14,11 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
+export interface IDateRange {
+  start: number;
+  end: number;
+}
+
 const START_AND_END_BY_HOURS = ({ hours = 1 }) => {
   const now = new Date();
   const minusHours = new Date(now.getTime() - hours * 60 * 60 * 1000);

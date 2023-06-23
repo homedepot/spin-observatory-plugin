@@ -27,6 +27,10 @@ const goToExecutionDetails = (executionId: string) => () => {
 };
 
 const convertTimestamp = (ts: number) => {
+  if (!ts) {
+    return ''
+  }
+
   return new Intl.DateTimeFormat('en-US', {
     year: '2-digit',
     month: 'numeric',
@@ -37,40 +41,38 @@ const convertTimestamp = (ts: number) => {
   }).format(ts);
 };
 
-export const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected, inProgress }: IExecutionRowProps) => {
+export const ExecutionRow = ({ execution, parameters, onSelectOne, isSelected }: IExecutionRowProps) => {
   const styles = useStyles();
   return (
-    <TableRow
-      hover
-      selected={isSelected}
-      onClick={onSelectOne}
-      style={isSelected ? { backgroundColor: 'var(--color-accent-g2)' } : {}}
-      classes={{ root: styles.tableRow }}
-    >
-      <TableCell padding="checkbox">
-        <Checkbox checked={isSelected} style={isSelected ? { color: 'var(--color-primary-g1)' } : {}} />
-      </TableCell>
-      <TableCell component="th" scope="row">
-        <Typography onClick={goToExecutionDetails(execution.id)} classes={{ root: styles.executionLink }}>
-          {execution.id}
-        </Typography>
-      </TableCell>
-      <TableCell>
-        <Typography classes={{ root: styles.typography }}>{execution.status}</Typography>
-      </TableCell>
-      <TableCell>
-        <Typography classes={{ root: styles.typography }}>{convertTimestamp(execution.startTime)}</Typography>
-      </TableCell>
-      {!inProgress && (
+      <TableRow
+          hover
+          selected={isSelected}
+          onClick={onSelectOne}
+          style={isSelected ? { backgroundColor: 'var(--color-accent-g2)' } : {}}
+          classes={{ root: styles.tableRow }}
+      >
+        <TableCell padding="checkbox">
+          <Checkbox checked={isSelected} style={isSelected ? { color: 'var(--color-primary-g1)' } : {}} />
+        </TableCell>
+        <TableCell component="th" scope="row">
+          <Typography onClick={goToExecutionDetails(execution.id)} classes={{ root: styles.executionLink }}>
+            {execution.id}
+          </Typography>
+        </TableCell>
+        <TableCell>
+          <Typography classes={{ root: styles.typography }}>{execution.status}</Typography>
+        </TableCell>
+        <TableCell>
+          <Typography classes={{ root: styles.typography }}>{convertTimestamp(execution.startTime)}</Typography>
+        </TableCell>
         <TableCell>
           <Typography classes={{ root: styles.typography }}>{convertTimestamp(execution.endTime)}</Typography>
         </TableCell>
-      )}
-      {parameters.map((p) => (
-        <TableCell>
-          <Typography classes={{ root: styles.typography }}>{execution.trigger.parameters![p]}</Typography>
-        </TableCell>
-      ))}
-    </TableRow>
+        {parameters.map((p) => (
+            <TableCell>
+              <Typography classes={{ root: styles.typography }}>{execution.trigger.parameters![p]}</Typography>
+            </TableCell>
+        ))}
+      </TableRow>
   );
 };

@@ -9,9 +9,11 @@ import {
   TableRow,
   Typography,
 } from '@material-ui/core';
+import React, { ChangeEvent, useState } from 'react';
+
 import { makeStyles } from '@material-ui/core';
-import type { ChangeEvent } from 'react';
-import React, { useState } from 'react';
+/*import type { ChangeEvent } from 'react';
+import React, { useState } from 'react';*/
 
 import type { IExecution } from '@spinnaker/core';
 import { Executions } from '@spinnaker/core/dist/pipeline/executions/Executions';
@@ -21,7 +23,7 @@ import { PaginationActions } from './PaginationActions';
 import { TableHeaders } from './TableHeaders';
 import { ActionButtonsContainer, PauseResumeButton, RetriggerButton } from '../actions';
 import type { IStatus } from './constants';
-import { DEFAULT_ROWS_PER_PAGE, STATUSES } from './constants';
+import { DEFAULT_ROWS_PER_PAGE, STATUSES, TRIGGERED } from './constants';
 import { retriggerExecutions } from '../../services/BroadsideService';
 
 const useStyles = makeStyles({
@@ -32,21 +34,19 @@ const useStyles = makeStyles({
 interface IExecutionsTableProps {
   executions: IExecution[];
   parameters: string[];
-  status: IStatus;
+  // TODO: check status type change is fine
+  status: string[];
   refreshExecutions: () => void;
 }
 
-export const ExecutionsTable = ({ executions, parameters, status, refreshExecutions }: IExecutionsTableProps) => {
+export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: IExecutionsTableProps) => {
   const [selectedExecutions, setSelectedExecutions] = useState<IExecution[]>([]);
   const [retriggerInProgress, setRetriggerInProgress] = useState(false);
   const [currentPage, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PER_PAGE);
   const styles = useStyles();
 
-  const headers =
-    status === STATUSES.TRIGGERED
-      ? ['ID', 'Status', 'Start Time', ...parameters]
-      : ['ID', 'Status', 'Start Time', 'End Time', ...parameters];
+  const headers = ['ID', 'Status', 'Start Time', 'End Time', ...parameters];
 
   const handlePageChange = (_: any, newPage: number) => {
     setPage(newPage);
@@ -97,6 +97,9 @@ export const ExecutionsTable = ({ executions, parameters, status, refreshExecuti
 
   const isSelected = (id: string) => !!selectedExecutions.find((e) => e.id === id);
 
+  // TODO: check this function works
+  const isTriggered = (status: string) => TRIGGERED.includes(status) ?? false;
+
   return (
     <TableContainer component={Paper} classes={{ root: styles.tableContainer }}>
       <Table stickyHeader>
@@ -113,7 +116,8 @@ export const ExecutionsTable = ({ executions, parameters, status, refreshExecuti
               isSelected={isSelected(e.id)}
               execution={e}
               parameters={parameters}
-              inProgress={status === STATUSES.TRIGGERED}
+              // TODO: check that this works correctly
+              inProgress={isTriggered(e.status)}
               onSelectOne={handleSelectOne({ execution: e })}
             />
           ))}
@@ -122,7 +126,10 @@ export const ExecutionsTable = ({ executions, parameters, status, refreshExecuti
           <TableRow>
             <TableCell colSpan={2}>
               <ActionButtonsContainer>
-                {status === STATUSES.TRIGGERED && (
+                {
+                  // TODO: check this
+                  /*status === STATUSES.TRIGGERED
+                    && */(
                   <PauseResumeButton
                     executionIds={selectedExecutions.map((e) => e.id)}
                     refreshExecutions={refreshExecutions}
