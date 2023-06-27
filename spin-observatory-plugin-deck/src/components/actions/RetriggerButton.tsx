@@ -1,24 +1,18 @@
-import Button from '@material-ui/core/Button';
-import React, { useState } from 'react';
+import { Button, makeStyles } from '@material-ui/core';
+import React from 'react';
 
-export const RetriggerButton = () => {
-  const [hover, setHover] = useState(false);
+const useStyles = makeStyles({
+  'retrigger-button': {
+    width: '7rem',
+    color: '#fff',
+    backgroundColor: 'var(--color-accent)',
+  },
+  'retrigger-button:hover': {
+    backgroundColor: 'var(--button-primary-hover-bg)',
+  },
+});
 
-  const handleHover = () => setHover((prevHover) => !prevHover);
-
-  return (
-    <div>
-      <Button
-        onMouseEnter={handleHover}
-        onMouseLeave={handleHover}
-        style={{
-          width: '7rem',
-          color: 'white',
-          backgroundColor: hover ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
-        }}
-      >
-        Retrigger
-      </Button>
-    </div>
-  );
+export const RetriggerButton = ({ disabled, onClick }: { disabled: boolean; onClick: () => void }) => {
+  const styles = useStyles();
+  return <Button className={styles['retrigger-button']}>Retrigger</Button>;
 };

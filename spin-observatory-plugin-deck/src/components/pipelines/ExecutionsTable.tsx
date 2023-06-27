@@ -14,12 +14,14 @@ import type { ChangeEvent } from 'react';
 import React, { useState } from 'react';
 
 import type { IExecution } from '@spinnaker/core';
+import { Executions } from '@spinnaker/core/dist/pipeline/executions/Executions';
 
 import { ExecutionRow } from './ExecutionRow';
 import { PaginationActions } from './PaginationActions';
 import { TableHeaders } from './TableHeaders';
 import { ActionButtonsContainer, PauseResumeButton, RetriggerButton } from '../actions';
 import { DEFAULT_ROWS_PER_PAGE } from './constants';
+import { retriggerExecutions } from '../../services/BroadsideService';
 
 const useStyles = makeStyles({
   tableContainer: { borderRadius: 'inherit' },
@@ -34,6 +36,7 @@ interface IExecutionsTableProps {
 
 export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: IExecutionsTableProps) => {
   const [selectedExecutionIds, setSelectedExecutionIds] = useState<string[]>([]);
+  const [retriggerInProgress, setRetriggerInProgress] = useState(false);
   const [currentPage, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PER_PAGE);
   const styles = useStyles();
@@ -70,6 +73,23 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
     setSelectedExecutionIds(newSelected);
   };
 
+  const handleRetrigger = () => {
+    setRetriggerInProgress(true);
+    // retriggerExecutions({ executions: selectedExecutions })
+    //   .then((res) => {
+    //     // eslint-disable-next-line no-console
+    //     console.log('retriggered: ', res);
+    //     setRetriggerInProgress(false);
+    //   })
+    //   .catch((e) => {
+    //     //TODO: surface this error
+    //     console.error('error retriggering: ', e);
+    //   })
+    //   .finally(() => {
+    //     setRetriggerInProgress(false);
+    //   });
+  };
+
   const isSelected = (name: string) => selectedExecutionIds.indexOf(name) !== -1;
 
   return (
@@ -97,7 +117,7 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
             <TableCell colSpan={2}>
               <ActionButtonsContainer>
                 <PauseResumeButton executionIds={selectedExecutionIds} refreshExecutions={refreshExecutions} />
-                <RetriggerButton />
+                <RetriggerButton disabled={selectedExecutionIds.length === 0} onClick={handleRetrigger} />
               </ActionButtonsContainer>
             </TableCell>
             <TablePagination
