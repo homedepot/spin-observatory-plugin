@@ -19,8 +19,7 @@ import { ExecutionRow } from './ExecutionRow';
 import { PaginationActions } from './PaginationActions';
 import { TableHeaders } from './TableHeaders';
 import { ActionButtonsContainer, PauseResumeButton, RetriggerButton } from '../actions';
-import type { IStatus } from './constants';
-import { DEFAULT_ROWS_PER_PAGE, STATUSES } from './constants';
+import { DEFAULT_ROWS_PER_PAGE } from './constants';
 
 const useStyles = makeStyles({
   tableContainer: { borderRadius: 'inherit' },
@@ -30,20 +29,16 @@ const useStyles = makeStyles({
 interface IExecutionsTableProps {
   executions: IExecution[];
   parameters: string[];
-  status: IStatus;
   refreshExecutions: () => void;
 }
 
-export const ExecutionsTable = ({ executions, parameters, status, refreshExecutions }: IExecutionsTableProps) => {
+export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: IExecutionsTableProps) => {
   const [selectedExecutionIds, setSelectedExecutionIds] = useState<string[]>([]);
   const [currentPage, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PER_PAGE);
   const styles = useStyles();
 
-  const headers =
-    status === STATUSES.TRIGGERED
-      ? ['ID', 'Status', 'Start Time', ...parameters]
-      : ['ID', 'Status', 'Start Time', 'End Time', ...parameters];
+  const headers = ['ID', 'Status', 'Start Time', 'End Time', ...parameters];
 
   const handlePageChange = (_: any, newPage: number) => {
     setPage(newPage);
@@ -93,7 +88,6 @@ export const ExecutionsTable = ({ executions, parameters, status, refreshExecuti
               isSelected={isSelected(e.id)}
               execution={e}
               parameters={parameters}
-              inProgress={status === STATUSES.TRIGGERED}
               onSelectOne={handleSelectOne(e.id)}
             />
           ))}
@@ -102,9 +96,7 @@ export const ExecutionsTable = ({ executions, parameters, status, refreshExecuti
           <TableRow>
             <TableCell colSpan={2}>
               <ActionButtonsContainer>
-                {status === STATUSES.TRIGGERED && (
-                  <PauseResumeButton executionIds={selectedExecutionIds} refreshExecutions={refreshExecutions} />
-                )}
+                <PauseResumeButton executionIds={selectedExecutionIds} refreshExecutions={refreshExecutions} />
                 <RetriggerButton />
               </ActionButtonsContainer>
             </TableCell>
