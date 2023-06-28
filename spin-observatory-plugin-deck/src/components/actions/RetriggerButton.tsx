@@ -24,7 +24,7 @@ export const RetriggerButton = ({ disabled, executions, refreshExecutions }: IRe
     retriggerExecutions({ executions })
       .then((res) => {
         // eslint-disable-next-line no-console
-        console.log('retriggered: ', res);
+        console.log('retriggered: ', res.status);
         setRetriggerInProgress(false);
       })
       .catch((e) => {

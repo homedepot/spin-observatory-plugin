@@ -21,5 +21,11 @@ export const retriggerExecutions = ({ executions }: { executions: IExecution[] }
   const amount = executions.length;
   const pipelineMultiParameters = executions.map((e) => e.trigger.parameters);
 
-  return REST(BROADSIDE_URI).post({ application, pipelineNameOrId, amount, pipelineMultiParameters });
+  return fetch(BROADSIDE_URI, {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify({ application, pipelineNameOrId, amount, pipelineMultiParameters }),
+  });
+
+  //return REST(BROADSIDE_URI).post({ application, pipelineNameOrId, amount, pipelineMultiParameters });
 };
