@@ -39,6 +39,7 @@ export const RetriggerButton = ({ disabled, executions, refreshExecutions }: IRe
 
   return (
     <Button
+      disabled={disabled}
       onMouseEnter={handleHover}
       onMouseLeave={handleHover}
       onClick={handleRetrigger}
