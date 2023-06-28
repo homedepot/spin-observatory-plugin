@@ -4,9 +4,9 @@ import { REST } from '@spinnaker/core';
 const BROADSIDE_URI = 'http://broadside.cd:80/v1/broadsides';
 
 // See https://github.com/one-thd/broadside/blob/main/api/swagger.yml#L206
-export const retriggerExecutions = ({ executions }: { executions: IExecution[] }): Promise<any[]> => {
+export const retriggerExecutions = ({ executions }: { executions: IExecution[] }) => {
   /***
-   *  application: "clipper"
+   *       application: "clipper"
    *       pipelineNameOrId: "Generate Clipper X.509 Key Pair"
    *       amount: 50
    *       delay: 100
@@ -15,13 +15,11 @@ export const retriggerExecutions = ({ executions }: { executions: IExecution[] }
    */
   // eslint-disable-next-line no-console
   console.log({ executions });
-  return Promise.all(
-    executions.map(async (execution) => {
-      return await REST(BROADSIDE_URI).post({
-        application: execution.application,
-        pipelineNameOrId: execution.pipelineConfigId,
-        pipelineBaseParameters: execution.trigger.parameters,
-      });
-    }),
-  );
+
+  const application = executions[0].application;
+  const pipelineNameOrId = executions[0].name;
+  const amount = executions.length;
+  const pipelineMultiParameters = executions.map((e) => e.trigger.parameters);
+
+  return REST(BROADSIDE_URI).post({ application, pipelineNameOrId, amount, pipelineMultiParameters });
 };

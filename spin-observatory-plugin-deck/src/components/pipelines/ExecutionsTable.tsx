@@ -36,7 +36,6 @@ interface IExecutionsTableProps {
 
 export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: IExecutionsTableProps) => {
   const [selectedExecutionIds, setSelectedExecutionIds] = useState<string[]>([]);
-  const [retriggerInProgress, setRetriggerInProgress] = useState(false);
   const [currentPage, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PER_PAGE);
   const styles = useStyles();
@@ -73,23 +72,6 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
     setSelectedExecutionIds(newSelected);
   };
 
-  const handleRetrigger = () => {
-    setRetriggerInProgress(true);
-    // retriggerExecutions({ executions: selectedExecutions })
-    //   .then((res) => {
-    //     // eslint-disable-next-line no-console
-    //     console.log('retriggered: ', res);
-    //     setRetriggerInProgress(false);
-    //   })
-    //   .catch((e) => {
-    //     //TODO: surface this error
-    //     console.error('error retriggering: ', e);
-    //   })
-    //   .finally(() => {
-    //     setRetriggerInProgress(false);
-    //   });
-  };
-
   const isSelected = (name: string) => selectedExecutionIds.indexOf(name) !== -1;
 
   return (
@@ -116,8 +98,16 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
           <TableRow>
             <TableCell colSpan={2}>
               <ActionButtonsContainer>
-                <PauseResumeButton executionIds={selectedExecutionIds} refreshExecutions={refreshExecutions} />
-                <RetriggerButton disabled={selectedExecutionIds.length === 0} onClick={handleRetrigger} />
+                <PauseResumeButton
+                  disabled={selectedExecutionIds.length === 0}
+                  executionIds={selectedExecutionIds}
+                  refreshExecutions={refreshExecutions}
+                />
+                <RetriggerButton
+                  disabled={selectedExecutionIds.length === 0}
+                  executions={executions.filter((e) => selectedExecutionIds.includes(e.id))}
+                  refreshExecutions={refreshExecutions}
+                />
               </ActionButtonsContainer>
             </TableCell>
             <TablePagination

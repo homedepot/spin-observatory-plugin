@@ -12,6 +12,7 @@ import React, { Fragment, useRef, useState } from 'react';
 import { pauseExecutions, resumeExecutions } from '../../services/gateService';
 
 interface IPauseResumeButtonProps {
+  disabled: boolean;
   executionIds: string[];
   refreshExecutions: () => void;
 }
@@ -21,7 +22,7 @@ const options = [
   { text: 'Resume', action: resumeExecutions },
 ];
 
-export const PauseResumeButton = ({ executionIds, refreshExecutions }: IPauseResumeButtonProps) => {
+export const PauseResumeButton = ({ disabled, executionIds, refreshExecutions }: IPauseResumeButtonProps) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -50,7 +51,7 @@ export const PauseResumeButton = ({ executionIds, refreshExecutions }: IPauseRes
 
   const handleHover = () => setHover((prevHover) => !prevHover);
 
-  const isHovered = hover && executionIds.length > 0;
+  const isHovered = hover && !disabled;
 
   return (
     <Fragment>
@@ -59,7 +60,7 @@ export const PauseResumeButton = ({ executionIds, refreshExecutions }: IPauseRes
         onMouseLeave={handleHover}
         variant="contained"
         ref={anchorRef}
-        disabled={executionIds.length === 0}
+        disabled={disabled}
       >
         <Button
           style={{
