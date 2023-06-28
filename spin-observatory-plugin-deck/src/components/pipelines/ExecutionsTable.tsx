@@ -14,14 +14,12 @@ import type { ChangeEvent } from 'react';
 import React, { useState } from 'react';
 
 import type { IExecution } from '@spinnaker/core';
-import { Executions } from '@spinnaker/core/dist/pipeline/executions/Executions';
 
 import { ExecutionRow } from './ExecutionRow';
 import { PaginationActions } from './PaginationActions';
 import { TableHeaders } from './TableHeaders';
 import { ActionButtonsContainer, PauseResumeButton, RetriggerButton } from '../actions';
 import { DEFAULT_ROWS_PER_PAGE } from './constants';
-import { retriggerExecutions } from '../../services/BroadsideService';
 
 const useStyles = makeStyles({
   tableContainer: { borderRadius: 'inherit' },

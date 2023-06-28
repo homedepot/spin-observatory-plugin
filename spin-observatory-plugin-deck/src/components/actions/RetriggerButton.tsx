@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Button, ButtonGroup } from '@material-ui/core';
 import React, { useState } from 'react';
 
 import type { IExecution } from '@spinnaker/core';
@@ -38,18 +38,17 @@ export const RetriggerButton = ({ disabled, executions, refreshExecutions }: IRe
   };
 
   return (
-    <Button
-      disabled={disabled}
-      onMouseEnter={handleHover}
-      onMouseLeave={handleHover}
-      onClick={handleRetrigger}
-      style={{
-        width: '7rem',
-        color: 'white',
-        backgroundColor: isHovered ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
-      }}
-    >
-      Retrigger
-    </Button>
+    <ButtonGroup onMouseEnter={handleHover} onMouseLeave={handleHover} variant="contained" disabled={disabled}>
+      <Button
+        onClick={handleRetrigger}
+        style={{
+          width: '7rem',
+          color: 'white',
+          backgroundColor: isHovered ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
+        }}
+      >
+        Retrigger
+      </Button>
+    </ButtonGroup>
   );
 };
