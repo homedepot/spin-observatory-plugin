@@ -74,11 +74,19 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
   };
 
   const isSelected = (name: string) => selectedExecutionIds.indexOf(name) !== -1;
-  const showToastMessage = () => {
-    toast.success('Success Notification !', {
-      position: toast.POSITION.TOP_RIGHT,
+
+  const handleError = (msg: string) => {
+    toast.error(msg, {
+      position: toast.POSITION.BOTTOM_RIGHT,
     });
   };
+
+  const handleSuccess = (msg: string) => {
+    toast(msg, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+  };
+
   return (
     <TableContainer component={Paper} classes={{ root: styles.tableContainer }}>
       <Table stickyHeader>
@@ -107,6 +115,8 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
                 <RetriggerButton
                   executions={executions.filter((e) => selectedExecutionIds.includes(e.id))}
                   refreshExecutions={refreshExecutions}
+                  handleSuccess={handleSuccess}
+                  handleError={handleError}
                 />
               </ActionButtonsContainer>
             </TableCell>
@@ -136,8 +146,7 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
         </TableFooter>
       </Table>
       <div>
-        <button onClick={showToastMessage}>Notify</button>
-        <ToastContainer />
+        <ToastContainer position="bottom-right" autoClose={false} newestOnTop={true} closeOnClick={false} />
       </div>
     </TableContainer>
   );
