@@ -8,7 +8,7 @@ import { useInterval } from '@spinnaker/core';
 import { ExecutionsTable } from './ExecutionsTable';
 import { POLL_DELAY_MS, REQUEST_PAGE_SIZE } from './constants';
 import type { IDateRange } from '../date-picker/date-picker';
-import { getExecutions } from '../../services/gate';
+import { gate } from '../../services/';
 import { STATUSES } from '../status';
 
 const useStyles = makeStyles({
@@ -46,7 +46,7 @@ export const PipelineExecutions = ({
   };
 
   const refreshExecutions = () => {
-    getExecutions(appName, getExecutionsParams).then((resp) => setExecutions(resp));
+    gate.getExecutions(appName, getExecutionsParams).then((resp) => setExecutions(resp));
   };
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export const PipelineExecutions = ({
       endDate: dateRange.end,
     };
 
-    getExecutions(appName, requestParams).then((resp) => {
+    gate.getExecutions(appName, requestParams).then((resp) => {
       setExecutions(resp);
       setFilteredExecutions(filterExecutions(resp));
       setStatusCount(getStatusCount(resp));
@@ -83,7 +83,7 @@ export const PipelineExecutions = ({
 
   useInterval(async () => {
     if (!pipeline) return;
-    const resp = await getExecutions(appName, {
+    const resp = await gate.getExecutions(appName, {
       pipelineName: pipeline.name,
       pageSize: REQUEST_PAGE_SIZE,
       startDate: dateRange.start,
