@@ -8,7 +8,7 @@ import { useInterval } from '@spinnaker/core';
 import { ExecutionsTable } from './ExecutionsTable';
 import { POLL_DELAY_MS, REQUEST_PAGE_SIZE } from './constants';
 import type { IDateRange } from '../date-picker/date-picker';
-import { getExecutions } from '../../services/gateService';
+import { getExecutions } from '../../services/gate';
 import { STATUSES } from '../status';
 
 const useStyles = makeStyles({

@@ -1,2 +1,2 @@
-export * from './broadsideService';
-export * from './gateService';
+export * from './broadside';
+export * from './gate';
