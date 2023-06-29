@@ -3,25 +3,25 @@ import React, { useState } from 'react';
 
 import type { IExecution } from '@spinnaker/core';
 
-import { retriggerExecutions } from '../../services/BroadsideService';
+import { broadside } from '../../services/';
 
 interface IRetriggerButtonProps {
-  disabled: boolean;
   executions: IExecution[];
   refreshExecutions: () => void;
 }
 
-export const RetriggerButton = ({ disabled, executions, refreshExecutions }: IRetriggerButtonProps) => {
+export const RetriggerButton = ({ executions, refreshExecutions }: IRetriggerButtonProps) => {
   const [retriggerInProgress, setRetriggerInProgress] = useState(false);
   const [hover, setHover] = useState(false);
 
   const handleHover = () => setHover((prevHover) => !prevHover);
 
-  const isHovered = hover && !disabled && !retriggerInProgress;
+  const disabled = executions.length === 0 || retriggerInProgress;
 
   const handleRetrigger = () => {
     setRetriggerInProgress(true);
-    retriggerExecutions({ executions })
+    broadside
+      .retriggerExecutions({ executions })
       .then((res) => {
         // eslint-disable-next-line no-console
         console.log('retriggered: ', res.status);
@@ -37,6 +37,16 @@ export const RetriggerButton = ({ disabled, executions, refreshExecutions }: IRe
       });
   };
 
+  const computeBtnColor = () => {
+    if (disabled) {
+      return 'var(--color-status-inactive)';
+    } else if (hover) {
+      return 'var(--button-primary-hover-bg)';
+    } else {
+      return 'var(--color-accent)';
+    }
+  };
+
   return (
     <ButtonGroup onMouseEnter={handleHover} onMouseLeave={handleHover} variant="contained" disabled={disabled}>
       <Button
@@ -44,7 +54,7 @@ export const RetriggerButton = ({ disabled, executions, refreshExecutions }: IRe
         style={{
           width: '7rem',
           color: 'white',
-          backgroundColor: isHovered ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
+          backgroundColor: computeBtnColor(),
         }}
       >
         Retrigger

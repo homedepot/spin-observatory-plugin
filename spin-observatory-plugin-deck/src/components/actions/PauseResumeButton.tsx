@@ -8,20 +8,19 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import React, { Fragment, useRef, useState } from 'react';
-import { pauseExecutions, resumeExecutions } from '../../services/gateService';
+import { gate } from '../../services/';
 
 interface IPauseResumeButtonProps {
-  disabled: boolean;
   executionIds: string[];
   refreshExecutions: () => void;
 }
 
 const options = [
-  { text: 'Pause', action: pauseExecutions },
-  { text: 'Resume', action: resumeExecutions },
+  { text: 'Pause', action: gate.pauseExecutions },
+  { text: 'Resume', action: gate.resumeExecutions },
 ];
 
-export const PauseResumeButton = ({ disabled, executionIds, refreshExecutions }: IPauseResumeButtonProps) => {
+export const PauseResumeButton = ({ executionIds, refreshExecutions }: IPauseResumeButtonProps) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -50,7 +49,17 @@ export const PauseResumeButton = ({ disabled, executionIds, refreshExecutions }:
 
   const handleHover = () => setHover((prevHover) => !prevHover);
 
-  const isHovered = hover && !disabled;
+  const disabled = executionIds.length === 0;
+
+  const computeBtnColor = () => {
+    if (disabled) {
+      return 'var(--color-status-inactive)';
+    } else if (hover) {
+      return 'var(--button-primary-hover-bg)';
+    } else {
+      return 'var(--color-accent)';
+    }
+  };
 
   return (
     <Fragment>
@@ -63,23 +72,23 @@ export const PauseResumeButton = ({ disabled, executionIds, refreshExecutions }:
       >
         <Button
           style={{
-            width: '7rem',
             color: 'white',
-            backgroundColor: isHovered ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
-          }}
-          onClick={handleButtonClick}
-        >
-          {options[selectedIndex].text}
-        </Button>
-        <Button
-          style={{
-            color: 'white',
-            backgroundColor: isHovered ? 'var(--button-primary-hover-bg)' : 'var(--color-accent)',
+            backgroundColor: computeBtnColor(),
           }}
           size="small"
           onClick={handleToggle}
         >
           <ArrowDropDownIcon />
+        </Button>
+        <Button
+          style={{
+            width: '7rem',
+            color: 'white',
+            backgroundColor: computeBtnColor(),
+          }}
+          onClick={handleButtonClick}
+        >
+          {options[selectedIndex].text}
         </Button>
       </ButtonGroup>
       <Popper open={open} anchorEl={anchorRef.current} transition disablePortal>

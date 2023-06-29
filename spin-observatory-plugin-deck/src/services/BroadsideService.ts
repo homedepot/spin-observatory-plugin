@@ -1,10 +1,10 @@
 import type { IExecution } from '@spinnaker/core';
-import { REST, SETTINGS } from '@spinnaker/core';
+import { SETTINGS } from '@spinnaker/core';
 // http://broadside.cd:80
 const BROADSIDE_URI = `${SETTINGS.gateUrl}/proxies/broadside/v1/broadsides`;
 
 // See https://github.com/one-thd/broadside/blob/main/api/swagger.yml#L206
-export const retriggerExecutions = ({ executions }: { executions: IExecution[] }) => {
+const retriggerExecutions = ({ executions }: { executions: IExecution[] }) => {
   /***
    *       application: "clipper"
    *       pipelineNameOrId: "Generate Clipper X.509 Key Pair"
@@ -26,6 +26,6 @@ export const retriggerExecutions = ({ executions }: { executions: IExecution[] }
     credentials: 'include',
     body: JSON.stringify({ application, pipelineNameOrId, amount, pipelineMultiParameters }),
   });
-
-  //return REST(BROADSIDE_URI).post({ application, pipelineNameOrId, amount, pipelineMultiParameters });
 };
+
+export const broadside = { retriggerExecutions };

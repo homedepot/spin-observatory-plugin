@@ -9,7 +9,7 @@ interface IExecutionsParams {
   firstItemIdx?: number;
 }
 
-export const getExecutions = async (appName: string, params: IExecutionsParams) => {
+const getExecutions = async (appName: string, params: IExecutionsParams) => {
   const { pipelineName, pageSize, startDate, endDate, firstItemIdx = 0 } = params;
 
   const data = await REST('/applications')
@@ -29,12 +29,14 @@ export const getExecutions = async (appName: string, params: IExecutionsParams) 
 
 const pauseExecution = (executionId: string) => REST('/pipelines').path(executionId).path('pause').put();
 
-export const pauseExecutions = async (executionIds: string[]) => {
+const pauseExecutions = async (executionIds: string[]) => {
   return await Promise.all(executionIds.map((id) => pauseExecution(id)));
 };
 
 const resumeExecution = (executionId: string) => REST('/pipelines').path(executionId).path('resume').put();
 
-export const resumeExecutions = async (executionIds: string[]) => {
+const resumeExecutions = async (executionIds: string[]) => {
   return await Promise.all(executionIds.map((id) => resumeExecution(id)));
 };
+
+export const gate = { getExecutions, pauseExecutions, resumeExecutions };

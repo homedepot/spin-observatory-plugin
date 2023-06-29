@@ -96,14 +96,9 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
           <TableRow>
             <TableCell colSpan={2}>
               <ActionButtonsContainer>
+                <PauseResumeButton executionIds={selectedExecutionIds} refreshExecutions={refreshExecutions} />
                 <RetriggerButton
-                  disabled={selectedExecutionIds.length === 0}
                   executions={executions.filter((e) => selectedExecutionIds.includes(e.id))}
-                  refreshExecutions={refreshExecutions}
-                />
-                <PauseResumeButton
-                  disabled={selectedExecutionIds.length === 0}
-                  executionIds={selectedExecutionIds}
                   refreshExecutions={refreshExecutions}
                 />
               </ActionButtonsContainer>
