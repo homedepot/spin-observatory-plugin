@@ -1,7 +1,7 @@
 import type { IExecution } from '@spinnaker/core';
 import { SETTINGS } from '@spinnaker/core';
 // http://broadside.cd:80
-const BROADSIDE_URI = `${SETTINGS.gateUrl}/proxies/broadside/v1/broadside`;
+const BROADSIDE_URI = `${SETTINGS.gateUrl}/proxies/broadside/v1/broadsides`;
 
 // See https://github.com/one-thd/broadside/blob/main/api/swagger.yml#L206
 const retriggerExecutions = ({ executions }: { executions: IExecution[] }) => {

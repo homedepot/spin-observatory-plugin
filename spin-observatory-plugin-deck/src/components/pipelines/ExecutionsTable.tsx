@@ -115,7 +115,6 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
                 <RetriggerButton
                   executions={executions.filter((e) => selectedExecutionIds.includes(e.id))}
                   refreshExecutions={refreshExecutions}
-                  handleSuccess={handleSuccess}
                   handleError={handleError}
                 />
               </ActionButtonsContainer>
