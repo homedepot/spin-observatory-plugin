@@ -1,7 +1,10 @@
-import { TableCell, TableRow, Typography, Checkbox } from '@material-ui/core';
-import React, { MouseEventHandler } from 'react';
-import { IExecution, ReactInjector } from '@spinnaker/core';
+import { Checkbox, TableCell, TableRow, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
+import type { MouseEventHandler } from 'react';
+import React from 'react';
+
+import type { IExecution } from '@spinnaker/core';
+import { ReactInjector } from '@spinnaker/core';
 
 const useStyles = makeStyles({
   tableRow: {
@@ -27,7 +30,7 @@ const goToExecutionDetails = (executionId: string) => () => {
 
 const convertTimestamp = (ts: number) => {
   if (!ts) {
-    return ''
+    return '';
   }
 
   return new Intl.DateTimeFormat('en-US', {

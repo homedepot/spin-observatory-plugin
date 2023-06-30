@@ -1,18 +1,8 @@
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  TextField,
-  MenuItem,
-  Menu,
-  ListSubheader,
-  PopoverProps
-} from "@material-ui/core";
-
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDateTimePicker
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+import DateFnsUtils from '@date-io/date-fns';
+import type { PopoverProps } from '@material-ui/core';
+import { Button, ListSubheader, Menu, MenuItem, TextField } from '@material-ui/core';
+import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import React, { useEffect, useState } from 'react';
 
 export interface IDateRange {
   start: number;
@@ -27,35 +17,35 @@ const START_AND_END_BY_HOURS = ({ hours = 1 }) => {
 
 const PREMADE_SELECTIONS = [
   {
-    value: "hour",
-    text: "Last Hour",
-    calculation: () => START_AND_END_BY_HOURS({ hours: 1 })
+    value: 'hour',
+    text: 'Last Hour',
+    calculation: () => START_AND_END_BY_HOURS({ hours: 1 }),
   },
   {
-    value: "day",
-    text: "Last 24 Hours",
-    calculation: () => START_AND_END_BY_HOURS({ hours: 24 })
+    value: 'day',
+    text: 'Last 24 Hours',
+    calculation: () => START_AND_END_BY_HOURS({ hours: 24 }),
   },
   {
-    value: "week",
-    text: "Last 7 Days",
-    calculation: () => START_AND_END_BY_HOURS({ hours: 24 * 7 })
+    value: 'week',
+    text: 'Last 7 Days',
+    calculation: () => START_AND_END_BY_HOURS({ hours: 24 * 7 }),
   },
   {
-    value: "month",
-    text: "Last 30 Days",
-    calculation: () => START_AND_END_BY_HOURS({ hours: 24 * 30 })
-  }
+    value: 'month',
+    text: 'Last 30 Days',
+    calculation: () => START_AND_END_BY_HOURS({ hours: 24 * 30 }),
+  },
 ];
 
 type DatePickerProps = {
-  disabled?: boolean,
-  onChange: ({ start, end }: { start?: number, end?: number }) => void
+  disabled?: boolean;
+  onChange: ({ start, end }: { start?: number; end?: number }) => void;
 };
 
-export const DatePicker = ({ disabled, onChange }:DatePickerProps) => {
+export const DatePicker = ({ disabled, onChange }: DatePickerProps) => {
   const [anchorEl, setAnchorEl] = useState<PopoverProps['anchorEl'] | null>(null);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
   const [selectedCustomStart, setSelectedCustomStart] = useState(new Date());
   const [selectedCustomEnd, setSelectedCustomEnd] = useState(new Date());
 
@@ -77,7 +67,7 @@ export const DatePicker = ({ disabled, onChange }:DatePickerProps) => {
   };
 
   const handleMenuItemClick = (newValue: string) => {
-    const item = PREMADE_SELECTIONS.find(i => i.value === newValue);
+    const item = PREMADE_SELECTIONS.find((i) => i.value === newValue);
     setValue(item.text);
     onChange(item.calculation());
     handleClose();
@@ -92,9 +82,7 @@ export const DatePicker = ({ disabled, onChange }:DatePickerProps) => {
   };
 
   const updateValueWithCustomDateRange = () => {
-    setValue(
-      `${selectedCustomStart.toLocaleDateString()} - ${selectedCustomEnd.toLocaleDateString()}`
-    );
+    setValue(`${selectedCustomStart.toLocaleDateString()} - ${selectedCustomEnd.toLocaleDateString()}`);
     handleClose();
   };
 
@@ -105,35 +93,24 @@ export const DatePicker = ({ disabled, onChange }:DatePickerProps) => {
           disabled={disabled}
           select
           fullWidth
-          style={disabled ? {} : { backgroundColor: "var(--color-white)" }}
+          style={disabled ? {} : { backgroundColor: 'var(--color-white)' }}
           size="small"
           label="Filter Date Range"
           variant="outlined"
           value={value}
           onClick={handleClick}
           InputProps={{
-            readOnly: true
+            readOnly: true,
           }}
         >
           {PREMADE_SELECTIONS.map((option) => {
             return <MenuItem value={option.value}>{option.text}</MenuItem>;
           })}
-          {PREMADE_SELECTIONS.findIndex((p) => p.value === value) === -1 && (
-            <MenuItem value={value}>{value}</MenuItem>
-          )}
+          {PREMADE_SELECTIONS.findIndex((p) => p.value === value) === -1 && <MenuItem value={value}>{value}</MenuItem>}
         </TextField>
-        <Menu
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
+        <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
           {PREMADE_SELECTIONS.map((option) => {
-            return (
-              <MenuItem onClick={() => handleMenuItemClick(option.value)}>
-                {option.text}
-              </MenuItem>
-            );
+            return <MenuItem onClick={() => handleMenuItemClick(option.value)}>{option.text}</MenuItem>;
           })}
           <ListSubheader>Custom</ListSubheader>
           <MenuItem>
@@ -143,7 +120,7 @@ export const DatePicker = ({ disabled, onChange }:DatePickerProps) => {
               value={selectedCustomStart}
               onChange={handleStartDateChange}
               KeyboardButtonProps={{
-                "aria-label": "change start date"
+                'aria-label': 'change start date',
               }}
             />
             <KeyboardDateTimePicker
@@ -152,7 +129,7 @@ export const DatePicker = ({ disabled, onChange }:DatePickerProps) => {
               value={selectedCustomEnd}
               onChange={handleEndDateChange}
               KeyboardButtonProps={{
-                "aria-label": "change end date"
+                'aria-label': 'change end date',
               }}
             />
             <Button onClick={updateValueWithCustomDateRange}>Apply</Button>
@@ -161,4 +138,4 @@ export const DatePicker = ({ disabled, onChange }:DatePickerProps) => {
       </div>
     </MuiPickersUtilsProvider>
   );
-}
+};

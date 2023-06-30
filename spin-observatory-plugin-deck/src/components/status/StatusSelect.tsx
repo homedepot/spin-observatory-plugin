@@ -5,18 +5,18 @@ import Select from 'react-select';
 import type { IPipeline } from '@spinnaker/core';
 
 export const STATUSES = [
-    'SUCCEEDED',
-    'FAILED_CONTINUE',
-    'TERMINAL',
-    'CANCELED',
-    'NOT_STARTED',
-    'RUNNING',
-    'PAUSED',
-    'SUSPENDED',
-    'BUFFERED',
-    'STOPPED',
-    'SKIPPED',
-    'REDIRECT'
+  'SUCCEEDED',
+  'FAILED_CONTINUE',
+  'TERMINAL',
+  'CANCELED',
+  'NOT_STARTED',
+  'RUNNING',
+  'PAUSED',
+  'SUSPENDED',
+  'BUFFERED',
+  'STOPPED',
+  'SKIPPED',
+  'REDIRECT',
 ];
 
 interface IStatusSelectProps {
@@ -27,13 +27,19 @@ interface IStatusSelectProps {
   statusCount: Map<string, number>;
 }
 
-export const StatusSelect = ({className, pipeline, selectedStatus, setSelectedStatus, statusCount }: IStatusSelectProps) => {
+export const StatusSelect = ({
+  className,
+  pipeline,
+  selectedStatus,
+  setSelectedStatus,
+  statusCount,
+}: IStatusSelectProps) => {
   const onStatusSelect = (options: Array<Option<string>>) => {
     setSelectedStatus(options.map((o) => o.value));
   };
 
   const extractStatus = (statusCount: Map<string, number>): Array<Option<string>> => {
-    let options = [];
+    const options: Array<Option<string>> = [];
     statusCount.forEach((value, key) => {
       options.push({ label: `${key} (${value})`, value: key });
     });

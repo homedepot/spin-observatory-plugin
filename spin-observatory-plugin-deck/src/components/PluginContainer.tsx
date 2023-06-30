@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react';
 import type { Application, IPipeline } from '@spinnaker/core';
 import { ReactSelectInput, useDataSource } from '@spinnaker/core';
 
-import { DatePicker, IDateRange } from './date-picker/date-picker';
+import type { IDateRange } from './date-picker/date-picker';
+import { DatePicker } from './date-picker/date-picker';
 import { ParameterSelect } from './parameters';
+import { MAX_DATE_RANGE, PipelineExecutions } from './pipelines';
 import { StatusSelect } from './status';
-import { PipelineExecutions, MAX_DATE_RANGE } from './pipelines';
 
 interface IPluginContainerProps {
   app: Application;
@@ -34,7 +35,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
     setSelectedPipeline(pipelineConfig);
   };
 
-  const handleDateFilterChange = ({ start, end }: { start: number, end: number }) => {
+  const handleDateFilterChange = ({ start, end }: { start: number; end: number }) => {
     setSelectedDateRange({ start, end });
   };
 
@@ -69,7 +70,7 @@ export function PluginContainer({ app }: IPluginContainerProps) {
             <StatusSelect
               className="flex-1"
               pipeline={selectedPipeline}
-              selectedStatus={selectedStatus}  
+              selectedStatus={selectedStatus}
               setSelectedStatus={setSelectedStatus}
               statusCount={statusCount}
             />

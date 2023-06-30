@@ -2,19 +2,24 @@ import {
   Paper,
   Table,
   TableBody,
+  TableCell,
   TableContainer,
   TableFooter,
-  TableRow,
   TablePagination,
+  TableRow,
   Typography,
 } from '@material-ui/core';
-import React, { ChangeEvent, useState } from 'react';
-import { IExecution } from '@spinnaker/core';
-import { TableHeaders } from './TableHeaders';
-import { ExecutionRow } from './ExecutionRow';
-import { DEFAULT_ROWS_PER_PAGE } from './constants';
-import { PaginationActions } from './PaginationActions';
 import { makeStyles } from '@material-ui/core';
+import type { ChangeEvent } from 'react';
+import React, { useState } from 'react';
+
+import type { IExecution } from '@spinnaker/core';
+
+import { ExecutionRow } from './ExecutionRow';
+import { PaginationActions } from './PaginationActions';
+import { TableHeaders } from './TableHeaders';
+import { ActionButtonsContainer, PauseResumeButton, RetriggerButton } from '../actions';
+import { DEFAULT_ROWS_PER_PAGE } from './constants';
 
 const useStyles = makeStyles({
   tableContainer: { borderRadius: 'inherit' },
@@ -24,10 +29,11 @@ const useStyles = makeStyles({
 interface IExecutionsTableProps {
   executions: IExecution[];
   parameters: string[];
+  refreshExecutions: () => void;
 }
 
-export const ExecutionsTable = ({ executions, parameters }: IExecutionsTableProps) => {
-  const [selectedExecutions, setSelectedExecutions] = useState<string[]>([]);
+export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: IExecutionsTableProps) => {
+  const [selectedExecutionIds, setSelectedExecutionIds] = useState<string[]>([]);
   const [currentPage, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PER_PAGE);
   const styles = useStyles();
@@ -45,26 +51,26 @@ export const ExecutionsTable = ({ executions, parameters }: IExecutionsTableProp
 
   const handleSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      setSelectedExecutions(executions.map((e) => e.id));
+      setSelectedExecutionIds(executions.map((e) => e.id));
       return;
     }
-    setSelectedExecutions([]);
+    setSelectedExecutionIds([]);
   };
 
   const handleSelectOne = (executionId: string) => () => {
-    const selectedIdx = selectedExecutions.indexOf(executionId);
+    const selectedIdx = selectedExecutionIds.indexOf(executionId);
     let newSelected: string[] = [];
 
     if (selectedIdx === -1) {
-      newSelected = [...selectedExecutions, executionId];
+      newSelected = [...selectedExecutionIds, executionId];
     } else {
-      newSelected = selectedExecutions.filter((e) => e !== executionId);
+      newSelected = selectedExecutionIds.filter((e) => e !== executionId);
     }
 
-    setSelectedExecutions(newSelected);
+    setSelectedExecutionIds(newSelected);
   };
 
-  const isSelected = (name: string) => selectedExecutions.indexOf(name) !== -1;
+  const isSelected = (name: string) => selectedExecutionIds.indexOf(name) !== -1;
 
   return (
     <TableContainer component={Paper} classes={{ root: styles.tableContainer }}>
@@ -73,7 +79,7 @@ export const ExecutionsTable = ({ executions, parameters }: IExecutionsTableProp
           headers={headers}
           onSelectAll={handleSelectAll}
           rowCount={executions.length}
-          selectedCount={selectedExecutions.length}
+          selectedCount={selectedExecutionIds.length}
         />
         <TableBody>
           {executions.slice(currentPage * rowsPerPage, currentPage * rowsPerPage + rowsPerPage).map((e) => (
@@ -88,6 +94,15 @@ export const ExecutionsTable = ({ executions, parameters }: IExecutionsTableProp
         </TableBody>
         <TableFooter>
           <TableRow>
+            <TableCell colSpan={2}>
+              <ActionButtonsContainer>
+                <PauseResumeButton executionIds={selectedExecutionIds} refreshExecutions={refreshExecutions} />
+                <RetriggerButton
+                  executions={executions.filter((e) => selectedExecutionIds.includes(e.id))}
+                  refreshExecutions={refreshExecutions}
+                />
+              </ActionButtonsContainer>
+            </TableCell>
             <TablePagination
               classes={{ root: styles.pagination }}
               count={executions.length}
