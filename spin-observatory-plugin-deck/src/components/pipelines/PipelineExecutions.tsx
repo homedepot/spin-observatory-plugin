@@ -71,7 +71,7 @@ export const PipelineExecutions = ({
       setStatusCount(getStatusCount(resp));
       setIsLoading(false);
     });
-  }, [pipeline]);
+  }, [pipeline, dateRange.start, dateRange.end]);
 
   useEffect(() => {
     onStatusChange(statusCount);
