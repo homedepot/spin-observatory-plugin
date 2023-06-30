@@ -8,10 +8,9 @@ import { broadside } from '../../services/';
 interface IRetriggerButtonProps {
   executions: IExecution[];
   refreshExecutions: () => void;
-  handleError: (msg: string) => void;
 }
 
-export const RetriggerButton = ({ executions, refreshExecutions, handleError }: IRetriggerButtonProps) => {
+export const RetriggerButton = ({ executions, refreshExecutions }: IRetriggerButtonProps) => {
   const [retriggerInProgress, setRetriggerInProgress] = useState(false);
   const [hover, setHover] = useState(false);
 
@@ -24,15 +23,13 @@ export const RetriggerButton = ({ executions, refreshExecutions, handleError }: 
     broadside
       .retriggerExecutions({ executions })
       .then((res) => {
-        if (res.status > 399) {
-          handleError(`Failed to retrigger: ${res.status}`);
-        }
-        setRetriggerInProgress(false);
+        /* eslint-disable no-console */
+        console.log(res.status);
+        return res.json();
       })
-      .catch((e) => {
-        console.error('error retriggering: ', e);
-        handleError(`Failed to retrigger: ${e}`);
-      })
+      /* eslint-disable no-console */
+      .then((data) => console.log(data))
+      .catch((e) => console.error('error retriggering: ', e))
       .finally(() => {
         setRetriggerInProgress(false);
         refreshExecutions();

@@ -12,7 +12,6 @@ import {
 import { makeStyles } from '@material-ui/core';
 import type { ChangeEvent } from 'react';
 import React, { useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
 
 import type { IExecution } from '@spinnaker/core';
 
@@ -21,8 +20,6 @@ import { PaginationActions } from './PaginationActions';
 import { TableHeaders } from './TableHeaders';
 import { ActionButtonsContainer, PauseResumeButton, RetriggerButton } from '../actions';
 import { DEFAULT_ROWS_PER_PAGE } from './constants';
-
-import 'react-toastify/dist/ReactToastify.css';
 
 const useStyles = makeStyles({
   tableContainer: { borderRadius: 'inherit' },
@@ -75,18 +72,6 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
 
   const isSelected = (name: string) => selectedExecutionIds.indexOf(name) !== -1;
 
-  const handleError = (msg: string) => {
-    toast.error(msg, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
-  };
-
-  const handleSuccess = (msg: string) => {
-    toast(msg, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-    });
-  };
-
   return (
     <TableContainer component={Paper} classes={{ root: styles.tableContainer }}>
       <Table stickyHeader>
@@ -115,7 +100,6 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
                 <RetriggerButton
                   executions={executions.filter((e) => selectedExecutionIds.includes(e.id))}
                   refreshExecutions={refreshExecutions}
-                  handleError={handleError}
                 />
               </ActionButtonsContainer>
             </TableCell>
@@ -144,9 +128,6 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
           </TableRow>
         </TableFooter>
       </Table>
-      <div>
-        <ToastContainer position="bottom-right" autoClose={false} newestOnTop={true} closeOnClick={false} />
-      </div>
     </TableContainer>
   );
 };
