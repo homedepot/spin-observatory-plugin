@@ -7,6 +7,7 @@ import MenuList from '@material-ui/core/MenuList';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import React, { Fragment, useRef, useState } from 'react';
 import { gate } from '../../services/';
@@ -34,11 +35,13 @@ export const PauseResumeButton = ({
       text: 'Pause',
       action: gate.pauseExecutions,
       tooltip: pausable ? 'pause selected executions' : 'no selected executions are running',
+      disabled: executionIds.length === 0 || !pausable,
     },
     {
       text: 'Resume',
       action: gate.resumeExecutions,
       tooltip: resumable ? 'resume selected executions' : 'no selected executions are paused',
+      disabled: executionIds.length === 0 || !resumable,
     },
   ];
 
@@ -65,10 +68,8 @@ export const PauseResumeButton = ({
 
   const handleHover = () => setHover((prevHover) => !prevHover);
 
-  const disabled = executionIds.length === 0;
-
   const computeBtnColor = () => {
-    if (disabled) {
+    if (options[selectedIndex].disabled) {
       return 'var(--color-status-inactive)';
     } else if (hover) {
       return 'var(--button-primary-hover-bg)';
@@ -79,13 +80,13 @@ export const PauseResumeButton = ({
 
   return (
     <Fragment>
-      <Tooltip title={options[selectedIndex].tooltip}>
+      <Tooltip title={<Typography>options[selectedIndex].tooltip</Typography>}>
         <ButtonGroup
           onMouseEnter={handleHover}
           onMouseLeave={handleHover}
           variant="contained"
           ref={anchorRef}
-          disabled={disabled}
+          disabled={options[selectedIndex].disabled}
         >
           <Button
             style={{
