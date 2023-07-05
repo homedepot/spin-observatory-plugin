@@ -72,6 +72,10 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
 
   const isSelected = (name: string) => selectedExecutionIds.indexOf(name) !== -1;
 
+  const pausable = executions.filter((e) => e.status === 'RUNNING' && selectedExecutionIds.includes(e.id)).length > 0;
+
+  const resumable = executions.filter((e) => e.status === 'PAUSED' && selectedExecutionIds.includes(e.id)).length > 0;
+
   return (
     <TableContainer component={Paper} classes={{ root: styles.tableContainer }}>
       <Table stickyHeader>
@@ -96,7 +100,12 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
           <TableRow>
             <TableCell colSpan={2}>
               <ActionButtonsContainer>
-                <PauseResumeButton executionIds={selectedExecutionIds} refreshExecutions={refreshExecutions} />
+                <PauseResumeButton
+                  executionIds={selectedExecutionIds}
+                  refreshExecutions={refreshExecutions}
+                  pausable={pausable}
+                  resumable={resumable}
+                />
                 <RetriggerButton
                   executions={executions.filter((e) => selectedExecutionIds.includes(e.id))}
                   refreshExecutions={refreshExecutions}

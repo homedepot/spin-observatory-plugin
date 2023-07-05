@@ -6,6 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
+import Tooltip from '@material-ui/core/Tooltip';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import React, { Fragment, useRef, useState } from 'react';
 import { gate } from '../../services/';
@@ -13,18 +14,33 @@ import { gate } from '../../services/';
 interface IPauseResumeButtonProps {
   executionIds: string[];
   refreshExecutions: () => void;
+  pausable: boolean;
+  resumable: boolean;
 }
 
-const options = [
-  { text: 'Pause', action: gate.pauseExecutions },
-  { text: 'Resume', action: gate.resumeExecutions },
-];
-
-export const PauseResumeButton = ({ executionIds, refreshExecutions }: IPauseResumeButtonProps) => {
+export const PauseResumeButton = ({
+  executionIds,
+  refreshExecutions,
+  pausable,
+  resumable,
+}: IPauseResumeButtonProps) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [hover, setHover] = useState(false);
+
+  const options = [
+    {
+      text: 'Pause',
+      action: gate.pauseExecutions,
+      tooltip: pausable ? 'pause selected executions' : 'no selected executions are running',
+    },
+    {
+      text: 'Resume',
+      action: gate.resumeExecutions,
+      tooltip: resumable ? 'resume selected executions' : 'no selected executions are paused',
+    },
+  ];
 
   const handleButtonClick = () => {
     options[selectedIndex].action(executionIds).then(() => refreshExecutions());
@@ -63,34 +79,36 @@ export const PauseResumeButton = ({ executionIds, refreshExecutions }: IPauseRes
 
   return (
     <Fragment>
-      <ButtonGroup
-        onMouseEnter={handleHover}
-        onMouseLeave={handleHover}
-        variant="contained"
-        ref={anchorRef}
-        disabled={disabled}
-      >
-        <Button
-          style={{
-            color: 'white',
-            backgroundColor: computeBtnColor(),
-          }}
-          size="small"
-          onClick={handleToggle}
+      <Tooltip title={options[selectedIndex].tooltip}>
+        <ButtonGroup
+          onMouseEnter={handleHover}
+          onMouseLeave={handleHover}
+          variant="contained"
+          ref={anchorRef}
+          disabled={disabled}
         >
-          <ArrowDropDownIcon />
-        </Button>
-        <Button
-          style={{
-            width: '7rem',
-            color: 'white',
-            backgroundColor: computeBtnColor(),
-          }}
-          onClick={handleButtonClick}
-        >
-          {options[selectedIndex].text}
-        </Button>
-      </ButtonGroup>
+          <Button
+            style={{
+              color: 'white',
+              backgroundColor: computeBtnColor(),
+            }}
+            size="small"
+            onClick={handleToggle}
+          >
+            <ArrowDropDownIcon />
+          </Button>
+          <Button
+            style={{
+              width: '7rem',
+              color: 'white',
+              backgroundColor: computeBtnColor(),
+            }}
+            onClick={handleButtonClick}
+          >
+            {options[selectedIndex].text}
+          </Button>
+        </ButtonGroup>
+      </Tooltip>
       <Popper open={open} anchorEl={anchorRef.current} transition disablePortal>
         {({ TransitionProps }) => (
           <Grow
