@@ -34,14 +34,12 @@ export const PauseResumeButton = ({
     {
       text: 'Pause',
       action: gate.pauseExecutions,
-      tooltip: pausable ? 'pause selected executions' : 'no selected executions are running',
-      disabled: executionIds.length === 0 || !pausable,
+      tooltip: pausable ? 'Pause selected executions' : 'No selected executions are running',
     },
     {
       text: 'Resume',
       action: gate.resumeExecutions,
-      tooltip: resumable ? 'resume selected executions' : 'no selected executions are paused',
-      disabled: executionIds.length === 0 || !resumable,
+      tooltip: resumable ? 'Resume selected executions' : 'No selected executions are paused',
     },
   ];
 
@@ -68,8 +66,10 @@ export const PauseResumeButton = ({
 
   const handleHover = () => setHover((prevHover) => !prevHover);
 
+  const disabled = executionIds.length === 0;
+
   const computeBtnColor = () => {
-    if (options[selectedIndex].disabled) {
+    if (disabled) {
       return 'var(--color-status-inactive)';
     } else if (hover) {
       return 'var(--button-primary-hover-bg)';
@@ -98,7 +98,7 @@ export const PauseResumeButton = ({
               color: 'white',
               backgroundColor: computeBtnColor(),
             }}
-            disabled={options[selectedIndex].disabled}
+            disabled={disabled}
             onClick={handleButtonClick}
           >
             {options[selectedIndex].text}
