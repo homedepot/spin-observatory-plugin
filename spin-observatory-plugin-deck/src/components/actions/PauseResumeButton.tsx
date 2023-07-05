@@ -88,7 +88,6 @@ export const PauseResumeButton = ({
               backgroundColor: computeBtnColor(),
             }}
             size="small"
-            disabled={executionIds.length === 0}
             onClick={handleToggle}
           >
             <ArrowDropDownIcon />
