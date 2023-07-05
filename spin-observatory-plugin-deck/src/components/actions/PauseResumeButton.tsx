@@ -80,7 +80,7 @@ export const PauseResumeButton = ({
 
   return (
     <Fragment>
-      <Tooltip title={<Typography>options[selectedIndex].tooltip</Typography>}>
+      <Tooltip title={<Typography>{options[selectedIndex].tooltip}</Typography>}>
         <ButtonGroup
           onMouseEnter={handleHover}
           onMouseLeave={handleHover}
