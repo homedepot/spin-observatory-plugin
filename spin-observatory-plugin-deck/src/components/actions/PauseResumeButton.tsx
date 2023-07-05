@@ -81,19 +81,14 @@ export const PauseResumeButton = ({
   return (
     <Fragment>
       <Tooltip title={<Typography>{options[selectedIndex].tooltip}</Typography>}>
-        <ButtonGroup
-          onMouseEnter={handleHover}
-          onMouseLeave={handleHover}
-          variant="contained"
-          ref={anchorRef}
-          disabled={options[selectedIndex].disabled}
-        >
+        <ButtonGroup onMouseEnter={handleHover} onMouseLeave={handleHover} variant="contained" ref={anchorRef}>
           <Button
             style={{
               color: 'white',
               backgroundColor: computeBtnColor(),
             }}
             size="small"
+            disabled={executionIds.length === 0}
             onClick={handleToggle}
           >
             <ArrowDropDownIcon />
@@ -104,6 +99,7 @@ export const PauseResumeButton = ({
               color: 'white',
               backgroundColor: computeBtnColor(),
             }}
+            disabled={options[selectedIndex].disabled}
             onClick={handleButtonClick}
           >
             {options[selectedIndex].text}
