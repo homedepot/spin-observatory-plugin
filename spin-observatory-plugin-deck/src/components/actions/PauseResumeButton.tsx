@@ -81,7 +81,13 @@ export const PauseResumeButton = ({
   return (
     <Fragment>
       <Tooltip title={<Typography>{options[selectedIndex].tooltip}</Typography>}>
-        <ButtonGroup onMouseEnter={handleHover} onMouseLeave={handleHover} variant="contained" ref={anchorRef}>
+        <ButtonGroup
+          onMouseEnter={handleHover}
+          onMouseLeave={handleHover}
+          variant="contained"
+          ref={anchorRef}
+          disabled={disabled}
+        >
           <Button
             style={{
               color: 'white',
@@ -98,7 +104,6 @@ export const PauseResumeButton = ({
               color: 'white',
               backgroundColor: computeBtnColor(),
             }}
-            disabled={disabled}
             onClick={handleButtonClick}
           >
             {options[selectedIndex].text}
