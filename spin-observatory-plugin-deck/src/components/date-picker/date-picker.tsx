@@ -50,11 +50,16 @@ export const DatePicker = ({ disabled, onChange }: DatePickerProps) => {
   const [selectedCustomEnd, setSelectedCustomEnd] = useState(new Date());
 
   useEffect(() => {
-    const start = selectedCustomStart.getTime();
-    const end = selectedCustomEnd.getTime();
-    // only emit if valid range
-    if (start < end) {
-      onChange({ end, start });
+    try {
+      const start = selectedCustomStart.getTime();
+      const end = selectedCustomEnd.getTime();
+      // only emit if valid range
+      if (start < end) {
+        onChange({ end, start });
+      }
+    } catch (e) {
+      /* eslint-disable no-console */
+      console.error('invalid date: ', e);
     }
   }, [selectedCustomStart, selectedCustomEnd]);
 
