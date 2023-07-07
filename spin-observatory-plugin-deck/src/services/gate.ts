@@ -39,4 +39,14 @@ const resumeExecutions = async (executionIds: string[]) => {
   return await Promise.all(executionIds.map((id) => resumeExecution(id)));
 };
 
-export const gate = { getExecutions, pauseExecutions, resumeExecutions };
+const cancelExecution = (executionId: string) =>
+  REST('/pipelines')
+    .path(executionId)
+    .path('cancel')
+    .query({ reason: 'cancelled by spin-observatory-plugin', force: true })
+    .put();
+
+const cancelExecutions = async (executionIds: string[]) =>
+  await Promise.all(executionIds.map((id) => cancelExecution(id)));
+
+export const gate = { getExecutions, pauseExecutions, resumeExecutions, cancelExecutions };

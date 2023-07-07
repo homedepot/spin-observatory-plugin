@@ -82,6 +82,14 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
     gate.resumeExecutions(selectedExecutionIds).then(() => refreshExecutions());
   };
 
+  const cancellable =
+    executions.filter(
+      (e) => !['TERMINAL', 'SUCCEEDED', 'CANCELED'].includes(e.status) && selectedExecutionIds.includes(e.id),
+    ).length > 0;
+  const handleCancel = () => {
+    gate.cancelExecutions(selectedExecutionIds).then(() => refreshExecutions());
+  };
+
   return (
     <TableContainer component={Paper} classes={{ root: styles.tableContainer }}>
       <Table stickyHeader>
@@ -104,7 +112,7 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={3}>
+            <TableCell colSpan={4}>
               <ActionButtonsContainer>
                 <RetriggerButton
                   executions={executions.filter((e) => selectedExecutionIds.includes(e.id))}
@@ -121,6 +129,12 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
                   action={handleResume}
                   disabled={!resumable}
                   tooltip={resumable ? 'Resume selected executions' : 'No selected executions are paused'}
+                />
+                <ActionButton
+                  title="Cancel"
+                  action={handleCancel}
+                  disabled={!cancellable}
+                  tooltip={cancellable ? 'Cancel selected executions' : 'No selected executions can be cancelled'}
                 />
               </ActionButtonsContainer>
             </TableCell>
