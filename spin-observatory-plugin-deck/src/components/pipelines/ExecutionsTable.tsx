@@ -112,7 +112,7 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={4}>
+            <TableCell colSpan={2}>
               <ActionButtonsContainer>
                 <RetriggerButton
                   executions={executions.filter((e) => selectedExecutionIds.includes(e.id))}
