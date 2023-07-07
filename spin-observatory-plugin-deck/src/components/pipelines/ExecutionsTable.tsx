@@ -18,9 +18,9 @@ import type { IExecution } from '@spinnaker/core';
 import { ExecutionRow } from './ExecutionRow';
 import { PaginationActions } from './PaginationActions';
 import { TableHeaders } from './TableHeaders';
-import { ActionButtonsContainer, PauseResumeButton, RetriggerButton } from '../actions';
+import { ActionButton, ActionButtonsContainer, RetriggerButton } from '../actions';
 import { DEFAULT_ROWS_PER_PAGE } from './constants';
-
+import { gate } from '../../services';
 const useStyles = makeStyles({
   tableContainer: { borderRadius: 'inherit' },
   pagination: { fontSize: '1rem', margin: 'auto' },
@@ -73,8 +73,14 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
   const isSelected = (name: string) => selectedExecutionIds.indexOf(name) !== -1;
 
   const pausable = executions.filter((e) => e.status === 'RUNNING' && selectedExecutionIds.includes(e.id)).length > 0;
+  const handlePause = () => {
+    gate.pauseExecutions(selectedExecutionIds).then(() => refreshExecutions());
+  };
 
   const resumable = executions.filter((e) => e.status === 'PAUSED' && selectedExecutionIds.includes(e.id)).length > 0;
+  const handleResume = () => {
+    gate.resumeExecutions(selectedExecutionIds).then(() => refreshExecutions());
+  };
 
   return (
     <TableContainer component={Paper} classes={{ root: styles.tableContainer }}>
@@ -98,17 +104,23 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={2}>
+            <TableCell colSpan={3}>
               <ActionButtonsContainer>
-                <PauseResumeButton
-                  executionIds={selectedExecutionIds}
-                  refreshExecutions={refreshExecutions}
-                  pausable={pausable}
-                  resumable={resumable}
-                />
                 <RetriggerButton
                   executions={executions.filter((e) => selectedExecutionIds.includes(e.id))}
                   refreshExecutions={refreshExecutions}
+                />
+                <ActionButton
+                  title="Pause"
+                  action={handlePause}
+                  disabled={pausable}
+                  tooltip={pausable ? 'No selected executions are running' : 'Pause selected executions'}
+                />
+                <ActionButton
+                  title="Resume"
+                  action={handleResume}
+                  disabled={resumable}
+                  tooltip={resumable ? 'No selected executions are running' : 'Pause selected executions'}
                 />
               </ActionButtonsContainer>
             </TableCell>
