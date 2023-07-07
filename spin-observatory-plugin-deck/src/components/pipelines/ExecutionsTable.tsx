@@ -113,14 +113,14 @@ export const ExecutionsTable = ({ executions, parameters, refreshExecutions }: I
                 <ActionButton
                   title="Pause"
                   action={handlePause}
-                  disabled={pausable}
-                  tooltip={pausable ? 'No selected executions are running' : 'Pause selected executions'}
+                  disabled={!pausable}
+                  tooltip={pausable ? 'Pause selected executions' : 'No selected executions are running'}
                 />
                 <ActionButton
                   title="Resume"
                   action={handleResume}
-                  disabled={resumable}
-                  tooltip={resumable ? 'No selected executions are running' : 'Pause selected executions'}
+                  disabled={!resumable}
+                  tooltip={resumable ? 'Resume selected executions' : 'No selected executions are paused'}
                 />
               </ActionButtonsContainer>
             </TableCell>
