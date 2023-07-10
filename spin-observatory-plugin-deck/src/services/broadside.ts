@@ -18,11 +18,17 @@ const retriggerExecutions = ({ executions }: { executions: IExecution[] }) => {
   const pipelineNameOrId = executions[0].name;
   const amount = executions.length;
   const pipelineMultiParameters = executions.map((e) => e.trigger.parameters);
+  let executionID;
+  try {
+    executionID = executions[0].trigger.parentExecution.id;
+  } catch (e) {
+    executionID = executions[0].id;
+  }
 
   return fetch(BROADSIDE_URI, {
     method: 'POST',
     credentials: 'include',
-    body: JSON.stringify({ application, pipelineNameOrId, amount, pipelineMultiParameters }),
+    body: JSON.stringify({ application, pipelineNameOrId, amount, pipelineMultiParameters, executionID }),
   });
 };
 
