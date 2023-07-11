@@ -16,7 +16,7 @@ interface IPluginContainerProps {
 
 export function PluginContainer({ app }: IPluginContainerProps) {
   /* eslint-disable no-console */
-  console.log('v0.14.0+5');
+  console.log('v0.14.0+6');
   const dataSource = app.getDataSource('observatory');
   const { data: pipelines } = useDataSource<IPipeline[]>(dataSource);
   const [selectedPipeline, setSelectedPipeline] = useState<IPipeline>();
