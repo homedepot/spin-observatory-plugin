@@ -23,6 +23,8 @@ const retriggerExecutions = ({ executions }: { executions: IExecution[] }) => {
     } else {
       executionID = executions[0].trigger.parameters['parentExecutionId'];
     }
+    /* eslint-disable no-console */
+    console.log(executionID, 'FROM TRY BLOCK');
   } catch (e) {
     /* eslint-disable no-console */
     console.error(e);
@@ -38,6 +40,7 @@ const retriggerExecutions = ({ executions }: { executions: IExecution[] }) => {
   });
   /* eslint-disable no-console */
   console.log(broadsideRequest);
+  console.log(executionID);
 
   return fetch(BROADSIDE_URI, {
     method: 'POST',
