@@ -17,7 +17,12 @@ const retriggerExecutions = ({ executions }: { executions: IExecution[] }) => {
   let executionID;
 
   try {
-    executionID = executions[0].trigger.parentExecution.id;
+    const parent = executions[0].trigger.parentExecution;
+    if (parent.id) {
+      executionID = parent.id;
+    } else {
+      executionID = executions[0].trigger.parameters['parentExecutionId'];
+    }
   } catch (e) {
     /* eslint-disable no-console */
     console.error(e);
