@@ -23,9 +23,6 @@ const retriggerExecutions = ({ executions }: { executions: IExecution[] }) => {
     executionID: getParentExecutionId(executions[0]),
   });
 
-  /* eslint-disable no-console */
-  console.log(broadsideRequest);
-
   return fetch(BROADSIDE_URI, {
     method: 'POST',
     credentials: 'include',
