@@ -14,21 +14,30 @@ const retriggerExecutions = ({ executions }: { executions: IExecution[] }) => {
    *       pipelineMultiParameters: '[ { "multiParameterName": "custom data" } ]'
    */
 
-  const application = executions[0].application;
-  const pipelineNameOrId = executions[0].name;
-  const amount = executions.length;
-  const pipelineMultiParameters = executions.map((e) => e.trigger.parameters);
   let executionID;
+
   try {
     executionID = executions[0].trigger.parentExecution.id;
   } catch (e) {
+    /* eslint-disable no-console */
+    console.error(e);
     executionID = executions[0].id;
   }
+
+  const broadsideRequest = JSON.stringify({
+    application: executions[0].application,
+    pipelineNameOrId: executions[0].name,
+    amount: executions.length,
+    pipelineMultiParameters: executions.map((e) => e.trigger.parameters),
+    executionID,
+  });
+  /* eslint-disable no-console */
+  console.log(broadsideRequest);
 
   return fetch(BROADSIDE_URI, {
     method: 'POST',
     credentials: 'include',
-    body: JSON.stringify({ application, pipelineNameOrId, amount, pipelineMultiParameters, executionID }),
+    body: broadsideRequest,
   });
 };
 
