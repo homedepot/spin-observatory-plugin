@@ -27,7 +27,6 @@ export const RetriggerButton = ({ executions, refreshExecutions }: IRetriggerBut
         console.log(res.status);
         return res.json();
       })
-      /* eslint-disable no-console */
       .then((data) => console.log(data))
       .catch((e) => console.error('error retriggering: ', e))
       .finally(() => {
