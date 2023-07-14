@@ -68,6 +68,9 @@ func addReleaseToPlugins(releaseEvent PluginReleaseEvent, existingPlugins []Plug
 	releasedPlugin := releaseEvent.Release
 	release := releasedPlugin.Releases[0]
 	release.Url = "https://github.com/" + releaseEvent.Org + "/" + releaseEvent.Repo + "/releases/download/" + release.Version + "/" + releaseEvent.Repo + "-" + release.Version + ".zip"
+	if !strings.Contains(release.Version, "+") {
+		release.State = "RELEASE"
+	}
 	if strings.HasPrefix(release.Version, "v") {
 		// the plugins version is supplied with a v from the bundler, but fails when update manager compares versions
 		release.Version = release.Version[1:]
