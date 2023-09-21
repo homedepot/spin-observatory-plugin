@@ -56,6 +56,7 @@ export const PipelineExecutions = ({
       setFilteredExecutions([]);
       setStatusCount(new Map<string, number>());
       setIsLoading(false);
+      setIsRequestInProgress(false);
       return;
     }
 
@@ -71,6 +72,7 @@ export const PipelineExecutions = ({
       setFilteredExecutions(filterExecutions(resp));
       setStatusCount(getStatusCount(resp));
       setIsLoading(false);
+      setIsRequestInProgress(false);
     });
   }, [pipeline, dateRange.start, dateRange.end]);
 
