@@ -102,8 +102,12 @@ export const PipelineExecutions = ({
       endDate: dateRange.end,
     });
 
+    setTimeout(() => {
+      console.log('setting timeout');
+    }, 40000);
+
     setIsRequestInProgress(false);
-    console.log("request completed.");
+    console.log("request completed");
 
     setExecutions(resp);
     setFilteredExecutions(filterExecutions(resp));
