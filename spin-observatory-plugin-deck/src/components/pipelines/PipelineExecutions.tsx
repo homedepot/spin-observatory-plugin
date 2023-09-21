@@ -93,7 +93,7 @@ export const PipelineExecutions = ({
     }
     
     setIsRequestInProgress(true);
-    console.log('making a request...');
+    console.log("making a request...");
 
     const resp = await gate.getExecutions(appName, {
       pipelineName: pipeline.name,
@@ -103,7 +103,7 @@ export const PipelineExecutions = ({
     });
 
     setIsRequestInProgress(false);
-    console.log('request completed.');
+    console.log("request completed.");
 
     setExecutions(resp);
     setFilteredExecutions(filterExecutions(resp));
