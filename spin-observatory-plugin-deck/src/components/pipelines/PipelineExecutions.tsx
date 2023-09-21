@@ -104,10 +104,9 @@ export const PipelineExecutions = ({
 
     setTimeout(() => {
       console.log('setting timeout');
+      setIsRequestInProgress(false);
+      console.log("request completed");
     }, 40000);
-
-    setIsRequestInProgress(false);
-    console.log("request completed");
 
     setExecutions(resp);
     setFilteredExecutions(filterExecutions(resp));
