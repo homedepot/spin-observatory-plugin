@@ -101,6 +101,7 @@ export const PipelineExecutions = ({
       })
       .catch((e) => console.error('error retrieving executions: ', e))
       .finally(() => {
+        console.log('setIsRequestInProgress = false')
         setIsRequestInProgress(false);
       });
   };
