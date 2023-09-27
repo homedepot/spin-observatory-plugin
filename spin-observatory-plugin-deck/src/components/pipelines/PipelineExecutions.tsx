@@ -72,28 +72,18 @@ export const PipelineExecutions = ({
   }, [statuses]);
 
   useInterval(async () => {
-    console.log("start useInterval");
-
     if (!pipeline) return;
 
-    if (isRequestInProgress) {
-      console.log("request is in progress");
-      console.log("end useInterval");
-      return;
-    }
+    if (isRequestInProgress) return;
 
     getExecutions(appName, getExecutionsParams);
-    console.log("end useInterval");
   }, POLL_DELAY_MS);
 
   const getExecutions = (name, params) => {
     setIsRequestInProgress(true);
-    console.log("making a request...");
 
     gate.getExecutions(name, params)
       .then((resp) => {
-        console.log("request completed");
-
         setExecutions(resp);
         setFilteredExecutions(filterExecutions(resp));
         setStatusCount(getStatusCount(resp));
@@ -101,7 +91,6 @@ export const PipelineExecutions = ({
       })
       .catch((e) => console.error('error retrieving executions: ', e))
       .finally(() => {
-        console.log('setIsRequestInProgress = false')
         setIsRequestInProgress(false);
       });
   };
