@@ -60,20 +60,7 @@ export const PipelineExecutions = ({
       return;
     }
 
-    const requestParams = {
-      pipelineName: pipeline.name,
-      pageSize: REQUEST_PAGE_SIZE,
-      startDate: dateRange.start,
-      endDate: dateRange.end,
-    };
-
-    gate.getExecutions(appName, requestParams).then((resp) => {
-      setExecutions(resp);
-      setFilteredExecutions(filterExecutions(resp));
-      setStatusCount(getStatusCount(resp));
-      setIsLoading(false);
-      setIsRequestInProgress(false);
-    });
+    getExecutions(appName, getExecutionsParams);
   }, [pipeline, dateRange.start, dateRange.end]);
 
   useEffect(() => {
@@ -94,23 +81,29 @@ export const PipelineExecutions = ({
       console.log("end useInterval");
       return;
     }
-    
-    setIsRequestInProgress(true);
-    console.log("making a request...");
-    const resp = await gate.getExecutions(appName, {
-      pipelineName: pipeline.name,
-      pageSize: REQUEST_PAGE_SIZE,
-      startDate: dateRange.start,
-      endDate: dateRange.end,
-    });
-    console.log("request completed");
-    setExecutions(resp);
-    setFilteredExecutions(filterExecutions(resp));
-    setStatusCount(getStatusCount(resp));
-    setIsLoading(false);
-    setIsRequestInProgress(false);
+
+    getExecutions(appName, getExecutionsParams);
     console.log("end useInterval");
   }, POLL_DELAY_MS);
+
+  const getExecutions = (name, params) => {
+    setIsRequestInProgress(true);
+    console.log("making a request...");
+
+    gate.getExecutions(name, params)
+      .then((resp) => {
+        console.log("request completed");
+
+        setExecutions(resp);
+        setFilteredExecutions(filterExecutions(resp));
+        setStatusCount(getStatusCount(resp));
+        setIsLoading(false);
+      })
+      .catch((e) => console.error('error retrieving executions: ', e))
+      .finally(() => {
+        setIsRequestInProgress(false);
+      });
+  };
 
   const filterExecutions = (ex: IExecution[]) => {
     const statusArr = statuses.length === 0 ? STATUSES : statuses;
