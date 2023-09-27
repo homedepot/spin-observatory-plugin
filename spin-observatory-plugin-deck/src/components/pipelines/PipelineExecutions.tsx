@@ -85,23 +85,31 @@ export const PipelineExecutions = ({
   }, [statuses]);
 
   useInterval(async () => {
+    console.log("start useInterval");
+
     if (!pipeline) return;
 
-    if (isRequestInProgress) return;
+    if (isRequestInProgress) {
+      console.log("request is in progress");
+      console.log("end useInterval");
+      return;
+    }
     
     setIsRequestInProgress(true);
+    console.log("making a request...");
     const resp = await gate.getExecutions(appName, {
       pipelineName: pipeline.name,
       pageSize: REQUEST_PAGE_SIZE,
       startDate: dateRange.start,
       endDate: dateRange.end,
     });
-
+    console.log("request completed");
     setExecutions(resp);
     setFilteredExecutions(filterExecutions(resp));
     setStatusCount(getStatusCount(resp));
     setIsLoading(false);
     setIsRequestInProgress(false);
+    console.log("end useInterval");
   }, POLL_DELAY_MS);
 
   const filterExecutions = (ex: IExecution[]) => {
