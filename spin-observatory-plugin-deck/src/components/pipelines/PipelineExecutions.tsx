@@ -36,6 +36,7 @@ export const PipelineExecutions = ({
   const [filteredExecutions, setFilteredExecutions] = useState<IExecution[]>([]);
   const [statusCount, setStatusCount] = useState<Map<string, number>>(new Map<string, number>());
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isRequestInProgress, setIsRequestInProgress] = useState<boolean>(false);
   const styles = useStyles();
 
   const getExecutionsParams = {
@@ -55,22 +56,11 @@ export const PipelineExecutions = ({
       setFilteredExecutions([]);
       setStatusCount(new Map<string, number>());
       setIsLoading(false);
+      setIsRequestInProgress(false);
       return;
     }
 
-    const requestParams = {
-      pipelineName: pipeline.name,
-      pageSize: REQUEST_PAGE_SIZE,
-      startDate: dateRange.start,
-      endDate: dateRange.end,
-    };
-
-    gate.getExecutions(appName, requestParams).then((resp) => {
-      setExecutions(resp);
-      setFilteredExecutions(filterExecutions(resp));
-      setStatusCount(getStatusCount(resp));
-      setIsLoading(false);
-    });
+    getExecutions(appName, getExecutionsParams);
   }, [pipeline, dateRange.start, dateRange.end]);
 
   useEffect(() => {
@@ -83,18 +73,27 @@ export const PipelineExecutions = ({
 
   useInterval(async () => {
     if (!pipeline) return;
-    const resp = await gate.getExecutions(appName, {
-      pipelineName: pipeline.name,
-      pageSize: REQUEST_PAGE_SIZE,
-      startDate: dateRange.start,
-      endDate: dateRange.end,
-    });
 
-    setExecutions(resp);
-    setFilteredExecutions(filterExecutions(resp));
-    setStatusCount(getStatusCount(resp));
-    setIsLoading(false);
+    if (isRequestInProgress) return;
+
+    getExecutions(appName, getExecutionsParams);
   }, POLL_DELAY_MS);
+
+  const getExecutions = (name, params) => {
+    setIsRequestInProgress(true);
+
+    gate.getExecutions(name, params)
+      .then((resp) => {
+        setExecutions(resp);
+        setFilteredExecutions(filterExecutions(resp));
+        setStatusCount(getStatusCount(resp));
+        setIsLoading(false);
+      })
+      .catch((e) => console.error('error retrieving executions: ', e))
+      .finally(() => {
+        setIsRequestInProgress(false);
+      });
+  };
 
   const filterExecutions = (ex: IExecution[]) => {
     const statusArr = statuses.length === 0 ? STATUSES : statuses;
