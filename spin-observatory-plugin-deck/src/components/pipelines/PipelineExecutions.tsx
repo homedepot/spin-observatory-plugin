@@ -74,7 +74,7 @@ export const PipelineExecutions = ({
   useInterval(async () => {
     if (!pipeline) return;
 
-    if (isRequestInProgress) return;
+    // if (isRequestInProgress) return;
 
     getExecutions(appName, getExecutionsParams);
   }, POLL_DELAY_MS);
